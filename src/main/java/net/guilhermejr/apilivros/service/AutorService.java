@@ -23,16 +23,16 @@ public class AutorService {
 	private AutorMapper autorMapper;
 	
 	public List<AutorDTO> listar() {
-		return this.autorMapper.mapList(this.autorRepository.findByOrderByDescricao(), AutorDTO.class);
+		return this.autorMapper.mapList(this.autorRepository.findByOrderByDescricao());
 	}
 	
 	public AutorDTO autor(Long id) {
 		Optional<Autor> autor = this.autorRepository.findById(id);
-		return this.autorMapper.mapObject(autor.orElseThrow(() -> new ExceptionPadrao("Autor não encontrado.")), AutorDTO.class);
+		return this.autorMapper.mapObject(autor.orElseThrow(() -> new ExceptionPadrao("Autor não encontrado.")));
 	}
 	
 	public AutorDTO cadastrar(AutorForm autorForm) {
-		return this.autorMapper.mapObject(this.autorRepository.save(this.autorMapper.mapObject(autorForm, Autor.class)), AutorDTO.class);
+		return this.autorMapper.mapObject(this.autorRepository.save(this.autorMapper.mapObject(autorForm)));
 	}
 
 }
