@@ -5,17 +5,16 @@ import javax.validation.constraints.Size;
 
 import lombok.Getter;
 import lombok.Setter;
-import net.guilhermejr.apilivros.model.annotation.EditoraUnica;
+import net.guilhermejr.apilivros.model.annotation.GeneroUnico;
 
 @Getter
 @Setter
-public class EditoraForm {
+public class GeneroForm {
 	
 	private Long id;
 	
     @NotBlank()
     @Size(max = 255)
-    @EditoraUnica()
+    @GeneroUnico()
 	private String descricao;
-
 }
