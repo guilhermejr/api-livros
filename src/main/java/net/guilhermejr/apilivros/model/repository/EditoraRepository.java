@@ -14,5 +14,5 @@ public interface EditoraRepository extends JpaRepository<Editora, Long> {
 	
 	List<Editora> findByOrderByDescricao();
 	
-	boolean existsByDescricao(String editoraNome);
+	boolean existsByDescricao(String descricao);
 }

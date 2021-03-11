@@ -14,6 +14,6 @@ public interface IdiomaRepository extends JpaRepository<Idioma, Long> {
 	
 	List<Idioma> findByOrderByDescricao();
 	
-	boolean existsByDescricao(String idiomaNome);
+	boolean existsByDescricao(String descricao);
 
 }

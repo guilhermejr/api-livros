@@ -14,6 +14,6 @@ public interface GeneroRepository extends JpaRepository<Genero, Long> {
 	
 	List<Genero> findByOrderByDescricao();
 	
-	boolean existsByDescricao(String generoNome);
+	boolean existsByDescricao(String descricao);
 
 }

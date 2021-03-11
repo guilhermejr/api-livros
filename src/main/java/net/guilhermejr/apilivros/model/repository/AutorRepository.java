@@ -14,6 +14,6 @@ public interface AutorRepository  extends JpaRepository<Autor, Long> {
 	
 	List<Autor> findByOrderByDescricao();
 	
-	boolean existsByDescricao(String autorNome);
+	boolean existsByDescricao(String descricao);
 
 }
