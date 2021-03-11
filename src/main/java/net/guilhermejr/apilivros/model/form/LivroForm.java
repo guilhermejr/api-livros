@@ -22,6 +22,6 @@ public class LivroForm {
 	private String anoPublicacao;
 	private String paginas;
 	private String tipo = "1";
-	private String tenho = "true";
+	private String estante;
 
 }
