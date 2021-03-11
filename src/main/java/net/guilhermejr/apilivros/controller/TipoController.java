@@ -15,13 +15,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import net.guilhermejr.apilivros.model.dto.TipoDTO;
 import net.guilhermejr.apilivros.model.form.TipoForm;
 import net.guilhermejr.apilivros.service.TipoService;
 
-@Api(tags = "Tipo")
+@Tag(name = "Tipo", description = "Controller de tipo")
 @RestController
 @RequestMapping("/tipo")
 public class TipoController {
@@ -29,19 +29,19 @@ public class TipoController {
 	@Autowired
 	private TipoService tipoService;
 	
-	@ApiOperation(value = "Lista todos os tipos")
+	@Operation(summary = "Lista todos os tipos")
 	@GetMapping
 	public ResponseEntity<List<TipoDTO>> listar() {
 		return ResponseEntity.ok(this.tipoService.listar());
 	}
 	
-	@ApiOperation(value = "Retorna um tipo")
+	@Operation(summary = "Retorna um tipo")
 	@GetMapping("{id}")
 	public ResponseEntity<TipoDTO> tipo(@PathVariable Long id) {
 		return ResponseEntity.ok(this.tipoService.tipo(id));
 	}
 	
-	@ApiOperation(value = "Cadastra novo tipo")
+	@Operation(summary = "Cadastra novo tipo")
 	@PostMapping()
 	public ResponseEntity<TipoDTO> cadastrar(@Valid @RequestBody TipoForm tipoForm, UriComponentsBuilder uriBuilder) {
 		TipoDTO tipoDTO = this.tipoService.cadastrar(tipoForm);

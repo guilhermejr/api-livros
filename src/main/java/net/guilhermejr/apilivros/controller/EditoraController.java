@@ -15,13 +15,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import net.guilhermejr.apilivros.model.dto.EditoraDTO;
 import net.guilhermejr.apilivros.model.form.EditoraForm;
 import net.guilhermejr.apilivros.service.EditoraService;
 
-@Api(tags = "Editora")
+@Tag(name = "Editora", description = "Controller de editora")
 @RestController
 @RequestMapping("/editora")
 public class EditoraController {
@@ -29,19 +29,19 @@ public class EditoraController {
 	@Autowired
 	private EditoraService editoraService;
 	
-	@ApiOperation(value = "Lista todos as editoras")
+	@Operation(summary = "Lista todos as editoras")
 	@GetMapping
 	public ResponseEntity<List<EditoraDTO>> listar() {
 		return ResponseEntity.ok(this.editoraService.listar());
 	}
 	
-	@ApiOperation(value = "Retorna uma editora")
+	@Operation(summary = "Retorna uma editora")
 	@GetMapping("{id}")
 	public ResponseEntity<EditoraDTO> editora(@PathVariable Long id) {
 		return ResponseEntity.ok(this.editoraService.editora(id));
 	}
 	
-	@ApiOperation(value = "Cadastra nova editora")
+	@Operation(summary = "Cadastra nova editora")
 	@PostMapping()
 	public ResponseEntity<EditoraDTO> cadastrar(@Valid @RequestBody EditoraForm editoraForm, UriComponentsBuilder uriBuilder) {
 		EditoraDTO ediotraDTO = this.editoraService.cadastrar(editoraForm);

@@ -15,13 +15,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import net.guilhermejr.apilivros.model.dto.GeneroDTO;
 import net.guilhermejr.apilivros.model.form.GeneroForm;
 import net.guilhermejr.apilivros.service.GeneroService;
 
-@Api(tags = "Gênero")
+@Tag(name = "Gênero", description = "Controller de gênero")
 @RestController
 @RequestMapping("/genero")
 public class GeneroController {
@@ -29,19 +29,19 @@ public class GeneroController {
 	@Autowired
 	private GeneroService generoService;
 	
-	@ApiOperation(value = "Lista todos os gêneros")
+	@Operation(summary = "Lista todos os gêneros")
 	@GetMapping
 	public ResponseEntity<List<GeneroDTO>> listar() {
 		return ResponseEntity.ok(this.generoService.listar());
 	}
 	
-	@ApiOperation(value = "Retorna um gênero")
+	@Operation(summary = "Retorna um gênero")
 	@GetMapping("{id}")
 	public ResponseEntity<GeneroDTO> genero(@PathVariable Long id) {
 		return ResponseEntity.ok(this.generoService.genero(id));
 	}
 	
-	@ApiOperation(value = "Cadastra novo gênero")
+	@Operation(summary = "Cadastra novo gênero")
 	@PostMapping()
 	public ResponseEntity<GeneroDTO> cadastrar(@Valid @RequestBody GeneroForm generoForm, UriComponentsBuilder uriBuilder) {
 		GeneroDTO generoDTO = this.generoService.cadastrar(generoForm);

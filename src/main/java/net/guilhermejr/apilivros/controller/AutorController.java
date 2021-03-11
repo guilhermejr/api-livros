@@ -15,13 +15,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import net.guilhermejr.apilivros.model.dto.AutorDTO;
 import net.guilhermejr.apilivros.model.form.AutorForm;
 import net.guilhermejr.apilivros.service.AutorService;
 
-@Api(tags = "Autor")
+@Tag(name = "Autor", description = "Controller de autor")
 @RestController
 @RequestMapping("/autor")
 public class AutorController {
@@ -29,19 +29,19 @@ public class AutorController {
 	@Autowired
 	private AutorService autorService;
 	
-	@ApiOperation(value = "Lista todos os autores")
+	@Operation(summary = "Lista todos os autores")
 	@GetMapping
 	public ResponseEntity<List<AutorDTO>> listar() {
 		return ResponseEntity.ok(this.autorService.listar());
 	}
 	
-	@ApiOperation(value = "Retorna um autor")
+	@Operation(summary = "Retorna um autor")
 	@GetMapping("{id}")
 	public ResponseEntity<AutorDTO> autor(@PathVariable Long id) {
 		return ResponseEntity.ok(this.autorService.autor(id));
 	}
 	
-	@ApiOperation(value = "Cadastra novo autor")
+	@Operation(summary = "Cadastra novo autor")
 	@PostMapping()
 	public ResponseEntity<AutorDTO> cadastrar(@Valid @RequestBody AutorForm autorForm, UriComponentsBuilder uriBuilder) {
 		AutorDTO autorDTO = this.autorService.cadastrar(autorForm);

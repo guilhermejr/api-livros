@@ -15,13 +15,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import net.guilhermejr.apilivros.model.dto.IdiomaDTO;
 import net.guilhermejr.apilivros.model.form.IdiomaForm;
 import net.guilhermejr.apilivros.service.IdiomaService;
 
-@Api(tags = "Idioma")
+@Tag(name = "Idioma", description = "Controller de idioma")
 @RestController
 @RequestMapping("/idioma")
 public class IdiomaController {
@@ -29,19 +29,19 @@ public class IdiomaController {
 	@Autowired
 	private IdiomaService idiomaService;
 	
-	@ApiOperation(value = "Lista todos os idiomas")
+	@Operation(summary = "Lista todos os idiomas")
 	@GetMapping
 	public ResponseEntity<List<IdiomaDTO>> listar() {
 		return ResponseEntity.ok(this.idiomaService.listar());
 	}
 	
-	@ApiOperation(value = "Retorna um idioma")
+	@Operation(summary = "Retorna um idioma")
 	@GetMapping("{id}")
 	public ResponseEntity<IdiomaDTO> idioma(@PathVariable Long id) {
 		return ResponseEntity.ok(this.idiomaService.idioma(id));
 	}
 	
-	@ApiOperation(value = "Cadastra novo idioma")
+	@Operation(summary = "Cadastra novo idioma")
 	@PostMapping()
 	public ResponseEntity<IdiomaDTO> cadastrar(@Valid @RequestBody IdiomaForm idiomaForm, UriComponentsBuilder uriBuilder) {
 		IdiomaDTO idiomaDTO = this.idiomaService.cadastrar(idiomaForm);
