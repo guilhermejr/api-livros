@@ -16,8 +16,8 @@ public class AutorUnicoValidador implements ConstraintValidator<AutorUnico, Stri
 	private AutorRepository autorRepository;
 	
 	@Override
-	public boolean isValid(String autorNome, ConstraintValidatorContext context) {
-		return !this.autorRepository.existsByDescricao(autorNome);
+	public boolean isValid(String descricao, ConstraintValidatorContext context) {
+		return !this.autorRepository.existsByDescricao(descricao);
 	}
 
 }

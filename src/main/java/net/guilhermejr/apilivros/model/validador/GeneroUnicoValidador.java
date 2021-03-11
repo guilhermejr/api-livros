@@ -16,8 +16,8 @@ public class GeneroUnicoValidador implements ConstraintValidator<GeneroUnico, St
 	private GeneroRepository generoRepository;
 	
 	@Override
-	public boolean isValid(String generoNome, ConstraintValidatorContext context) {
-		return !this.generoRepository.existsByDescricao(generoNome);
+	public boolean isValid(String descricao, ConstraintValidatorContext context) {
+		return !this.generoRepository.existsByDescricao(descricao);
 	}
 
 }

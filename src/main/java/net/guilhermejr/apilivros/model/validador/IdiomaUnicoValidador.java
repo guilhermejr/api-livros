@@ -16,8 +16,8 @@ public class IdiomaUnicoValidador implements ConstraintValidator<IdiomaUnico, St
 	private IdiomaRepository idiomaRepository;
 	
 	@Override
-	public boolean isValid(String idiomaNome, ConstraintValidatorContext context) {
-		return !this.idiomaRepository.existsByDescricao(idiomaNome);
+	public boolean isValid(String descricao, ConstraintValidatorContext context) {
+		return !this.idiomaRepository.existsByDescricao(descricao);
 	}
 
 }

@@ -39,7 +39,7 @@ public class IdiomaController {
 	@PostMapping()
 	public ResponseEntity<IdiomaDTO> cadastrar(@Valid @RequestBody IdiomaForm idiomaForm, UriComponentsBuilder uriBuilder) {
 		IdiomaDTO idiomaDTO = this.idiomaService.cadastrar(idiomaForm);
-		URI uri = uriBuilder.path("/autor/{id}").buildAndExpand(idiomaDTO.getId()).toUri();
+		URI uri = uriBuilder.path("/idioma/{id}").buildAndExpand(idiomaDTO.getId()).toUri();
 		return ResponseEntity.created(uri).body(idiomaDTO);	
 	}
 

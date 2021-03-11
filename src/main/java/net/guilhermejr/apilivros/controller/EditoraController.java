@@ -39,7 +39,7 @@ public class EditoraController {
 	@PostMapping()
 	public ResponseEntity<EditoraDTO> cadastrar(@Valid @RequestBody EditoraForm editoraForm, UriComponentsBuilder uriBuilder) {
 		EditoraDTO ediotraDTO = this.editoraService.cadastrar(editoraForm);
-		URI uri = uriBuilder.path("/autor/{id}").buildAndExpand(ediotraDTO.getId()).toUri();
+		URI uri = uriBuilder.path("/editora/{id}").buildAndExpand(ediotraDTO.getId()).toUri();
 		return ResponseEntity.created(uri).body(ediotraDTO);	
 	}
 

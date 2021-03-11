@@ -14,8 +14,8 @@ public class EditoraUnicaValidador implements ConstraintValidator<EditoraUnica, 
 	private EditoraRepository editoraRepository;
 	
 	@Override
-	public boolean isValid(String editoraNome, ConstraintValidatorContext context) {
-		return !this.editoraRepository.existsByDescricao(editoraNome);
+	public boolean isValid(String descricao, ConstraintValidatorContext context) {
+		return !this.editoraRepository.existsByDescricao(descricao);
 	}
 	
 }

@@ -70,8 +70,9 @@ public class Livro implements Serializable {
 
     @ManyToOne
     private Tipo tipo;
-
-    private Boolean tenho;
+    
+    @ManyToOne
+    private Estante estante;
 
     @ManyToOne
     private Usuario usuario;

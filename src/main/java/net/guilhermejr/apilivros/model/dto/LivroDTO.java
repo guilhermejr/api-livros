@@ -24,7 +24,7 @@ public class LivroDTO {
 	private List<AutorDTO> autores;
 	private List<GeneroDTO> generos;
 	private TipoDTO tipo;
-	private Boolean tenho;
+	private EstanteDTO estante;
 	private UsuarioDTO usuario;
 
 }

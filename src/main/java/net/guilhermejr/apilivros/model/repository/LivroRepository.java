@@ -14,8 +14,8 @@ public interface LivroRepository extends JpaRepository<Livro, Long> {
 
 	Page<Livro> findByTituloContainingIgnoreCase(String titulo, Pageable paginacao);
 
-	Page<Livro> findByTenho(boolean tenho, Pageable paginacao);
-
-	Page<Livro> findByTenhoAndTituloContainingIgnoreCase(boolean tenho, String titulo, Pageable paginacao);
+//	Page<Livro> findByTenho(boolean tenho, Pageable paginacao);
+//
+//	Page<Livro> findByTenhoAndTituloContainingIgnoreCase(boolean tenho, String titulo, Pageable paginacao);
 
 }

@@ -16,8 +16,8 @@ public class IdiomaMapper  extends MapperUtil {
 		return this.mapList(idioma, IdiomaDTO.class);
 	}
 	
-	public IdiomaDTO mapObject(Idioma editora) {
-		return super.mapObject(editora, IdiomaDTO.class);
+	public IdiomaDTO mapObject(Idioma idioma) {
+		return super.mapObject(idioma, IdiomaDTO.class);
 	}
 	
 	public Idioma mapObject(IdiomaForm idiomaForm) {
