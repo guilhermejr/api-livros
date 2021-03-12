@@ -6,7 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import net.guilhermejr.apilivros.exception.ExceptionPadrao;
+import net.guilhermejr.apilivros.exception.ExceptionNotFound;
 import net.guilhermejr.apilivros.model.dto.AutorDTO;
 import net.guilhermejr.apilivros.model.entity.Autor;
 import net.guilhermejr.apilivros.model.form.AutorForm;
@@ -28,7 +28,7 @@ public class AutorService {
 	
 	public AutorDTO autor(Long id) {
 		Optional<Autor> autor = this.autorRepository.findById(id);
-		return this.autorMapper.mapObject(autor.orElseThrow(() -> new ExceptionPadrao("Autor não encontrado.")));
+		return this.autorMapper.mapObject(autor.orElseThrow(() -> new ExceptionNotFound("Autor não encontrado.")));
 	}
 	
 	public AutorDTO cadastrar(AutorForm autorForm) {

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 
+import net.guilhermejr.apilivros.exception.ExceptionNotFound;
 import net.guilhermejr.apilivros.exception.ExceptionPadrao;
 
 @RestControllerAdvice
@@ -25,6 +26,14 @@ public class ErroDeValidacaoHandler {
 	@ExceptionHandler(ExceptionPadrao.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public ErroPadraoDTO handleErrroPadrao(ExceptionPadrao ex, WebRequest request) {
+		
+		return new ErroPadraoDTO(ex.getMessage());
+
+	}
+	
+	@ExceptionHandler(ExceptionNotFound.class)
+	@ResponseStatus(HttpStatus.NOT_FOUND)
+	public ErroPadraoDTO handleErrroNotFound(ExceptionNotFound ex, WebRequest request) {
 		
 		return new ErroPadraoDTO(ex.getMessage());
 

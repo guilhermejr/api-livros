@@ -6,7 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import net.guilhermejr.apilivros.exception.ExceptionPadrao;
+import net.guilhermejr.apilivros.exception.ExceptionNotFound;
 import net.guilhermejr.apilivros.model.dto.EditoraDTO;
 import net.guilhermejr.apilivros.model.entity.Editora;
 import net.guilhermejr.apilivros.model.form.EditoraForm;
@@ -28,7 +28,7 @@ public class EditoraService {
 	
 	public EditoraDTO editora(Long id) {
 		Optional<Editora> editora = this.editoraRepository.findById(id);
-		return this.editoraMapper.mapObject(editora.orElseThrow(() -> new ExceptionPadrao("Editora não encontrada.")));
+		return this.editoraMapper.mapObject(editora.orElseThrow(() -> new ExceptionNotFound("Editora não encontrada.")));
 	}
 	
 	public EditoraDTO cadastrar(EditoraForm editoraForm) {

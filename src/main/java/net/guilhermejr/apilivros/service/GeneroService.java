@@ -6,7 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import net.guilhermejr.apilivros.exception.ExceptionPadrao;
+import net.guilhermejr.apilivros.exception.ExceptionNotFound;
 import net.guilhermejr.apilivros.model.dto.GeneroDTO;
 import net.guilhermejr.apilivros.model.entity.Genero;
 import net.guilhermejr.apilivros.model.form.GeneroForm;
@@ -28,7 +28,7 @@ public class GeneroService {
 	
 	public GeneroDTO genero(Long id) {
 		Optional<Genero> genero = this.generoRepository.findById(id);
-		return this.generoMapper.mapObject(genero.orElseThrow(() -> new ExceptionPadrao("Gênero não encontrado.")));
+		return this.generoMapper.mapObject(genero.orElseThrow(() -> new ExceptionNotFound("Gênero não encontrado.")));
 	}
 	
 	public GeneroDTO cadastrar(GeneroForm generoForm) {

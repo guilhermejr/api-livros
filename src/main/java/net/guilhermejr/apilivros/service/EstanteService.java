@@ -6,7 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import net.guilhermejr.apilivros.exception.ExceptionPadrao;
+import net.guilhermejr.apilivros.exception.ExceptionNotFound;
 import net.guilhermejr.apilivros.model.dto.EstanteDTO;
 import net.guilhermejr.apilivros.model.entity.Estante;
 import net.guilhermejr.apilivros.model.form.EstanteForm;
@@ -28,7 +28,7 @@ public class EstanteService {
 	
 	public EstanteDTO estante(Long id) {
 		Optional<Estante> estante = this.estanteRepository.findById(id);
-		return this.estanteMapper.mapObject(estante.orElseThrow(() -> new ExceptionPadrao("Estante não encontrada.")));
+		return this.estanteMapper.mapObject(estante.orElseThrow(() -> new ExceptionNotFound("Estante não encontrada.")));
 	}
 	
 	public EstanteDTO cadastrar(EstanteForm estanteForm) {

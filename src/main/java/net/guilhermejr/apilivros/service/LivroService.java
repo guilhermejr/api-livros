@@ -13,7 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import net.guilhermejr.apilivros.exception.ExceptionPadrao;
+import net.guilhermejr.apilivros.exception.ExceptionNotFound;
 import net.guilhermejr.apilivros.model.dto.LivroDTO;
 import net.guilhermejr.apilivros.model.entity.Autor;
 import net.guilhermejr.apilivros.model.entity.Editora;
@@ -78,7 +78,7 @@ public class LivroService {
 	
 	public LivroDTO livro(Long id) {
 		Optional<Livro> livro = this.livroRepository.findById(id);
-		return this.livroMapper.mapObject(livro.orElseThrow(() -> new ExceptionPadrao("Livro não encontrado.")));
+		return this.livroMapper.mapObject(livro.orElseThrow(() -> new ExceptionNotFound("Livro não encontrado.")));
 	}
 
 	public LivroDTO cadastrar(LivroForm livroForm) {

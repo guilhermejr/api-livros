@@ -6,7 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import net.guilhermejr.apilivros.exception.ExceptionPadrao;
+import net.guilhermejr.apilivros.exception.ExceptionNotFound;
 import net.guilhermejr.apilivros.model.dto.TipoDTO;
 import net.guilhermejr.apilivros.model.entity.Tipo;
 import net.guilhermejr.apilivros.model.form.TipoForm;
@@ -28,7 +28,7 @@ public class TipoService {
 	
 	public TipoDTO tipo(Long id) {
 		Optional<Tipo> tipo = this.tipoRepository.findById(id);
-		return this.tipoMapper.mapObject(tipo.orElseThrow(() -> new ExceptionPadrao("Tipo não encontrado.")));
+		return this.tipoMapper.mapObject(tipo.orElseThrow(() -> new ExceptionNotFound("Tipo não encontrado.")));
 	}
 	
 	public TipoDTO cadastrar(TipoForm tipoForm) {
