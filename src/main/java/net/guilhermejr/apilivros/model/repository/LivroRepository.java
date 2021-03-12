@@ -9,13 +9,11 @@ import net.guilhermejr.apilivros.model.entity.Livro;
 
 @Repository
 public interface LivroRepository extends JpaRepository<Livro, Long> {
-	
-	Livro findByIsbn(String isbn13);
 
-	Page<Livro> findByTituloContainingIgnoreCase(String titulo, Pageable paginacao);
+	boolean existsByIsbn(String isbn);
 
-//	Page<Livro> findByTenho(boolean tenho, Pageable paginacao);
-//
-//	Page<Livro> findByTenhoAndTituloContainingIgnoreCase(boolean tenho, String titulo, Pageable paginacao);
+	Page<Livro> findByEstanteId(Long estante, Pageable paginacao);
+
+	Page<Livro> findByTituloContainingIgnoreCaseOrSubTituloContainingIgnoreCaseAndEstanteId(String titulo, String subTitulo, Long estante, Pageable paginacao);
 
 }

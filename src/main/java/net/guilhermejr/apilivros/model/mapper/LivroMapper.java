@@ -41,7 +41,9 @@ public class LivroMapper extends MapperUtil {
 			.addMappings(mapper -> mapper.using(autoresConverter).map(LivroForm::getAutores, Livro::setAutores))
 			.addMappings(mapper -> mapper.using(generosConverter).map(LivroForm::getGeneros, Livro::setGeneros))
 			.<String>addMapping(src -> src.getEditora(), (dest, v) -> dest.getEditora().setDescricao(v))
-			.<String>addMapping(src -> src.getIdioma(), (dest, v) -> dest.getIdioma().setDescricao(v));
+			.<String>addMapping(src -> src.getIdioma(), (dest, v) -> dest.getIdioma().setDescricao(v))
+			.<String>addMapping(src -> src.getTipo(), (dest, v) -> { if (v == null || v.isEmpty()) { v = "1"; } dest.getTipo().setId(Long.parseLong(v)); })
+			.<String>addMapping(src -> src.getEstante() , (dest, v) -> { if (v == null || v.isEmpty()) { v = "1"; } dest.getEstante().setId(Long.parseLong(v)); });
 	}
 	
 	public LivroDTO mapObject(Livro livro) {

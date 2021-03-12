@@ -12,13 +12,14 @@ public class LivroDTO {
 	
 	private Long id;
 	private String capa;
+	private String extensao;
 	private String titulo;
 	private String subTitulo;
 	private String isbn;
 	private String descricao;
 	private EditoraDTO editora;
 	private IdiomaDTO idioma;
-	private int ano;
+	private int anoPublicacao;
 	private int paginas;
 	private LocalDateTime criado;
 	private List<AutorDTO> autores;
