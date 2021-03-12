@@ -2,7 +2,6 @@ package net.guilhermejr.apilivros.model.entity;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -16,6 +15,7 @@ import javax.persistence.PrePersist;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -24,6 +24,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Usuario implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -48,7 +49,7 @@ public class Usuario implements Serializable {
     private LocalDateTime ultimoAcesso;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    List<Perfil> perfis = new ArrayList<>();
+    List<Perfil> perfis;
 
     @PrePersist
     public void prePersist() {

@@ -9,15 +9,20 @@ import org.springframework.stereotype.Component;
 import net.guilhermejr.apilivros.model.entity.Estante;
 import net.guilhermejr.apilivros.model.entity.Perfil;
 import net.guilhermejr.apilivros.model.entity.Tipo;
+import net.guilhermejr.apilivros.model.entity.Usuario;
 import net.guilhermejr.apilivros.model.repository.EstanteRepository;
 import net.guilhermejr.apilivros.model.repository.PerfilRepository;
 import net.guilhermejr.apilivros.model.repository.TipoRepository;
+import net.guilhermejr.apilivros.model.repository.UsuarioRepository;
 
 @Component
 public class CarregaBancoDeDados {
 
 	@Autowired
 	private PerfilRepository perfilRepository;
+
+	@Autowired
+	private UsuarioRepository usuarioRepository;
 
 	@Autowired
 	private TipoRepository tipoRepository;
@@ -35,6 +40,23 @@ public class CarregaBancoDeDados {
 
 			this.perfilRepository.save(perfil);
 
+		}
+
+		// --- Se não existir Usuario cadastrado realiza o cadastro ---
+		if (this.usuarioRepository.count() == 0) {
+
+			// --- Encode da senha ---
+			// BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+
+			Usuario usuario = Usuario.builder().nome("Guilherme Jr.").email("falecom@guilhermejr.net").senha("123456").build();
+			//Usuario usuario = Usuario.builder().nome("Guilherme Jr.").email("falecom@guilhermejr.net").senha(encoder.encode("123456")).build();
+
+			Perfil perfil1 = new Perfil();
+			perfil1.setId(1L);
+
+			usuario.setPerfis(Arrays.asList(perfil1));
+
+			this.usuarioRepository.save(usuario);
 		}
 
 		// --- Se não existir Tipo cadastrado realiza o cadastro ---
