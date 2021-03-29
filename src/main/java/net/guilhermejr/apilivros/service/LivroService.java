@@ -31,6 +31,7 @@ import net.guilhermejr.apilivros.model.repository.GeneroRepository;
 import net.guilhermejr.apilivros.model.repository.IdiomaRepository;
 import net.guilhermejr.apilivros.model.repository.LivroRepository;
 import net.guilhermejr.apilivros.model.repository.TipoRepository;
+import net.guilhermejr.apilivros.model.specification.LivroSpecification;
 
 @Service
 public class LivroService {
@@ -61,7 +62,7 @@ public class LivroService {
 
 	@Value("${livro.localCapa}")
 	private String localCapa;
-	
+
 	public Page<LivroDTO> listar(Long estante, String titulo, Pageable paginacao) {
 
 		Page<Livro> livros;
@@ -69,13 +70,34 @@ public class LivroService {
 		if (titulo == null || titulo.isBlank()) {
 			livros = this.livroRepository.findByEstanteId(estante, paginacao);
 		} else {
-			livros = this.livroRepository.findByTituloContainingIgnoreCaseOrSubTituloContainingIgnoreCaseAndEstanteId(titulo, titulo, estante, paginacao);
+			livros = this.livroRepository.findByTituloContainingIgnoreCaseOrSubtituloContainingIgnoreCaseAndEstanteId(
+					titulo, titulo, estante, paginacao);
 		}
 
 		return this.livroMapper.mapPage(livros);
 
 	}
-	
+
+	public Page<LivroDTO> pesquisar(Long estante, String titulo, String isbn, Long editora, Long autor, Long genero, Long idioma, Long tipo, Integer ano,
+			Pageable paginacao) {
+
+		Page<Livro> livros = this.livroRepository
+				.findAll(
+						LivroSpecification.primeira().
+							and(LivroSpecification.titulo(titulo))
+							.and(LivroSpecification.isbn(isbn))
+							.and(LivroSpecification.estante(estante))
+							.and(LivroSpecification.editora(editora))
+							.and(LivroSpecification.autor(autor))
+							.and(LivroSpecification.genero(genero))
+							.and(LivroSpecification.idioma(idioma))
+							.and(LivroSpecification.tipo(tipo))
+							.and(LivroSpecification.ano(ano)),
+						paginacao);
+
+		return this.livroMapper.mapPage(livros);
+	}
+
 	public LivroDTO livro(Long id) {
 		Optional<Livro> livro = this.livroRepository.findById(id);
 		return this.livroMapper.mapObject(livro.orElseThrow(() -> new ExceptionNotFound("Livro não encontrado.")));
@@ -144,7 +166,7 @@ public class LivroService {
 		// --- Salva livro ---
 		livroRepository.save(livro);
 
-		// --- Download do arquivo da capa --- 
+		// --- Download do arquivo da capa ---
 		try {
 			URL url = new URL(livro.getCapa());
 			String caminho = localCapa + livro.getId() + "." + livroForm.getExtensao();
@@ -157,7 +179,7 @@ public class LivroService {
 		}
 
 		return this.livroMapper.mapObject(livro);
-		
+
 	}
 
 }

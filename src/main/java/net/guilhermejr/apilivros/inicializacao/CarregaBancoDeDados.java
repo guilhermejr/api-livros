@@ -77,8 +77,9 @@ public class CarregaBancoDeDados {
 			Estante estante2 = Estante.builder().descricao("Desejados").build();
 			Estante estante3 = Estante.builder().descricao("Troca").build();
 			Estante estante4 = Estante.builder().descricao("Doação").build();
+			Estante estante5 = Estante.builder().descricao("Venda").build();
 
-			this.estanteRepository.saveAll(Arrays.asList(estante1, estante2, estante3, estante4));
+			this.estanteRepository.saveAll(Arrays.asList(estante1, estante2, estante3, estante4, estante5));
 
 		}
 

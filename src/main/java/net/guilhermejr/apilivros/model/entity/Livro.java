@@ -45,7 +45,7 @@ public class Livro implements Serializable {
     @Column(nullable = false)
     private String titulo;
 
-    private String subTitulo;
+    private String subtitulo;
 
     @Column(length = 13, nullable = false, unique = true)
     private String isbn;
@@ -60,10 +60,10 @@ public class Livro implements Serializable {
     private Idioma idioma;
 
     @Column(nullable = false)
-    private int anoPublicacao;
+    private Integer anoPublicacao;
 
     @Column(nullable = false)
-    private int paginas;
+    private Integer paginas;
 
     @Column(updatable = false)
     private LocalDateTime criado;

@@ -29,18 +29,38 @@ import net.guilhermejr.apilivros.service.LivroService;
 @RestController
 @RequestMapping("/livro")
 public class LivroController {
-	
+
 	@Autowired
 	private LivroService livroService;
-	
+
 	@Operation(summary = "Lista livros com filtro")
 	@GetMapping
-	public ResponseEntity<Page<LivroDTO>> listar(@RequestParam(required = false) Long estante, @RequestParam(required = false) String titulo, @PageableDefault(page = 0, size = 24, sort = "titulo", direction = Direction.ASC) Pageable paginacao) {
+	public ResponseEntity<Page<LivroDTO>> listar(
+			@RequestParam(required = false) Long estante,
+			@RequestParam(required = false) String titulo,
+			@PageableDefault(page = 0, size = 24, sort = "titulo", direction = Direction.ASC) Pageable paginacao) {
 
 		return ResponseEntity.ok(this.livroService.listar(estante, titulo, paginacao));
-			
+
 	}
-	
+
+	@Operation(summary = "Pesquisa livros")
+	@GetMapping("/pesquisar")
+	public ResponseEntity<Page<LivroDTO>> pesquisar(@RequestParam(required = false) Long estante,
+			@RequestParam(required = false) String titulo, 
+			@RequestParam(required = false) String isbn,
+			@RequestParam(required = false) Long editora, 
+			@RequestParam(required = false) Long autor,
+			@RequestParam(required = false) Long genero,
+			@RequestParam(required = false) Long idioma,
+			@RequestParam(required = false) Long tipo,
+			@RequestParam(required = false) Integer ano,
+			@PageableDefault(page = 0, size = 24, sort = "titulo", direction = Direction.ASC) Pageable paginacao) {
+
+		return ResponseEntity.ok(this.livroService.pesquisar(estante, titulo, isbn, editora, autor, genero, idioma, tipo, ano, paginacao));
+
+	}
+
 	@Operation(summary = "Retorna um livro")
 	@GetMapping("{id}")
 	public ResponseEntity<LivroDTO> livro(@PathVariable Long id) {
@@ -49,12 +69,13 @@ public class LivroController {
 
 	@Operation(summary = "Cadastra novo livro")
 	@PostMapping()
-	public ResponseEntity<LivroDTO> cadastrar(@RequestBody @Valid LivroForm livroForm, UriComponentsBuilder uriBuilder) {
-		
+	public ResponseEntity<LivroDTO> cadastrar(@RequestBody @Valid LivroForm livroForm,
+			UriComponentsBuilder uriBuilder) {
+
 		LivroDTO livroDTO = this.livroService.cadastrar(livroForm);
-		
+
 		URI uri = uriBuilder.path("/livro/{id}").buildAndExpand(livroDTO.getId()).toUri();
-		return ResponseEntity.created(uri).body(livroDTO);	
+		return ResponseEntity.created(uri).body(livroDTO);
 	}
 
 }
