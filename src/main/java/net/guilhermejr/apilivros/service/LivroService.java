@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import net.guilhermejr.apilivros.exception.ExceptionNotFound;
 import net.guilhermejr.apilivros.model.dto.LivroDTO;
+import net.guilhermejr.apilivros.model.dto.LivrosDTO;
 import net.guilhermejr.apilivros.model.entity.Autor;
 import net.guilhermejr.apilivros.model.entity.Editora;
 import net.guilhermejr.apilivros.model.entity.Estante;
@@ -63,22 +64,15 @@ public class LivroService {
 	@Value("${livro.localCapa}")
 	private String localCapa;
 
-	public Page<LivroDTO> listar(Long estante, String titulo, Pageable paginacao) {
+	public Page<LivrosDTO> listar(Long estante, Pageable paginacao) {
 
-		Page<Livro> livros;
-
-		if (titulo == null || titulo.isBlank()) {
-			livros = this.livroRepository.findByEstanteId(estante, paginacao);
-		} else {
-			livros = this.livroRepository.findByTituloContainingIgnoreCaseOrSubtituloContainingIgnoreCaseAndEstanteId(
-					titulo, titulo, estante, paginacao);
-		}
+		Page<Livro> livros = this.livroRepository.findByEstanteId(estante, paginacao);
 
 		return this.livroMapper.mapPage(livros);
 
 	}
 
-	public Page<LivroDTO> pesquisar(Long estante, String titulo, String isbn, Long editora, Long autor, Long genero, Long idioma, Long tipo, Integer ano,
+	public Page<LivrosDTO> pesquisar(Long estante, String titulo, String isbn, Long editora, Long autor, Long genero, Long idioma, Long tipo, Integer ano,
 			Pageable paginacao) {
 
 		Page<Livro> livros = this.livroRepository

@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -13,6 +14,9 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -53,10 +57,10 @@ public class Livro implements Serializable {
     @Column(nullable = false, columnDefinition="TEXT")
     private String descricao;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Editora editora;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Idioma idioma;
 
     @Column(nullable = false)
@@ -65,8 +69,13 @@ public class Livro implements Serializable {
     @Column(nullable = false)
     private Integer paginas;
 
+    @CreationTimestamp
     @Column(updatable = false)
     private LocalDateTime criado;
+    
+    @UpdateTimestamp
+    @Column(updatable = false)
+    private LocalDateTime atualizado;
 
     @ManyToMany
     private List<Autor> autores;
@@ -74,18 +83,17 @@ public class Livro implements Serializable {
     @ManyToMany
     private List<Genero> generos;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Tipo tipo;
     
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Estante estante;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Usuario usuario;
 
     @PrePersist
     public void prePersist() {
-        this.criado = LocalDateTime.now();
         Usuario usuario1 = new Usuario();
         usuario1.setId(1L);
         this.usuario = usuario1;

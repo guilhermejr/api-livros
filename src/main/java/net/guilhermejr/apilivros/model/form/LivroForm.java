@@ -33,7 +33,7 @@ public class LivroForm {
 	private String titulo;
 	
     @Size(max = 255)
-	private String subTitulo;
+	private String subtitulo;
 	
 	@NotBlank()
 	@ISBNUnico

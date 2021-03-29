@@ -22,6 +22,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import net.guilhermejr.apilivros.model.dto.LivroDTO;
+import net.guilhermejr.apilivros.model.dto.LivrosDTO;
 import net.guilhermejr.apilivros.model.form.LivroForm;
 import net.guilhermejr.apilivros.service.LivroService;
 
@@ -35,18 +36,17 @@ public class LivroController {
 
 	@Operation(summary = "Lista livros com filtro")
 	@GetMapping
-	public ResponseEntity<Page<LivroDTO>> listar(
-			@RequestParam(required = false) Long estante,
-			@RequestParam(required = false) String titulo,
+	public ResponseEntity<Page<LivrosDTO>> listar(
+			@RequestParam Long estante,
 			@PageableDefault(page = 0, size = 24, sort = "titulo", direction = Direction.ASC) Pageable paginacao) {
 
-		return ResponseEntity.ok(this.livroService.listar(estante, titulo, paginacao));
+		return ResponseEntity.ok(this.livroService.listar(estante, paginacao));
 
 	}
 
 	@Operation(summary = "Pesquisa livros")
 	@GetMapping("/pesquisar")
-	public ResponseEntity<Page<LivroDTO>> pesquisar(@RequestParam(required = false) Long estante,
+	public ResponseEntity<Page<LivrosDTO>> pesquisar(@RequestParam(required = false) Long estante,
 			@RequestParam(required = false) String titulo, 
 			@RequestParam(required = false) String isbn,
 			@RequestParam(required = false) Long editora, 

@@ -14,7 +14,7 @@ public class LivroDTO {
 	private String capa;
 	private String extensao;
 	private String titulo;
-	private String subTitulo;
+	private String subtitulo;
 	private String isbn;
 	private String descricao;
 	private EditoraDTO editora;
@@ -22,6 +22,7 @@ public class LivroDTO {
 	private int anoPublicacao;
 	private int paginas;
 	private LocalDateTime criado;
+	private LocalDateTime atualizado;
 	private List<AutorDTO> autores;
 	private List<GeneroDTO> generos;
 	private TipoDTO tipo;

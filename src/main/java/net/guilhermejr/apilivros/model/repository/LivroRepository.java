@@ -15,8 +15,4 @@ public interface LivroRepository extends JpaRepository<Livro, Long>, JpaSpecific
 
 	Page<Livro> findByEstanteId(Long estante, Pageable paginacao);
 
-	Page<Livro> findByTituloContainingIgnoreCaseOrSubtituloContainingIgnoreCaseAndEstanteId(String titulo, String subTitulo, Long estante, Pageable paginacao);
-	
-	Page<Livro> findByTituloContainingIgnoreCaseOrSubtituloContainingIgnoreCaseOrIsbnAndEstanteId(String titulo, String subTitulo, String isbn, Long estante, Pageable paginacao);
-
 }

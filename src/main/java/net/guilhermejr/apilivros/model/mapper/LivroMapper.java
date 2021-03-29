@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 import net.guilhermejr.apilivros.model.dto.LivroDTO;
+import net.guilhermejr.apilivros.model.dto.LivrosDTO;
 import net.guilhermejr.apilivros.model.entity.Autor;
 import net.guilhermejr.apilivros.model.entity.Genero;
 import net.guilhermejr.apilivros.model.entity.Livro;
@@ -54,10 +55,8 @@ public class LivroMapper extends MapperUtil {
 		return this.mapObject(livroForm, Livro.class);
 	}
 	
-	public Page<LivroDTO> mapPage(Page<Livro> livro) {
-		return this.mapPage(livro, LivroDTO.class);
-	}
+	public Page<LivrosDTO> mapPage(Page<Livro> livro) {
+		return this.mapPage(livro, LivrosDTO.class);
+	}	
 	
-	
-
 }
