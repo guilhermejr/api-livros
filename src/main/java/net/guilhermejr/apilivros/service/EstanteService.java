@@ -28,7 +28,7 @@ public class EstanteService {
 	
 	public EstanteDTO estante(Long id) {
 		Optional<Estante> estante = this.estanteRepository.findById(id);
-		return this.estanteMapper.mapObject(estante.orElseThrow(() -> new ExceptionNotFound("Estante não encontrada.")));
+		return this.estanteMapper.mapObject(estante.orElseThrow(() -> new ExceptionNotFound("Estante "+ id +" não encontrada.")));
 	}
 	
 	public EstanteDTO cadastrar(EstanteForm estanteForm) {

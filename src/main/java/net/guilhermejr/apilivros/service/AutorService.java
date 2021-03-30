@@ -28,7 +28,7 @@ public class AutorService {
 	
 	public AutorDTO autor(Long id) {
 		Optional<Autor> autor = this.autorRepository.findById(id);
-		return this.autorMapper.mapObject(autor.orElseThrow(() -> new ExceptionNotFound("Autor não encontrado.")));
+		return this.autorMapper.mapObject(autor.orElseThrow(() -> new ExceptionNotFound("Autor "+ id +" não encontrado.")));
 	}
 	
 	public AutorDTO cadastrar(AutorForm autorForm) {

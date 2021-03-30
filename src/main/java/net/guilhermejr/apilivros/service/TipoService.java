@@ -28,7 +28,7 @@ public class TipoService {
 	
 	public TipoDTO tipo(Long id) {
 		Optional<Tipo> tipo = this.tipoRepository.findById(id);
-		return this.tipoMapper.mapObject(tipo.orElseThrow(() -> new ExceptionNotFound("Tipo não encontrado.")));
+		return this.tipoMapper.mapObject(tipo.orElseThrow(() -> new ExceptionNotFound("Tipo "+ id +" não encontrado.")));
 	}
 	
 	public TipoDTO cadastrar(TipoForm tipoForm) {

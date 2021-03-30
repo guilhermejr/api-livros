@@ -28,7 +28,7 @@ public class IdiomaService {
 	
 	public IdiomaDTO idioma(Long id) {
 		Optional<Idioma> idioma = this.idiomaRepository.findById(id);
-		return this.idiomaMapper.mapObject(idioma.orElseThrow(() -> new ExceptionNotFound("Idioma não encontrado.")));
+		return this.idiomaMapper.mapObject(idioma.orElseThrow(() -> new ExceptionNotFound("Idioma "+ id +" não encontrado.")));
 	}
 	
 	public IdiomaDTO cadastrar(IdiomaForm idiomaForm) {

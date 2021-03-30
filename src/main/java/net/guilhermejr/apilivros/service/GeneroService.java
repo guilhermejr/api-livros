@@ -28,7 +28,7 @@ public class GeneroService {
 	
 	public GeneroDTO genero(Long id) {
 		Optional<Genero> genero = this.generoRepository.findById(id);
-		return this.generoMapper.mapObject(genero.orElseThrow(() -> new ExceptionNotFound("Gênero não encontrado.")));
+		return this.generoMapper.mapObject(genero.orElseThrow(() -> new ExceptionNotFound("Gênero "+ id +" não encontrado.")));
 	}
 	
 	public GeneroDTO cadastrar(GeneroForm generoForm) {

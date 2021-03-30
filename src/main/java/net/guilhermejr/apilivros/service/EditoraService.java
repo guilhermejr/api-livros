@@ -28,7 +28,7 @@ public class EditoraService {
 	
 	public EditoraDTO editora(Long id) {
 		Optional<Editora> editora = this.editoraRepository.findById(id);
-		return this.editoraMapper.mapObject(editora.orElseThrow(() -> new ExceptionNotFound("Editora não encontrada.")));
+		return this.editoraMapper.mapObject(editora.orElseThrow(() -> new ExceptionNotFound("Editora "+ id +" não encontrada.")));
 	}
 	
 	public EditoraDTO cadastrar(EditoraForm editoraForm) {

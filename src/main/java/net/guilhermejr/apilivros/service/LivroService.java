@@ -94,7 +94,7 @@ public class LivroService {
 
 	public LivroDTO livro(Long id) {
 		Optional<Livro> livro = this.livroRepository.findById(id);
-		return this.livroMapper.mapObject(livro.orElseThrow(() -> new ExceptionNotFound("Livro não encontrado.")));
+		return this.livroMapper.mapObject(livro.orElseThrow(() -> new ExceptionNotFound("Livro "+ id +" não encontrado.")));
 	}
 
 	public LivroDTO cadastrar(LivroForm livroForm) {
