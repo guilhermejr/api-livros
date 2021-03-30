@@ -14,6 +14,9 @@ import javax.persistence.ManyToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -48,7 +51,14 @@ public class Usuario implements Serializable {
     @Column(nullable = false)
     private Boolean ativo;
 
+    @CreationTimestamp
+    @Column(updatable = false)
     private LocalDateTime criado;
+    
+    @UpdateTimestamp
+    @Column(updatable = false)
+    private LocalDateTime atualizado;
+    
     private LocalDateTime ultimoAcesso;
 
     @ManyToMany(fetch = FetchType.EAGER)
@@ -56,7 +66,6 @@ public class Usuario implements Serializable {
 
     @PrePersist
     public void prePersist() {
-        criado = LocalDateTime.now();
         ativo = true;
     }
 
