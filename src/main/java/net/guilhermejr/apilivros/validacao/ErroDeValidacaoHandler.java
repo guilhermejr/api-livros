@@ -27,7 +27,7 @@ public class ErroDeValidacaoHandler {
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public ErroPadraoDTO handleErrroPadrao(ExceptionPadrao ex, WebRequest request) {
 		
-		return new ErroPadraoDTO(ex.getMessage());
+		return new ErroPadraoDTO(HttpStatus.BAD_REQUEST.value(), ex.getMessage());
 
 	}
 	
@@ -35,7 +35,7 @@ public class ErroDeValidacaoHandler {
 	@ResponseStatus(HttpStatus.NOT_FOUND)
 	public ErroPadraoDTO handleErrroNotFound(ExceptionNotFound ex, WebRequest request) {
 		
-		return new ErroPadraoDTO(ex.getMessage());
+		return new ErroPadraoDTO(HttpStatus.NOT_FOUND.value(), ex.getMessage());
 
 	}
 

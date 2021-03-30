@@ -7,6 +7,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public class ErroPadraoDTO {
 
-	String erros;
+	int status;
+	String detalhe;
     
 }
