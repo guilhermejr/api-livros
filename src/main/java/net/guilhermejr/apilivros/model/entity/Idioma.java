@@ -1,6 +1,7 @@
 package net.guilhermejr.apilivros.model.entity;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,6 +9,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.CreationTimestamp;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -33,5 +36,9 @@ public class Idioma implements Serializable {
 
     @Column(nullable = false, unique = true)
     private String descricao;
+    
+    @CreationTimestamp
+    @Column(updatable = false)
+    private LocalDateTime criado;
 
 }
