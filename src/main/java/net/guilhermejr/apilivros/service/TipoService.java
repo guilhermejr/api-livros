@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import net.guilhermejr.apilivros.exception.ExceptionNotFound;
 import net.guilhermejr.apilivros.model.dto.TipoDTO;
 import net.guilhermejr.apilivros.model.entity.Tipo;
-import net.guilhermejr.apilivros.model.form.TipoForm;
 import net.guilhermejr.apilivros.model.mapper.TipoMapper;
 import net.guilhermejr.apilivros.model.repository.TipoRepository;
 
@@ -29,10 +28,6 @@ public class TipoService {
 	public TipoDTO tipo(Long id) {
 		Optional<Tipo> tipo = this.tipoRepository.findById(id);
 		return this.tipoMapper.mapObject(tipo.orElseThrow(() -> new ExceptionNotFound("Tipo "+ id +" não encontrado.")));
-	}
-	
-	public TipoDTO cadastrar(TipoForm tipoForm) {
-		return this.tipoMapper.mapObject(this.tipoRepository.save(this.tipoMapper.mapObject(tipoForm)));
 	}
 
 }

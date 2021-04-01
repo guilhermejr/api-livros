@@ -6,7 +6,6 @@ import org.springframework.stereotype.Component;
 
 import net.guilhermejr.apilivros.model.dto.TipoDTO;
 import net.guilhermejr.apilivros.model.entity.Tipo;
-import net.guilhermejr.apilivros.model.form.TipoForm;
 import net.guilhermejr.apilivros.utils.MapperUtil;
 
 @Component
@@ -18,10 +17,6 @@ public class TipoMapper extends MapperUtil {
 	
 	public TipoDTO mapObject(Tipo tipo) {
 		return super.mapObject(tipo, TipoDTO.class);
-	}
-	
-	public Tipo mapObject(TipoForm tipoForm) {
-		return super.mapObject(tipoForm, Tipo.class);
 	}
 
 }

@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import net.guilhermejr.apilivros.exception.ExceptionNotFound;
 import net.guilhermejr.apilivros.model.dto.EstanteDTO;
 import net.guilhermejr.apilivros.model.entity.Estante;
-import net.guilhermejr.apilivros.model.form.EstanteForm;
 import net.guilhermejr.apilivros.model.mapper.EstanteMapper;
 import net.guilhermejr.apilivros.model.repository.EstanteRepository;
 
@@ -29,10 +28,6 @@ public class EstanteService {
 	public EstanteDTO estante(Long id) {
 		Optional<Estante> estante = this.estanteRepository.findById(id);
 		return this.estanteMapper.mapObject(estante.orElseThrow(() -> new ExceptionNotFound("Estante "+ id +" não encontrada.")));
-	}
-	
-	public EstanteDTO cadastrar(EstanteForm estanteForm) {
-		return this.estanteMapper.mapObject(this.estanteRepository.save(this.estanteMapper.mapObject(estanteForm)));
 	}
 	
 }

@@ -9,11 +9,7 @@ import net.guilhermejr.apilivros.model.entity.Estante;
 
 @Repository
 public interface EstanteRepository extends JpaRepository<Estante, Long> {
-	
-	Estante findByDescricao(String descricao);
-	
+
 	List<Estante> findByOrderByDescricao();
-	
-	boolean existsByDescricao(String descricao);
 	
 }
