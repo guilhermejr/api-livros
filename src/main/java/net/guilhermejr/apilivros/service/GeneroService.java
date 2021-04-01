@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import net.guilhermejr.apilivros.exception.ExceptionNotFound;
 import net.guilhermejr.apilivros.model.dto.GeneroDTO;
@@ -31,6 +32,7 @@ public class GeneroService {
 		return this.generoMapper.mapObject(genero.orElseThrow(() -> new ExceptionNotFound("Gênero "+ id +" não encontrado.")));
 	}
 	
+	@Transactional
 	public GeneroDTO cadastrar(GeneroForm generoForm) {
 		return this.generoMapper.mapObject(this.generoRepository.save(this.generoMapper.mapObject(generoForm)));
 	}

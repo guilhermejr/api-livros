@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import net.guilhermejr.apilivros.exception.ExceptionNotFound;
 import net.guilhermejr.apilivros.model.dto.LivroDTO;
@@ -97,6 +98,7 @@ public class LivroService {
 		return this.livroMapper.mapObject(livro.orElseThrow(() -> new ExceptionNotFound("Livro "+ id +" não encontrado.")));
 	}
 
+	@Transactional
 	public LivroDTO cadastrar(LivroForm livroForm) {
 
 		Livro livro = this.livroMapper.mapObject(livroForm);
