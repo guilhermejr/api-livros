@@ -9,6 +9,8 @@ import java.util.Optional;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -66,6 +68,7 @@ public class LivroService {
 	@Value("${livro.localCapa}")
 	private String localCapa;
 
+	@Cacheable(value = "listarLivros")
 	public Page<LivrosDTO> listar(Long estante, Pageable paginacao) {
 
 		Page<Livro> livros = this.livroRepository.findByEstanteId(estante, paginacao);
@@ -95,12 +98,14 @@ public class LivroService {
 		return this.livroMapper.mapPage(livros);
 	}
 
+	@Cacheable(value = "livro")
 	public LivroDTO livro(Long id) {
 		Optional<Livro> livro = this.livroRepository.findById(id);
 		return this.livroMapper.mapObject(livro.orElseThrow(() -> new ExceptionNotFound("Livro "+ id +" não encontrado.")));
 	}
 
 	@Transactional
+	@CacheEvict(value = "listarLivros", allEntries = true)
 	public LivroDTO cadastrar(LivroForm livroForm) {
 
 		Livro livro = this.livroMapper.mapObject(livroForm);
@@ -181,6 +186,7 @@ public class LivroService {
 	}
 
 	@Transactional
+	@CacheEvict(value = "listarLivros", allEntries = true)
 	public void mudaEstante(Long idLivro, Long idEstante) {
 		
 		Optional<Livro> livro = this.livroRepository.findById(idLivro);
@@ -202,6 +208,7 @@ public class LivroService {
 	}
 
 	@Transactional
+	@CacheEvict(value = "listarLivros", allEntries = true)
 	public void ativar(Long idLivro) {
 		
 		Optional<Livro> livro = this.livroRepository.findById(idLivro);
@@ -221,6 +228,7 @@ public class LivroService {
 	}
 
 	@Transactional
+	@CacheEvict(value = "listarLivros", allEntries = true)
 	public void desativar(Long idLivro) {
 		
 		Optional<Livro> livro = this.livroRepository.findById(idLivro);
