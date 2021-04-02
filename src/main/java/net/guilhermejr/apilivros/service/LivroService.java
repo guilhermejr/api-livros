@@ -178,4 +178,25 @@ public class LivroService {
 
 	}
 
+	@Transactional
+	public void mudaLivroEstante(Long idLivro, Long idEstante) {
+		
+		Optional<Livro> livro = this.livroRepository.findById(idLivro);
+		
+		if (livro.isPresent()) {
+			
+			Optional<Estante> estante = this.estanteRepository.findById(idEstante);
+			
+			if (estante.isPresent()) {
+				livro.get().setEstante(estante.get());
+			} else {
+				throw new ExceptionNotFound("Estante "+ idEstante +" não encontrada.");
+			}
+			
+		} else {
+			throw new ExceptionNotFound("Livro "+ idLivro +" não encontrado.");
+		}
+		
+	}
+
 }

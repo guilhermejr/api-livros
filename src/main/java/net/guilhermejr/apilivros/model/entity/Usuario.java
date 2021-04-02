@@ -49,7 +49,7 @@ public class Usuario implements Serializable {
     private String senha;
 
     @Column(nullable = false)
-    private Boolean ativo;
+    private Boolean ativo = Boolean.TRUE;
 
     @CreationTimestamp
     @Column(updatable = false)
@@ -63,10 +63,5 @@ public class Usuario implements Serializable {
 
     @ManyToMany(fetch = FetchType.EAGER)
     List<Perfil> perfis;
-
-    @PrePersist
-    public void prePersist() {
-        ativo = true;
-    }
 
 }
