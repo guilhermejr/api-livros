@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import net.guilhermejr.apilivros.exception.ExceptionNotFound;
+import net.guilhermejr.apilivros.exception.ExceptionPadrao;
 import net.guilhermejr.apilivros.model.dto.LivroDTO;
 import net.guilhermejr.apilivros.model.dto.LivrosDTO;
 import net.guilhermejr.apilivros.model.entity.Autor;
@@ -73,13 +74,13 @@ public class LivroService {
 
 	}
 
-	public Page<LivrosDTO> pesquisar(Long estante, String titulo, String isbn, Long editora, Long autor, Long genero, Long idioma, Long tipo, Integer ano,
+	public Page<LivrosDTO> pesquisar(Long estante, String titulo, String isbn, Long editora, Long autor, Long genero, Long idioma, Long tipo, Integer ano, Boolean ativo,
 			Pageable paginacao) {
 
 		Page<Livro> livros = this.livroRepository
 				.findAll(
-						LivroSpecification.primeira().
-							and(LivroSpecification.titulo(titulo))
+						LivroSpecification.primeira()
+							.and(LivroSpecification.titulo(titulo))
 							.and(LivroSpecification.isbn(isbn))
 							.and(LivroSpecification.estante(estante))
 							.and(LivroSpecification.editora(editora))
@@ -87,7 +88,8 @@ public class LivroService {
 							.and(LivroSpecification.genero(genero))
 							.and(LivroSpecification.idioma(idioma))
 							.and(LivroSpecification.tipo(tipo))
-							.and(LivroSpecification.ano(ano)),
+							.and(LivroSpecification.ano(ano))
+							.and(LivroSpecification.ativo(ativo)),
 						paginacao);
 
 		return this.livroMapper.mapPage(livros);
@@ -166,7 +168,7 @@ public class LivroService {
 		try {
 			URL url = new URL(livro.getCapa());
 			String caminho = localCapa + livro.getId() + "." + livroForm.getExtensao();
-			System.out.println(caminho);
+			//System.out.println(caminho);
 			File file = new File(caminho);
 			FileUtils.copyURLToFile(url, file);
 		} catch (Exception e) {
@@ -179,7 +181,7 @@ public class LivroService {
 	}
 
 	@Transactional
-	public void mudaLivroEstante(Long idLivro, Long idEstante) {
+	public void mudaEstante(Long idLivro, Long idEstante) {
 		
 		Optional<Livro> livro = this.livroRepository.findById(idLivro);
 		
@@ -191,6 +193,44 @@ public class LivroService {
 				livro.get().setEstante(estante.get());
 			} else {
 				throw new ExceptionNotFound("Estante "+ idEstante +" não encontrada.");
+			}
+			
+		} else {
+			throw new ExceptionNotFound("Livro "+ idLivro +" não encontrado.");
+		}
+		
+	}
+
+	@Transactional
+	public void ativar(Long idLivro) {
+		
+		Optional<Livro> livro = this.livroRepository.findById(idLivro);
+		
+		if (livro.isPresent()) {
+			
+			if (livro.get().getAtivo()) {
+				throw new ExceptionPadrao("Livro "+ idLivro +" já está ativo.");
+			} else {
+				livro.get().setAtivo(Boolean.TRUE);	
+			}
+			
+		} else {
+			throw new ExceptionNotFound("Livro "+ idLivro +" não encontrado.");
+		}
+		
+	}
+
+	@Transactional
+	public void desativar(Long idLivro) {
+		
+		Optional<Livro> livro = this.livroRepository.findById(idLivro);
+		
+		if (livro.isPresent()) {
+			
+			if (!livro.get().getAtivo()) {
+				throw new ExceptionPadrao("Livro "+ idLivro +" já está inativo.");
+			} else {
+				livro.get().setAtivo(Boolean.FALSE);	
 			}
 			
 		} else {

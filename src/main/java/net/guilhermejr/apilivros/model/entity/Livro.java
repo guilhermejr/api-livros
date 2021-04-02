@@ -76,6 +76,9 @@ public class Livro implements Serializable {
     @UpdateTimestamp
     @Column(updatable = false)
     private LocalDateTime atualizado;
+    
+    @Column(nullable = false)
+    private Boolean ativo = Boolean.TRUE;
 
     @ManyToMany
     private List<Autor> autores;

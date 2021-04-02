@@ -11,6 +11,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -58,9 +59,10 @@ public class LivroController {
 			@RequestParam(required = false) Long idioma,
 			@RequestParam(required = false) Long tipo,
 			@RequestParam(required = false) Integer ano,
+			@RequestParam(required = false) Boolean ativo,
 			@PageableDefault(page = 0, size = 24, sort = "titulo", direction = Direction.ASC) Pageable paginacao) {
 
-		return ResponseEntity.ok(this.livroService.pesquisar(estante, titulo, isbn, editora, autor, genero, idioma, tipo, ano, paginacao));
+		return ResponseEntity.ok(this.livroService.pesquisar(estante, titulo, isbn, editora, autor, genero, idioma, tipo, ano, ativo, paginacao));
 
 	}
 
@@ -84,8 +86,22 @@ public class LivroController {
 	@Operation(summary = "Muda um livro de estante")
 	@PutMapping("{idLivro}/estante/{idEstante}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void mudaLivroEstante(@PathVariable Long idLivro, @PathVariable Long idEstante) {
-		this.livroService.mudaLivroEstante(idLivro, idEstante);
+	public void mudaEstante(@PathVariable Long idLivro, @PathVariable Long idEstante) {
+		this.livroService.mudaEstante(idLivro, idEstante);
+	}
+	
+	@Operation(summary = "Ativar um livro")
+	@PutMapping("{idLivro}/ativar")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void ativar(@PathVariable Long idLivro) {
+		this.livroService.ativar(idLivro);
+	}
+	
+	@Operation(summary = "Desativar um livro")
+	@DeleteMapping("{idLivro}/desativar")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void desativar(@PathVariable Long idLivro) {
+		this.livroService.desativar(idLivro);
 	}
 
 }

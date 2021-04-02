@@ -46,6 +46,7 @@
         paginas integer not null,
         criado datetime,
 		atualizado datetime,
+		ativo bit not null,
         editora_id bigint,
         estante_id bigint,
         idioma_id bigint,

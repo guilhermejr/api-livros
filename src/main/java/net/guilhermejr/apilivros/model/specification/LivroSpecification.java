@@ -108,7 +108,14 @@ public class LivroSpecification {
 
 		return null;
 	}
+	
+	public static Specification<Livro> ativo(Boolean ativo) {
 
+		if (ativo != null) {
+			return (root, query, builder) -> builder.equal(root.get("ativo"), ativo);
+		}
 
+		return null;
+	}
 
 }
