@@ -100,7 +100,7 @@ public class LivroControllerTest {
 			.isbn("9788525409140")
 			.paginas(104)
 			.titulo("Édipo Rei")
-			.ativo(Boolean.TRUE)
+			.ativo(Boolean.FALSE)
 			.autores(List.of(AutorRetorno))
 			.generos(List.of(generoRetorno))
 			.editora(editoraRetorno)
@@ -360,6 +360,159 @@ public class LivroControllerTest {
 		
 		MvcResult mvcResult = this.mockMvc
 			.perform(MockMvcRequestBuilders.get("/livro?estante=1"))
+			.andExpect(MockMvcResultMatchers.status().isUnsupportedMediaType())
+			.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(415))
+			.andExpect(MockMvcResultMatchers.jsonPath("$.detalhe").value("Content-Type não suportado."))
+			.andReturn();
+		
+		Assertions.assertEquals("application/json", mvcResult.getResponse().getContentType());
+		
+	}
+	
+	@Test
+	@DisplayName("Deve mudar livro de estante")
+	public void deveMudarLivroDeEstante() throws Exception {
+		
+		this.mockMvc
+			.perform(MockMvcRequestBuilders.put("/livro/1/estante/2").contentType("application/json"))
+			.andExpect(MockMvcResultMatchers.status().isNoContent());
+		
+	}
+	
+	@Test
+	@DisplayName("Deve retornar erro ao tentar mudar livro inexistente de estante")
+	public void deveRetornarErroAoTentarMudarLivroInexistenteDeEstante() throws Exception {
+		
+		MvcResult mvcResult = this.mockMvc
+				.perform(MockMvcRequestBuilders.put("/livro/10/estante/1").contentType("application/json"))
+			.andExpect(MockMvcResultMatchers.status().isNotFound())
+			.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(404))
+			.andExpect(MockMvcResultMatchers.jsonPath("$.detalhe").value("Livro 10 não encontrado."))
+			.andReturn();
+		
+		Assertions.assertEquals("application/json", mvcResult.getResponse().getContentType());
+		
+	}
+	
+	@Test
+	@DisplayName("Deve retornar erro ao tentar mudar livro de estante inexistente")
+	public void deveRetornarErroAoTentarMudarLivroDeEstanteInexistente() throws Exception {
+		
+		MvcResult mvcResult = this.mockMvc
+				.perform(MockMvcRequestBuilders.put("/livro/1/estante/10").contentType("application/json"))
+			.andExpect(MockMvcResultMatchers.status().isNotFound())
+			.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(404))
+			.andExpect(MockMvcResultMatchers.jsonPath("$.detalhe").value("Estante 10 não encontrada."))
+			.andReturn();
+		
+		Assertions.assertEquals("application/json", mvcResult.getResponse().getContentType());
+		
+	}
+	
+	@Test
+	@DisplayName("Deve dar erro ao mudar livro de estante com Content-Type errado")
+	public void deveDarErroAoMudarLivroDeEstanteComContentTypeErrado() throws Exception {
+		
+		MvcResult mvcResult = this.mockMvc
+				.perform(MockMvcRequestBuilders.put("/livro/1/estante/2"))
+			.andExpect(MockMvcResultMatchers.status().isUnsupportedMediaType())
+			.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(415))
+			.andExpect(MockMvcResultMatchers.jsonPath("$.detalhe").value("Content-Type não suportado."))
+			.andReturn();
+		
+		Assertions.assertEquals("application/json", mvcResult.getResponse().getContentType());
+		
+	}
+	
+	@Test
+	@DisplayName("Deve ativar livro")
+	public void deveAtivarLivro() throws Exception {
+		
+		this.mockMvc
+			.perform(MockMvcRequestBuilders.put("/livro/2/ativar").contentType("application/json"))
+			.andExpect(MockMvcResultMatchers.status().isNoContent());
+		
+	}
+	
+	@Test
+	@DisplayName("Deve dar erro ao tentar ativar livro já ativado")
+	public void deveDarErroAoTentarAtivarLivroJaAtivado() throws Exception {
+		
+		this.mockMvc
+			.perform(MockMvcRequestBuilders.put("/livro/1/ativar").contentType("application/json"))
+			.andExpect(MockMvcResultMatchers.status().isBadRequest())
+			.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(400))
+			.andExpect(MockMvcResultMatchers.jsonPath("$.detalhe").value("Livro 1 já está ativo."));
+		
+	}
+	
+	@Test
+	@DisplayName("Deve dar erro ao tentar ativar livro inexistente")
+	public void deveDarErroAoTentarAtivarLivroInexistente() throws Exception {
+		
+		this.mockMvc
+			.perform(MockMvcRequestBuilders.put("/livro/10/ativar").contentType("application/json"))
+			.andExpect(MockMvcResultMatchers.status().isNotFound())
+			.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(404))
+			.andExpect(MockMvcResultMatchers.jsonPath("$.detalhe").value("Livro 10 não encontrado."));
+		
+	}
+	
+	@Test
+	@DisplayName("Deve dar erro ativar um livro com Content-Type errado")
+	public void deveDarErroAoAtivarUmLivroComContentTypeErrado() throws Exception {
+		
+		MvcResult mvcResult = this.mockMvc
+				.perform(MockMvcRequestBuilders.put("/livro/1/ativar"))
+			.andExpect(MockMvcResultMatchers.status().isUnsupportedMediaType())
+			.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(415))
+			.andExpect(MockMvcResultMatchers.jsonPath("$.detalhe").value("Content-Type não suportado."))
+			.andReturn();
+		
+		Assertions.assertEquals("application/json", mvcResult.getResponse().getContentType());
+		
+	}
+	
+	@Test
+	@DisplayName("Deve deaativar livro")
+	public void deveDesativarLivro() throws Exception {
+		
+		this.mockMvc
+			.perform(MockMvcRequestBuilders.delete("/livro/1/desativar").contentType("application/json"))
+			.andExpect(MockMvcResultMatchers.status().isNoContent());
+		
+	}
+	
+	@Test
+	@DisplayName("Deve dar erro ao tentar desativar livro já desativado")
+	public void deveDarErroAoTentarDesativarLivroJaDesativado() throws Exception {
+		
+		this.mockMvc
+			.perform(MockMvcRequestBuilders.delete("/livro/2/desativar").contentType("application/json"))
+			.andExpect(MockMvcResultMatchers.status().isBadRequest())
+			.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(400))
+			.andExpect(MockMvcResultMatchers.jsonPath("$.detalhe").value("Livro 2 já está inativo."));
+		
+	}
+	
+	@Test
+	@DisplayName("Deve dar erro ao tentar desativar livro inexistente")
+	public void deveDarErroAoTentarDesativarLivroInexistente() throws Exception {
+		
+		this.mockMvc
+			.perform(MockMvcRequestBuilders.delete("/livro/10/desativar").contentType("application/json"))
+			.andExpect(MockMvcResultMatchers.status().isNotFound())
+			.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(404))
+			.andExpect(MockMvcResultMatchers.jsonPath("$.detalhe").value("Livro 10 não encontrado."));
+		
+	}
+	
+	@Test
+	@DisplayName("Deve dar erro desativar um livro com Content-Type errado")
+	public void deveDarErroAoDesativarUmLivroComContentTypeErrado() throws Exception {
+		
+		MvcResult mvcResult = this.mockMvc
+				.perform(MockMvcRequestBuilders.delete("/livro/1/desativar"))
 			.andExpect(MockMvcResultMatchers.status().isUnsupportedMediaType())
 			.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(415))
 			.andExpect(MockMvcResultMatchers.jsonPath("$.detalhe").value("Content-Type não suportado."))
