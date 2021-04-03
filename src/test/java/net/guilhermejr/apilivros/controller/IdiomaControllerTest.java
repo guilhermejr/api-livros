@@ -14,13 +14,9 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import net.guilhermejr.apilivros.model.entity.Autor;
-import net.guilhermejr.apilivros.model.entity.Genero;
 import net.guilhermejr.apilivros.model.entity.Idioma;
-import net.guilhermejr.apilivros.model.repository.GeneroRepository;
 import net.guilhermejr.apilivros.model.repository.IdiomaRepository;
 import net.guilhermejr.apilivros.utils.LeJSON;
 import net.guilhermejr.apilivros.utils.LimpaBancoDeDados;
@@ -66,7 +62,6 @@ public class IdiomaControllerTest {
 			.perform(MockMvcRequestBuilders.post("/idioma")
 			.contentType("application/json")
 	        .content(LeJSON.conteudo("/json/correto/idioma/idioma.json")))
-			//.andDo(MockMvcResultHandlers.print())
 			.andExpect(MockMvcResultMatchers.jsonPath("$.descricao").value("Alemão"))
 			.andExpect(MockMvcResultMatchers.status().isCreated())
 			.andReturn();
@@ -82,7 +77,6 @@ public class IdiomaControllerTest {
 		MvcResult mvcResult = this.mockMvc
 			.perform(MockMvcRequestBuilders.post("/idioma")
 	        .content(LeJSON.conteudo("/json/correto/idioma/idioma.json")))
-			//.andDo(MockMvcResultHandlers.print())
 			.andExpect(MockMvcResultMatchers.status().isUnsupportedMediaType())
 			.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(415))
 			.andExpect(MockMvcResultMatchers.jsonPath("$.detalhe").value("Content-Type não suportado."))
@@ -100,7 +94,6 @@ public class IdiomaControllerTest {
 			.perform(MockMvcRequestBuilders.post("/idioma")
 			.contentType("application/json")
 	        .content(LeJSON.conteudo("/json/correto/idioma/idioma.json")))
-			//.andDo(MockMvcResultHandlers.print())
 			.andExpect(MockMvcResultMatchers.jsonPath("$.descricao").value("Alemão"))
 			.andExpect(MockMvcResultMatchers.status().isCreated())
 			.andReturn();
@@ -111,7 +104,6 @@ public class IdiomaControllerTest {
 				.perform(MockMvcRequestBuilders.post("/idioma")
 				.contentType("application/json")
 		        .content(LeJSON.conteudo("/json/correto/idioma/idioma.json")))
-				//.andDo(MockMvcResultHandlers.print())
 				.andExpect(MockMvcResultMatchers.jsonPath("$[0].campo").value("descricao"))
 				.andExpect(MockMvcResultMatchers.jsonPath("$[0].mensagem").value("Idioma já está cadastrado."))
 				.andExpect(MockMvcResultMatchers.status().isBadRequest())
@@ -129,7 +121,6 @@ public class IdiomaControllerTest {
 			.perform(MockMvcRequestBuilders.post("/idioma")
 			.contentType("application/json")
 	        .content(LeJSON.conteudo("/json/incorreto/idioma/idioma1.json")))
-			//.andDo(MockMvcResultHandlers.print())
 			.andExpect(MockMvcResultMatchers.jsonPath("$[0].campo").value("descricao"))
 			.andExpect(MockMvcResultMatchers.jsonPath("$[0].mensagem").value("Idioma deve ser preenchido."))
 			.andExpect(MockMvcResultMatchers.status().isBadRequest())
@@ -147,7 +138,6 @@ public class IdiomaControllerTest {
 			.perform(MockMvcRequestBuilders.post("/idioma")
 			.contentType("application/json")
 	        .content(LeJSON.conteudo("/json/incorreto/idioma/idioma2.json")))
-			//.andDo(MockMvcResultHandlers.print())
 			.andExpect(MockMvcResultMatchers.jsonPath("$[0].campo").value("descricao"))
 			.andExpect(MockMvcResultMatchers.jsonPath("$[0].mensagem").value("Idioma deve ser preenchido."))
 			.andExpect(MockMvcResultMatchers.status().isBadRequest())
@@ -165,7 +155,6 @@ public class IdiomaControllerTest {
 			.perform(MockMvcRequestBuilders.post("/idioma")
 			.contentType("application/json")
 	        .content(LeJSON.conteudo("/json/incorreto/idioma/idioma3.json")))
-			//.andDo(MockMvcResultHandlers.print())
 			.andExpect(MockMvcResultMatchers.jsonPath("$[0].campo").value("descricao"))
 			.andExpect(MockMvcResultMatchers.jsonPath("$[0].mensagem").value("Idioma deve ter no máximo 255 caracteres."))
 			.andExpect(MockMvcResultMatchers.status().isBadRequest())
@@ -181,7 +170,6 @@ public class IdiomaControllerTest {
 		
 		MvcResult mvcResult = this.mockMvc
 			.perform(MockMvcRequestBuilders.get("/idioma/1").contentType("application/json"))
-			//.andDo(MockMvcResultHandlers.print())
 			.andExpect(MockMvcResultMatchers.status().isOk())
 			.andExpect(MockMvcResultMatchers.jsonPath("$.descricao").value(this.descricao1))
 			.andReturn();
@@ -196,7 +184,6 @@ public class IdiomaControllerTest {
 		
 		MvcResult mvcResult = this.mockMvc
 			.perform(MockMvcRequestBuilders.get("/idioma/1"))
-			//.andDo(MockMvcResultHandlers.print())
 			.andExpect(MockMvcResultMatchers.status().isUnsupportedMediaType())
 			.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(415))
 			.andExpect(MockMvcResultMatchers.jsonPath("$.detalhe").value("Content-Type não suportado."))
@@ -212,7 +199,6 @@ public class IdiomaControllerTest {
 		
 		MvcResult mvcResult = this.mockMvc
 			.perform(MockMvcRequestBuilders.get("/idioma/10").contentType("application/json"))
-			//.andDo(MockMvcResultHandlers.print())
 			.andExpect(MockMvcResultMatchers.status().isNotFound())
 			.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(404))
 			.andExpect(MockMvcResultMatchers.jsonPath("$.detalhe").value("Idioma 10 não encontrado."))
@@ -228,7 +214,6 @@ public class IdiomaControllerTest {
 		
 		MvcResult mvcResult = this.mockMvc
 			.perform(MockMvcRequestBuilders.get("/idioma").contentType("application/json"))
-			//.andDo(MockMvcResultHandlers.print())
 			.andExpect(MockMvcResultMatchers.status().isOk())
 			.andExpect(MockMvcResultMatchers.jsonPath("$[0].descricao").value(this.descricao2))
 			.andExpect(MockMvcResultMatchers.jsonPath("$[1].descricao").value(this.descricao3))
@@ -245,7 +230,6 @@ public class IdiomaControllerTest {
 		
 		MvcResult mvcResult = this.mockMvc
 			.perform(MockMvcRequestBuilders.get("/idioma"))
-			//.andDo(MockMvcResultHandlers.print())
 			.andExpect(MockMvcResultMatchers.status().isUnsupportedMediaType())
 			.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(415))
 			.andExpect(MockMvcResultMatchers.jsonPath("$.detalhe").value("Content-Type não suportado."))

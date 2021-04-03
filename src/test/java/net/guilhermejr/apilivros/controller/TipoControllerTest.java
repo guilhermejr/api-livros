@@ -11,7 +11,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import net.guilhermejr.apilivros.utils.LimpaBancoDeDados;
@@ -38,7 +37,6 @@ public class TipoControllerTest {
 		
 		MvcResult mvcResult = this.mockMvc
 			.perform(MockMvcRequestBuilders.get("/tipo/1").contentType("application/json"))
-			//.andDo(MockMvcResultHandlers.print())
 			.andExpect(MockMvcResultMatchers.status().isOk())
 			.andExpect(MockMvcResultMatchers.jsonPath("$.descricao").value("Físico"))
 			.andReturn();
@@ -53,7 +51,6 @@ public class TipoControllerTest {
 		
 		MvcResult mvcResult = this.mockMvc
 			.perform(MockMvcRequestBuilders.get("/tipo/1"))
-			//.andDo(MockMvcResultHandlers.print())
 			.andExpect(MockMvcResultMatchers.status().isUnsupportedMediaType())
 			.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(415))
 			.andExpect(MockMvcResultMatchers.jsonPath("$.detalhe").value("Content-Type não suportado."))
@@ -69,7 +66,6 @@ public class TipoControllerTest {
 		
 		MvcResult mvcResult = this.mockMvc
 			.perform(MockMvcRequestBuilders.get("/tipo/10").contentType("application/json"))
-			//.andDo(MockMvcResultHandlers.print())
 			.andExpect(MockMvcResultMatchers.status().isNotFound())
 			.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(404))
 			.andExpect(MockMvcResultMatchers.jsonPath("$.detalhe").value("Tipo 10 não encontrado."))
@@ -85,7 +81,6 @@ public class TipoControllerTest {
 		
 		MvcResult mvcResult = this.mockMvc
 			.perform(MockMvcRequestBuilders.get("/tipo").contentType("application/json"))
-			//.andDo(MockMvcResultHandlers.print())
 			.andExpect(MockMvcResultMatchers.status().isOk())
 			.andExpect(MockMvcResultMatchers.jsonPath("$[0].descricao").value("E-book"))
 			.andExpect(MockMvcResultMatchers.jsonPath("$[1].descricao").value("Físico"))
@@ -102,7 +97,6 @@ public class TipoControllerTest {
 		
 		MvcResult mvcResult = this.mockMvc
 			.perform(MockMvcRequestBuilders.get("/tipo"))
-			//.andDo(MockMvcResultHandlers.print())
 			.andExpect(MockMvcResultMatchers.status().isUnsupportedMediaType())
 			.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(415))
 			.andExpect(MockMvcResultMatchers.jsonPath("$.detalhe").value("Content-Type não suportado."))

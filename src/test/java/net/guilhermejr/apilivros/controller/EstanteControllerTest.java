@@ -11,7 +11,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import net.guilhermejr.apilivros.utils.LimpaBancoDeDados;
@@ -38,7 +37,6 @@ public class EstanteControllerTest {
 		
 		MvcResult mvcResult = this.mockMvc
 			.perform(MockMvcRequestBuilders.get("/estante/1").contentType("application/json"))
-			//.andDo(MockMvcResultHandlers.print())
 			.andExpect(MockMvcResultMatchers.status().isOk())
 			.andExpect(MockMvcResultMatchers.jsonPath("$.descricao").value("Biblioteca"))
 			.andReturn();
@@ -53,7 +51,6 @@ public class EstanteControllerTest {
 		
 		MvcResult mvcResult = this.mockMvc
 			.perform(MockMvcRequestBuilders.get("/estante/1"))
-			//.andDo(MockMvcResultHandlers.print())
 			.andExpect(MockMvcResultMatchers.status().isUnsupportedMediaType())
 			.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(415))
 			.andExpect(MockMvcResultMatchers.jsonPath("$.detalhe").value("Content-Type não suportado."))
@@ -69,7 +66,6 @@ public class EstanteControllerTest {
 		
 		MvcResult mvcResult = this.mockMvc
 			.perform(MockMvcRequestBuilders.get("/estante/10").contentType("application/json"))
-			//.andDo(MockMvcResultHandlers.print())
 			.andExpect(MockMvcResultMatchers.status().isNotFound())
 			.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(404))
 			.andExpect(MockMvcResultMatchers.jsonPath("$.detalhe").value("Estante 10 não encontrada."))
@@ -85,7 +81,6 @@ public class EstanteControllerTest {
 		
 		MvcResult mvcResult = this.mockMvc
 			.perform(MockMvcRequestBuilders.get("/estante").contentType("application/json"))
-			//.andDo(MockMvcResultHandlers.print())
 			.andExpect(MockMvcResultMatchers.status().isOk())
 			.andExpect(MockMvcResultMatchers.jsonPath("$[0].descricao").value("Biblioteca"))
 			.andExpect(MockMvcResultMatchers.jsonPath("$[1].descricao").value("Desejados"))
@@ -104,7 +99,6 @@ public class EstanteControllerTest {
 		
 		MvcResult mvcResult = this.mockMvc
 			.perform(MockMvcRequestBuilders.get("/estante"))
-			//.andDo(MockMvcResultHandlers.print())
 			.andExpect(MockMvcResultMatchers.status().isUnsupportedMediaType())
 			.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(415))
 			.andExpect(MockMvcResultMatchers.jsonPath("$.detalhe").value("Content-Type não suportado."))

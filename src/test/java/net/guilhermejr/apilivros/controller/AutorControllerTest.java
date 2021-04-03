@@ -14,7 +14,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import net.guilhermejr.apilivros.model.entity.Autor;
@@ -79,7 +78,6 @@ public class AutorControllerTest {
 		MvcResult mvcResult = this.mockMvc
 			.perform(MockMvcRequestBuilders.post("/autor")
 	        .content(LeJSON.conteudo("/json/correto/autor/autor.json")))
-			//.andDo(MockMvcResultHandlers.print())
 			.andExpect(MockMvcResultMatchers.status().isUnsupportedMediaType())
 			.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(415))
 			.andExpect(MockMvcResultMatchers.jsonPath("$.detalhe").value("Content-Type não suportado."))
@@ -97,7 +95,6 @@ public class AutorControllerTest {
 			.perform(MockMvcRequestBuilders.post("/autor")
 			.contentType("application/json")
 	        .content(LeJSON.conteudo("/json/correto/autor/autor.json")))
-			//.andDo(MockMvcResultHandlers.print())
 			.andExpect(MockMvcResultMatchers.jsonPath("$.descricao").value("Paulo Coelho"))
 			.andExpect(MockMvcResultMatchers.status().isCreated())
 			.andReturn();
@@ -126,7 +123,6 @@ public class AutorControllerTest {
 			.perform(MockMvcRequestBuilders.post("/autor")
 			.contentType("application/json")
 	        .content(LeJSON.conteudo("/json/incorreto/autor/autor1.json")))
-			//.andDo(MockMvcResultHandlers.print())
 			.andExpect(MockMvcResultMatchers.jsonPath("$[0].campo").value("descricao"))
 			.andExpect(MockMvcResultMatchers.jsonPath("$[0].mensagem").value("Autor deve ser preenchido."))
 			.andExpect(MockMvcResultMatchers.status().isBadRequest())
@@ -144,7 +140,6 @@ public class AutorControllerTest {
 			.perform(MockMvcRequestBuilders.post("/autor")
 			.contentType("application/json")
 	        .content(LeJSON.conteudo("/json/incorreto/autor/autor2.json")))
-			//.andDo(MockMvcResultHandlers.print())
 			.andExpect(MockMvcResultMatchers.jsonPath("$[0].campo").value("descricao"))
 			.andExpect(MockMvcResultMatchers.jsonPath("$[0].mensagem").value("Autor deve ser preenchido."))
 			.andExpect(MockMvcResultMatchers.status().isBadRequest())
@@ -162,7 +157,6 @@ public class AutorControllerTest {
 			.perform(MockMvcRequestBuilders.post("/autor")
 			.contentType("application/json")
 	        .content(LeJSON.conteudo("/json/incorreto/autor/autor3.json")))
-			//.andDo(MockMvcResultHandlers.print())
 			.andExpect(MockMvcResultMatchers.jsonPath("$[0].campo").value("descricao"))
 			.andExpect(MockMvcResultMatchers.jsonPath("$[0].mensagem").value("Autor deve ter no máximo 255 caracteres."))
 			.andExpect(MockMvcResultMatchers.status().isBadRequest())
@@ -178,7 +172,6 @@ public class AutorControllerTest {
 		
 		MvcResult mvcResult = this.mockMvc
 			.perform(MockMvcRequestBuilders.get("/autor/1").contentType("application/json"))
-			//.andDo(MockMvcResultHandlers.print())
 			.andExpect(MockMvcResultMatchers.status().isOk())
 			.andExpect(MockMvcResultMatchers.jsonPath("$.descricao").value(this.descricao1))
 			.andReturn();
@@ -193,7 +186,6 @@ public class AutorControllerTest {
 		
 		MvcResult mvcResult = this.mockMvc
 			.perform(MockMvcRequestBuilders.get("/autor/1"))
-			//.andDo(MockMvcResultHandlers.print())
 			.andExpect(MockMvcResultMatchers.status().isUnsupportedMediaType())
 			.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(415))
 			.andExpect(MockMvcResultMatchers.jsonPath("$.detalhe").value("Content-Type não suportado."))
@@ -209,7 +201,6 @@ public class AutorControllerTest {
 		
 		MvcResult mvcResult = this.mockMvc
 			.perform(MockMvcRequestBuilders.get("/autor/10").contentType("application/json"))
-			//.andDo(MockMvcResultHandlers.print())
 			.andExpect(MockMvcResultMatchers.status().isNotFound())
 			.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(404))
 			.andExpect(MockMvcResultMatchers.jsonPath("$.detalhe").value("Autor 10 não encontrado."))
@@ -225,7 +216,6 @@ public class AutorControllerTest {
 		
 		MvcResult mvcResult = this.mockMvc
 			.perform(MockMvcRequestBuilders.get("/autor").contentType("application/json"))
-			//.andDo(MockMvcResultHandlers.print())
 			.andExpect(MockMvcResultMatchers.status().isOk())
 			.andExpect(MockMvcResultMatchers.jsonPath("$[0].descricao").value(this.descricao3))
 			.andExpect(MockMvcResultMatchers.jsonPath("$[1].descricao").value(this.descricao1))
@@ -242,7 +232,6 @@ public class AutorControllerTest {
 		
 		MvcResult mvcResult = this.mockMvc
 			.perform(MockMvcRequestBuilders.get("/autor"))
-			//.andDo(MockMvcResultHandlers.print())
 			.andExpect(MockMvcResultMatchers.status().isUnsupportedMediaType())
 			.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(415))
 			.andExpect(MockMvcResultMatchers.jsonPath("$.detalhe").value("Content-Type não suportado."))

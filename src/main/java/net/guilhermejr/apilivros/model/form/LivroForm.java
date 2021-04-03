@@ -66,7 +66,7 @@ public class LivroForm {
 	@Schema(description = "Ano lançamento do livro", example = "2013")
 	@Min(1900)
 	@Max(2100)
-	private String anoPublicacao;
+	private String anoPublicacao = "1900";
 
 	@Schema(description = "Quantidade de páginas do livro", example = "392")
 	@NotNull()
@@ -80,7 +80,7 @@ public class LivroForm {
 	
 	@NotNull()
 	@Min(1)
-	@Max(4)
+	@Max(5)
 	private String estante = "1";
 
 }
