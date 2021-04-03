@@ -76,6 +76,23 @@ public class IdiomaControllerTest {
 	}
 	
 	@Test
+	@DisplayName("Deve dar erro ao cadastrar um idioma com Content-Type errado")
+	public void deveDarErroAoCadastrarUmIdiomaComContentTypeErrado() throws Exception {
+		
+		MvcResult mvcResult = this.mockMvc
+			.perform(MockMvcRequestBuilders.post("/idioma")
+	        .content(LeJSON.conteudo("/json/correto/idioma/idioma.json")))
+			//.andDo(MockMvcResultHandlers.print())
+			.andExpect(MockMvcResultMatchers.status().isUnsupportedMediaType())
+			.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(415))
+			.andExpect(MockMvcResultMatchers.jsonPath("$.detalhe").value("Content-Type não suportado."))
+			.andReturn();
+		
+		Assertions.assertEquals("application/json", mvcResult.getResponse().getContentType());
+		
+	}
+	
+	@Test
 	@DisplayName("Deve dar erro ao cadastrar um idioma que ja existe")
 	public void deveDarErroAoCadastrarUmIdiomaQueJaExiste() throws Exception {
 		
@@ -163,10 +180,26 @@ public class IdiomaControllerTest {
 	public void deveRetornarUmIdioma() throws Exception {
 		
 		MvcResult mvcResult = this.mockMvc
-			.perform(MockMvcRequestBuilders.get("/idioma/1"))
+			.perform(MockMvcRequestBuilders.get("/idioma/1").contentType("application/json"))
 			//.andDo(MockMvcResultHandlers.print())
 			.andExpect(MockMvcResultMatchers.status().isOk())
 			.andExpect(MockMvcResultMatchers.jsonPath("$.descricao").value(this.descricao1))
+			.andReturn();
+		
+		Assertions.assertEquals("application/json", mvcResult.getResponse().getContentType());
+		
+	}
+	
+	@Test
+	@DisplayName("Deve dar erro ao retornar um idioma com Content-Type errado")
+	public void deveDarErroAoRetornarUmIdiomaComContentTypeErrado() throws Exception {
+		
+		MvcResult mvcResult = this.mockMvc
+			.perform(MockMvcRequestBuilders.get("/idioma/1"))
+			//.andDo(MockMvcResultHandlers.print())
+			.andExpect(MockMvcResultMatchers.status().isUnsupportedMediaType())
+			.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(415))
+			.andExpect(MockMvcResultMatchers.jsonPath("$.detalhe").value("Content-Type não suportado."))
 			.andReturn();
 		
 		Assertions.assertEquals("application/json", mvcResult.getResponse().getContentType());
@@ -178,7 +211,7 @@ public class IdiomaControllerTest {
 	public void deveRetornarErroAoTentarRetornarUmIdiomaInexistente() throws Exception {
 		
 		MvcResult mvcResult = this.mockMvc
-			.perform(MockMvcRequestBuilders.get("/idioma/10"))
+			.perform(MockMvcRequestBuilders.get("/idioma/10").contentType("application/json"))
 			//.andDo(MockMvcResultHandlers.print())
 			.andExpect(MockMvcResultMatchers.status().isNotFound())
 			.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(404))
@@ -194,12 +227,28 @@ public class IdiomaControllerTest {
 	public void deveRetornarListaDeIdiomas() throws Exception {
 		
 		MvcResult mvcResult = this.mockMvc
-			.perform(MockMvcRequestBuilders.get("/idioma"))
+			.perform(MockMvcRequestBuilders.get("/idioma").contentType("application/json"))
 			//.andDo(MockMvcResultHandlers.print())
 			.andExpect(MockMvcResultMatchers.status().isOk())
 			.andExpect(MockMvcResultMatchers.jsonPath("$[0].descricao").value(this.descricao2))
 			.andExpect(MockMvcResultMatchers.jsonPath("$[1].descricao").value(this.descricao3))
 			.andExpect(MockMvcResultMatchers.jsonPath("$[2].descricao").value(this.descricao1))
+			.andReturn();
+		
+		Assertions.assertEquals("application/json", mvcResult.getResponse().getContentType());
+		
+	}
+	
+	@Test
+	@DisplayName("Deve dar erro ao listar idiomas com Content-Type errado")
+	public void deveDarErroAoListarIdiomasComContentTypeErrado() throws Exception {
+		
+		MvcResult mvcResult = this.mockMvc
+			.perform(MockMvcRequestBuilders.get("/idioma"))
+			//.andDo(MockMvcResultHandlers.print())
+			.andExpect(MockMvcResultMatchers.status().isUnsupportedMediaType())
+			.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(415))
+			.andExpect(MockMvcResultMatchers.jsonPath("$.detalhe").value("Content-Type não suportado."))
 			.andReturn();
 		
 		Assertions.assertEquals("application/json", mvcResult.getResponse().getContentType());

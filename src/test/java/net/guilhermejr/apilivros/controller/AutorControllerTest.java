@@ -73,6 +73,23 @@ public class AutorControllerTest {
 	}
 	
 	@Test
+	@DisplayName("Deve dar erro ao cadastrar um autor com Content-Type errado")
+	public void deveDarErroAoCadastrarUmAutorComContentTypeErrado() throws Exception {
+		
+		MvcResult mvcResult = this.mockMvc
+			.perform(MockMvcRequestBuilders.post("/autor")
+	        .content(LeJSON.conteudo("/json/correto/autor/autor.json")))
+			//.andDo(MockMvcResultHandlers.print())
+			.andExpect(MockMvcResultMatchers.status().isUnsupportedMediaType())
+			.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(415))
+			.andExpect(MockMvcResultMatchers.jsonPath("$.detalhe").value("Content-Type não suportado."))
+			.andReturn();
+		
+		Assertions.assertEquals("application/json", mvcResult.getResponse().getContentType());
+		
+	}
+	
+	@Test
 	@DisplayName("Deve dar erro ao cadastrar um autor que ja existe")
 	public void deveDarErroAoCadastrarUmAutorQueJaExiste() throws Exception {
 		
@@ -160,10 +177,26 @@ public class AutorControllerTest {
 	public void deveRetornarUmAutor() throws Exception {
 		
 		MvcResult mvcResult = this.mockMvc
-			.perform(MockMvcRequestBuilders.get("/autor/1"))
+			.perform(MockMvcRequestBuilders.get("/autor/1").contentType("application/json"))
 			//.andDo(MockMvcResultHandlers.print())
 			.andExpect(MockMvcResultMatchers.status().isOk())
 			.andExpect(MockMvcResultMatchers.jsonPath("$.descricao").value(this.descricao1))
+			.andReturn();
+		
+		Assertions.assertEquals("application/json", mvcResult.getResponse().getContentType());
+		
+	}
+	
+	@Test
+	@DisplayName("Deve dar erro ao retornar um autor com Content-Type errado")
+	public void deveDarErroAoRetornarUmAutorComContentTypeErrado() throws Exception {
+		
+		MvcResult mvcResult = this.mockMvc
+			.perform(MockMvcRequestBuilders.get("/autor/1"))
+			//.andDo(MockMvcResultHandlers.print())
+			.andExpect(MockMvcResultMatchers.status().isUnsupportedMediaType())
+			.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(415))
+			.andExpect(MockMvcResultMatchers.jsonPath("$.detalhe").value("Content-Type não suportado."))
 			.andReturn();
 		
 		Assertions.assertEquals("application/json", mvcResult.getResponse().getContentType());
@@ -175,7 +208,7 @@ public class AutorControllerTest {
 	public void deveRetornarErroAoTentarRetornarUmAutorInexistente() throws Exception {
 		
 		MvcResult mvcResult = this.mockMvc
-			.perform(MockMvcRequestBuilders.get("/autor/10"))
+			.perform(MockMvcRequestBuilders.get("/autor/10").contentType("application/json"))
 			//.andDo(MockMvcResultHandlers.print())
 			.andExpect(MockMvcResultMatchers.status().isNotFound())
 			.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(404))
@@ -191,12 +224,28 @@ public class AutorControllerTest {
 	public void deveRetornarListaDeAutores() throws Exception {
 		
 		MvcResult mvcResult = this.mockMvc
-			.perform(MockMvcRequestBuilders.get("/autor"))
+			.perform(MockMvcRequestBuilders.get("/autor").contentType("application/json"))
 			//.andDo(MockMvcResultHandlers.print())
 			.andExpect(MockMvcResultMatchers.status().isOk())
 			.andExpect(MockMvcResultMatchers.jsonPath("$[0].descricao").value(this.descricao3))
 			.andExpect(MockMvcResultMatchers.jsonPath("$[1].descricao").value(this.descricao1))
 			.andExpect(MockMvcResultMatchers.jsonPath("$[2].descricao").value(this.descricao2))
+			.andReturn();
+		
+		Assertions.assertEquals("application/json", mvcResult.getResponse().getContentType());
+		
+	}
+	
+	@Test
+	@DisplayName("Deve dar erro ao listar autores com Content-Type errado")
+	public void deveDarErroAoListarAutoresComContentTypeErrado() throws Exception {
+		
+		MvcResult mvcResult = this.mockMvc
+			.perform(MockMvcRequestBuilders.get("/autor"))
+			//.andDo(MockMvcResultHandlers.print())
+			.andExpect(MockMvcResultMatchers.status().isUnsupportedMediaType())
+			.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(415))
+			.andExpect(MockMvcResultMatchers.jsonPath("$.detalhe").value("Content-Type não suportado."))
 			.andReturn();
 		
 		Assertions.assertEquals("application/json", mvcResult.getResponse().getContentType());

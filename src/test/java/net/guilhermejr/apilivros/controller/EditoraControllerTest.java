@@ -74,6 +74,23 @@ public class EditoraControllerTest {
 	}
 	
 	@Test
+	@DisplayName("Deve dar erro ao cadastrar uma editora com Content-Type errado")
+	public void deveDarErroAoCadastrarUmaEditoraComContentTypeErrado() throws Exception {
+		
+		MvcResult mvcResult = this.mockMvc
+			.perform(MockMvcRequestBuilders.post("/editora")
+	        .content(LeJSON.conteudo("/json/correto/editora/editora.json")))
+			//.andDo(MockMvcResultHandlers.print())
+			.andExpect(MockMvcResultMatchers.status().isUnsupportedMediaType())
+			.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(415))
+			.andExpect(MockMvcResultMatchers.jsonPath("$.detalhe").value("Content-Type não suportado."))
+			.andReturn();
+		
+		Assertions.assertEquals("application/json", mvcResult.getResponse().getContentType());
+		
+	}
+	
+	@Test
 	@DisplayName("Deve dar erro ao cadastrar uma editora que ja existe")
 	public void deveDarErroAoCadastrarUmaEditoraQueJaExiste() throws Exception {
 		
@@ -161,10 +178,26 @@ public class EditoraControllerTest {
 	public void deveRetornarUmaEditora() throws Exception {
 		
 		MvcResult mvcResult = this.mockMvc
-			.perform(MockMvcRequestBuilders.get("/editora/1"))
+			.perform(MockMvcRequestBuilders.get("/editora/1").contentType("application/json"))
 			//.andDo(MockMvcResultHandlers.print())
 			.andExpect(MockMvcResultMatchers.status().isOk())
 			.andExpect(MockMvcResultMatchers.jsonPath("$.descricao").value(this.descricao1))
+			.andReturn();
+		
+		Assertions.assertEquals("application/json", mvcResult.getResponse().getContentType());
+		
+	}
+	
+	@Test
+	@DisplayName("Deve dar erro ao retornar uma editora com Content-Type errado")
+	public void deveDarErroAoRetornarUmaEditoraComContentTypeErrado() throws Exception {
+		
+		MvcResult mvcResult = this.mockMvc
+			.perform(MockMvcRequestBuilders.get("/editora/1"))
+			//.andDo(MockMvcResultHandlers.print())
+			.andExpect(MockMvcResultMatchers.status().isUnsupportedMediaType())
+			.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(415))
+			.andExpect(MockMvcResultMatchers.jsonPath("$.detalhe").value("Content-Type não suportado."))
 			.andReturn();
 		
 		Assertions.assertEquals("application/json", mvcResult.getResponse().getContentType());
@@ -176,7 +209,7 @@ public class EditoraControllerTest {
 	public void deveRetornarErroAoTentarRetornarUmaEditoraInexistente() throws Exception {
 		
 		MvcResult mvcResult = this.mockMvc
-			.perform(MockMvcRequestBuilders.get("/editora/10"))
+			.perform(MockMvcRequestBuilders.get("/editora/10").contentType("application/json"))
 			//.andDo(MockMvcResultHandlers.print())
 			.andExpect(MockMvcResultMatchers.status().isNotFound())
 			.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(404))
@@ -188,16 +221,32 @@ public class EditoraControllerTest {
 	}
 
 	@Test
-	@DisplayName("Deve retornar lista de autores")
-	public void deveRetornarListaDeAutores() throws Exception {
+	@DisplayName("Deve retornar lista de editoras")
+	public void deveRetornarListaDeEditoras() throws Exception {
 		
 		MvcResult mvcResult = this.mockMvc
-			.perform(MockMvcRequestBuilders.get("/editora"))
+			.perform(MockMvcRequestBuilders.get("/editora").contentType("application/json"))
 			//.andDo(MockMvcResultHandlers.print())
 			.andExpect(MockMvcResultMatchers.status().isOk())
 			.andExpect(MockMvcResultMatchers.jsonPath("$[0].descricao").value(this.descricao3))
 			.andExpect(MockMvcResultMatchers.jsonPath("$[1].descricao").value(this.descricao2))
 			.andExpect(MockMvcResultMatchers.jsonPath("$[2].descricao").value(this.descricao1))
+			.andReturn();
+		
+		Assertions.assertEquals("application/json", mvcResult.getResponse().getContentType());
+		
+	}
+	
+	@Test
+	@DisplayName("Deve dar erro ao listar editoras com Content-Type errado")
+	public void deveDarErroAoListarEditorasComContentTypeErrado() throws Exception {
+		
+		MvcResult mvcResult = this.mockMvc
+			.perform(MockMvcRequestBuilders.get("/editora"))
+			//.andDo(MockMvcResultHandlers.print())
+			.andExpect(MockMvcResultMatchers.status().isUnsupportedMediaType())
+			.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(415))
+			.andExpect(MockMvcResultMatchers.jsonPath("$.detalhe").value("Content-Type não suportado."))
 			.andReturn();
 		
 		Assertions.assertEquals("application/json", mvcResult.getResponse().getContentType());
