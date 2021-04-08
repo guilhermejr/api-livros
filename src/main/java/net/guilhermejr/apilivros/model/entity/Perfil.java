@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.security.core.GrantedAuthority;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,7 +26,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Perfil implements Serializable {
+public class Perfil implements Serializable, GrantedAuthority {
 
     private static final long serialVersionUID = 1L;
 
@@ -40,5 +41,10 @@ public class Perfil implements Serializable {
     @CreationTimestamp
     @Column(updatable = false)
     private LocalDateTime criado;
+
+	@Override
+	public String getAuthority() {
+		return this.descricao;
+	}
 
 }
