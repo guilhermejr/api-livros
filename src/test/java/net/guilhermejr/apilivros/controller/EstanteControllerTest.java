@@ -36,7 +36,7 @@ public class EstanteControllerTest {
 	public void deveRetornarUmaEstante() throws Exception {
 		
 		MvcResult mvcResult = this.mockMvc
-			.perform(MockMvcRequestBuilders.get("/estante/1").contentType("application/json"))
+			.perform(MockMvcRequestBuilders.get("/estantes/1").contentType("application/json"))
 			.andExpect(MockMvcResultMatchers.status().isOk())
 			.andExpect(MockMvcResultMatchers.jsonPath("$.descricao").value("Biblioteca"))
 			.andReturn();
@@ -50,7 +50,7 @@ public class EstanteControllerTest {
 	public void deveDarErroAoRetornarUmaEstanteComContentTypeErrado() throws Exception {
 		
 		MvcResult mvcResult = this.mockMvc
-			.perform(MockMvcRequestBuilders.get("/estante/1"))
+			.perform(MockMvcRequestBuilders.get("/estantes/1"))
 			.andExpect(MockMvcResultMatchers.status().isUnsupportedMediaType())
 			.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(415))
 			.andExpect(MockMvcResultMatchers.jsonPath("$.detalhe").value("Content-Type não suportado."))
@@ -65,7 +65,7 @@ public class EstanteControllerTest {
 	public void deveRetornarErroAoTentarRetornarUmaEstanteInexistente() throws Exception {
 		
 		MvcResult mvcResult = this.mockMvc
-			.perform(MockMvcRequestBuilders.get("/estante/10").contentType("application/json"))
+			.perform(MockMvcRequestBuilders.get("/estantes/10").contentType("application/json"))
 			.andExpect(MockMvcResultMatchers.status().isNotFound())
 			.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(404))
 			.andExpect(MockMvcResultMatchers.jsonPath("$.detalhe").value("Estante 10 não encontrada."))
@@ -80,7 +80,7 @@ public class EstanteControllerTest {
 	public void deveRetornarListaDeAutores() throws Exception {
 		
 		MvcResult mvcResult = this.mockMvc
-			.perform(MockMvcRequestBuilders.get("/estante").contentType("application/json"))
+			.perform(MockMvcRequestBuilders.get("/estantes").contentType("application/json"))
 			.andExpect(MockMvcResultMatchers.status().isOk())
 			.andExpect(MockMvcResultMatchers.jsonPath("$[0].descricao").value("Biblioteca"))
 			.andExpect(MockMvcResultMatchers.jsonPath("$[1].descricao").value("Desejados"))
@@ -98,7 +98,7 @@ public class EstanteControllerTest {
 	public void deveDarErroAoListarEstantesComContentTypeErrado() throws Exception {
 		
 		MvcResult mvcResult = this.mockMvc
-			.perform(MockMvcRequestBuilders.get("/estante"))
+			.perform(MockMvcRequestBuilders.get("/estantes"))
 			.andExpect(MockMvcResultMatchers.status().isUnsupportedMediaType())
 			.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(415))
 			.andExpect(MockMvcResultMatchers.jsonPath("$.detalhe").value("Content-Type não suportado."))

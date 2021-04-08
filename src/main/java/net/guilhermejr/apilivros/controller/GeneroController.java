@@ -34,7 +34,7 @@ import net.guilhermejr.apilivros.validacao.ErroPadraoDTO;
 @Tag(name = "Gênero", description = "Controller de gênero")
 @RestController
 @Slf4j
-@RequestMapping(path = "/genero", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "/generos", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 public class GeneroController {
 
 	@Autowired
@@ -68,7 +68,7 @@ public class GeneroController {
 		
 		log.info("Gênero: "+ generoDTO.getDescricao() +" cadastrado com sucesso.");
 		
-		URI uri = uriBuilder.path("/genero/{id}").buildAndExpand(generoDTO.getId()).toUri();
+		URI uri = uriBuilder.path("/generos/{id}").buildAndExpand(generoDTO.getId()).toUri();
 		return ResponseEntity.created(uri).body(generoDTO);	
 	}
 

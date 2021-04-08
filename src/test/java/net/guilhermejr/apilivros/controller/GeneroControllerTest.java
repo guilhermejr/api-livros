@@ -59,7 +59,7 @@ public class GeneroControllerTest {
 	public void deveCadastrarUmGenero() throws Exception {
 		
 		MvcResult mvcResult = this.mockMvc
-			.perform(MockMvcRequestBuilders.post("/genero")
+			.perform(MockMvcRequestBuilders.post("/generos")
 			.contentType("application/json")
 	        .content(LeJSON.conteudo("/json/correto/genero/genero.json")))
 			//.andDo(MockMvcResultHandlers.print())
@@ -76,7 +76,7 @@ public class GeneroControllerTest {
 	public void deveDarErroAoCadastrarUmGeneroComContentTypeErrado() throws Exception {
 		
 		MvcResult mvcResult = this.mockMvc
-			.perform(MockMvcRequestBuilders.post("/genero")
+			.perform(MockMvcRequestBuilders.post("/generos")
 	        .content(LeJSON.conteudo("/json/correto/genero/genero.json")))
 			.andExpect(MockMvcResultMatchers.status().isUnsupportedMediaType())
 			.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(415))
@@ -92,7 +92,7 @@ public class GeneroControllerTest {
 	public void deveDarErroAoCadastrarUmGeneroQueJaExiste() throws Exception {
 		
 		MvcResult mvcResult = this.mockMvc
-			.perform(MockMvcRequestBuilders.post("/genero")
+			.perform(MockMvcRequestBuilders.post("/generos")
 			.contentType("application/json")
 	        .content(LeJSON.conteudo("/json/correto/genero/genero.json")))
 			.andExpect(MockMvcResultMatchers.jsonPath("$.descricao").value("Drama"))
@@ -102,7 +102,7 @@ public class GeneroControllerTest {
 		Assertions.assertEquals("application/json", mvcResult.getResponse().getContentType());
 		
 		mvcResult = this.mockMvc
-				.perform(MockMvcRequestBuilders.post("/genero")
+				.perform(MockMvcRequestBuilders.post("/generos")
 				.contentType("application/json")
 		        .content(LeJSON.conteudo("/json/correto/genero/genero.json")))
 				.andExpect(MockMvcResultMatchers.jsonPath("$[0].campo").value("descricao"))
@@ -119,7 +119,7 @@ public class GeneroControllerTest {
 	public void deveDarErroAoCadastrarUmGeneroSemDescricao() throws Exception {
 		
 		MvcResult mvcResult = this.mockMvc
-			.perform(MockMvcRequestBuilders.post("/genero")
+			.perform(MockMvcRequestBuilders.post("/generos")
 			.contentType("application/json")
 	        .content(LeJSON.conteudo("/json/incorreto/genero/genero1.json")))
 			.andExpect(MockMvcResultMatchers.jsonPath("$[0].campo").value("descricao"))
@@ -136,7 +136,7 @@ public class GeneroControllerTest {
 	public void deveDarErroAoCadastrarUmGeneroComDescricaoEmBranco() throws Exception {
 		
 		MvcResult mvcResult = this.mockMvc
-			.perform(MockMvcRequestBuilders.post("/genero")
+			.perform(MockMvcRequestBuilders.post("/generos")
 			.contentType("application/json")
 	        .content(LeJSON.conteudo("/json/incorreto/genero/genero2.json")))
 			.andExpect(MockMvcResultMatchers.jsonPath("$[0].campo").value("descricao"))
@@ -153,7 +153,7 @@ public class GeneroControllerTest {
 	public void deveDarErroAoCadastrarUmGeneroComMuitosCaracteres() throws Exception {
 		
 		MvcResult mvcResult = this.mockMvc
-			.perform(MockMvcRequestBuilders.post("/genero")
+			.perform(MockMvcRequestBuilders.post("/generos")
 			.contentType("application/json")
 	        .content(LeJSON.conteudo("/json/incorreto/genero/genero3.json")))
 			.andExpect(MockMvcResultMatchers.jsonPath("$[0].campo").value("descricao"))
@@ -170,7 +170,7 @@ public class GeneroControllerTest {
 	public void deveRetornarUmGenero() throws Exception {
 		
 		MvcResult mvcResult = this.mockMvc
-			.perform(MockMvcRequestBuilders.get("/genero/1").contentType("application/json"))
+			.perform(MockMvcRequestBuilders.get("/generos/1").contentType("application/json"))
 			.andExpect(MockMvcResultMatchers.status().isOk())
 			.andExpect(MockMvcResultMatchers.jsonPath("$.descricao").value(this.descricao1))
 			.andReturn();
@@ -184,7 +184,7 @@ public class GeneroControllerTest {
 	public void deveDarErroAoRetornarUmGeneroComContentTypeErrado() throws Exception {
 		
 		MvcResult mvcResult = this.mockMvc
-			.perform(MockMvcRequestBuilders.get("/genero/1"))
+			.perform(MockMvcRequestBuilders.get("/generos/1"))
 			.andExpect(MockMvcResultMatchers.status().isUnsupportedMediaType())
 			.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(415))
 			.andExpect(MockMvcResultMatchers.jsonPath("$.detalhe").value("Content-Type não suportado."))
@@ -199,7 +199,7 @@ public class GeneroControllerTest {
 	public void deveRetornarErroAoTentarRetornarUmGeneroInexistente() throws Exception {
 		
 		MvcResult mvcResult = this.mockMvc
-			.perform(MockMvcRequestBuilders.get("/genero/10").contentType("application/json"))
+			.perform(MockMvcRequestBuilders.get("/generos/10").contentType("application/json"))
 			.andExpect(MockMvcResultMatchers.status().isNotFound())
 			.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(404))
 			.andExpect(MockMvcResultMatchers.jsonPath("$.detalhe").value("Gênero 10 não encontrado."))
@@ -214,7 +214,7 @@ public class GeneroControllerTest {
 	public void deveRetornarListaDeGeneros() throws Exception {
 		
 		MvcResult mvcResult = this.mockMvc
-			.perform(MockMvcRequestBuilders.get("/genero").contentType("application/json"))
+			.perform(MockMvcRequestBuilders.get("/generos").contentType("application/json"))
 			.andExpect(MockMvcResultMatchers.status().isOk())
 			.andExpect(MockMvcResultMatchers.jsonPath("$[0].descricao").value(this.descricao1))
 			.andExpect(MockMvcResultMatchers.jsonPath("$[1].descricao").value(this.descricao3))
@@ -230,7 +230,7 @@ public class GeneroControllerTest {
 	public void deveDarErroAoListarGenerosComContentTypeErrado() throws Exception {
 		
 		MvcResult mvcResult = this.mockMvc
-			.perform(MockMvcRequestBuilders.get("/genero"))
+			.perform(MockMvcRequestBuilders.get("/generos"))
 			.andExpect(MockMvcResultMatchers.status().isUnsupportedMediaType())
 			.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(415))
 			.andExpect(MockMvcResultMatchers.jsonPath("$.detalhe").value("Content-Type não suportado."))

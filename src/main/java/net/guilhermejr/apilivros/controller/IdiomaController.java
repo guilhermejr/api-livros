@@ -34,7 +34,7 @@ import net.guilhermejr.apilivros.validacao.ErroPadraoDTO;
 @Tag(name = "Idioma", description = "Controller de idioma")
 @RestController
 @Slf4j
-@RequestMapping(path = "/idioma", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "/idiomas", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 public class IdiomaController {
 
 	@Autowired
@@ -68,7 +68,7 @@ public class IdiomaController {
 		
 		log.info("Idioma: "+ idiomaDTO.getDescricao() +" cadastrado com sucesso.");
 		
-		URI uri = uriBuilder.path("/idioma/{id}").buildAndExpand(idiomaDTO.getId()).toUri();
+		URI uri = uriBuilder.path("/idiomas/{id}").buildAndExpand(idiomaDTO.getId()).toUri();
 		return ResponseEntity.created(uri).body(idiomaDTO);	
 	}
 

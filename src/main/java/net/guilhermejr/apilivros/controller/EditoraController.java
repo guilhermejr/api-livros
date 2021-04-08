@@ -34,7 +34,7 @@ import net.guilhermejr.apilivros.validacao.ErroPadraoDTO;
 @Tag(name = "Editora", description = "Controller de editora")
 @RestController
 @Slf4j
-@RequestMapping(path = "/editora", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "/editoras", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 public class EditoraController {
 	
 	@Autowired
@@ -68,7 +68,7 @@ public class EditoraController {
 		
 		log.info("Editora: "+ ediotraDTO.getDescricao() +" cadastrada com sucesso.");
 		
-		URI uri = uriBuilder.path("/editora/{id}").buildAndExpand(ediotraDTO.getId()).toUri();
+		URI uri = uriBuilder.path("/editoras/{id}").buildAndExpand(ediotraDTO.getId()).toUri();
 		return ResponseEntity.created(uri).body(ediotraDTO);	
 	}
 

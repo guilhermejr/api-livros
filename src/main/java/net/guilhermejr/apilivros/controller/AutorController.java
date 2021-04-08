@@ -34,7 +34,7 @@ import net.guilhermejr.apilivros.validacao.ErroPadraoDTO;
 @Tag(name = "Autor", description = "Controller de autor")
 @RestController
 @Slf4j
-@RequestMapping(path = "/autor", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "/autores", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 public class AutorController {
 
 	@Autowired
@@ -68,7 +68,7 @@ public class AutorController {
 		
 		log.info("Autor: "+ autorDTO.getDescricao() +" cadastrado com sucesso.");
 		
-		URI uri = uriBuilder.path("/autor/{id}").buildAndExpand(autorDTO.getId()).toUri();
+		URI uri = uriBuilder.path("/autores/{id}").buildAndExpand(autorDTO.getId()).toUri();
 		return ResponseEntity.created(uri).body(autorDTO);	
 	}
 

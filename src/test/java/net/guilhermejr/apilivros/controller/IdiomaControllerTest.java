@@ -59,7 +59,7 @@ public class IdiomaControllerTest {
 	public void deveCadastrarUmIdioma() throws Exception {
 		
 		MvcResult mvcResult = this.mockMvc
-			.perform(MockMvcRequestBuilders.post("/idioma")
+			.perform(MockMvcRequestBuilders.post("/idiomas")
 			.contentType("application/json")
 	        .content(LeJSON.conteudo("/json/correto/idioma/idioma.json")))
 			.andExpect(MockMvcResultMatchers.jsonPath("$.descricao").value("Alemão"))
@@ -75,7 +75,7 @@ public class IdiomaControllerTest {
 	public void deveDarErroAoCadastrarUmIdiomaComContentTypeErrado() throws Exception {
 		
 		MvcResult mvcResult = this.mockMvc
-			.perform(MockMvcRequestBuilders.post("/idioma")
+			.perform(MockMvcRequestBuilders.post("/idiomas")
 	        .content(LeJSON.conteudo("/json/correto/idioma/idioma.json")))
 			.andExpect(MockMvcResultMatchers.status().isUnsupportedMediaType())
 			.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(415))
@@ -91,7 +91,7 @@ public class IdiomaControllerTest {
 	public void deveDarErroAoCadastrarUmIdiomaQueJaExiste() throws Exception {
 		
 		MvcResult mvcResult = this.mockMvc
-			.perform(MockMvcRequestBuilders.post("/idioma")
+			.perform(MockMvcRequestBuilders.post("/idiomas")
 			.contentType("application/json")
 	        .content(LeJSON.conteudo("/json/correto/idioma/idioma.json")))
 			.andExpect(MockMvcResultMatchers.jsonPath("$.descricao").value("Alemão"))
@@ -101,7 +101,7 @@ public class IdiomaControllerTest {
 		Assertions.assertEquals("application/json", mvcResult.getResponse().getContentType());
 		
 		mvcResult = this.mockMvc
-				.perform(MockMvcRequestBuilders.post("/idioma")
+				.perform(MockMvcRequestBuilders.post("/idiomas")
 				.contentType("application/json")
 		        .content(LeJSON.conteudo("/json/correto/idioma/idioma.json")))
 				.andExpect(MockMvcResultMatchers.jsonPath("$[0].campo").value("descricao"))
@@ -118,7 +118,7 @@ public class IdiomaControllerTest {
 	public void deveDarErroAoCadastrarUmIdiomaSemDescricao() throws Exception {
 		
 		MvcResult mvcResult = this.mockMvc
-			.perform(MockMvcRequestBuilders.post("/idioma")
+			.perform(MockMvcRequestBuilders.post("/idiomas")
 			.contentType("application/json")
 	        .content(LeJSON.conteudo("/json/incorreto/idioma/idioma1.json")))
 			.andExpect(MockMvcResultMatchers.jsonPath("$[0].campo").value("descricao"))
@@ -135,7 +135,7 @@ public class IdiomaControllerTest {
 	public void deveDarErroAoCadastrarUmIdiomaComDescricaoEmBranco() throws Exception {
 		
 		MvcResult mvcResult = this.mockMvc
-			.perform(MockMvcRequestBuilders.post("/idioma")
+			.perform(MockMvcRequestBuilders.post("/idiomas")
 			.contentType("application/json")
 	        .content(LeJSON.conteudo("/json/incorreto/idioma/idioma2.json")))
 			.andExpect(MockMvcResultMatchers.jsonPath("$[0].campo").value("descricao"))
@@ -152,7 +152,7 @@ public class IdiomaControllerTest {
 	public void deveDarErroAoCadastrarUmIdiomaComMuitosCaracteres() throws Exception {
 		
 		MvcResult mvcResult = this.mockMvc
-			.perform(MockMvcRequestBuilders.post("/idioma")
+			.perform(MockMvcRequestBuilders.post("/idiomas")
 			.contentType("application/json")
 	        .content(LeJSON.conteudo("/json/incorreto/idioma/idioma3.json")))
 			.andExpect(MockMvcResultMatchers.jsonPath("$[0].campo").value("descricao"))
@@ -169,7 +169,7 @@ public class IdiomaControllerTest {
 	public void deveRetornarUmIdioma() throws Exception {
 		
 		MvcResult mvcResult = this.mockMvc
-			.perform(MockMvcRequestBuilders.get("/idioma/1").contentType("application/json"))
+			.perform(MockMvcRequestBuilders.get("/idiomas/1").contentType("application/json"))
 			.andExpect(MockMvcResultMatchers.status().isOk())
 			.andExpect(MockMvcResultMatchers.jsonPath("$.descricao").value(this.descricao1))
 			.andReturn();
@@ -183,7 +183,7 @@ public class IdiomaControllerTest {
 	public void deveDarErroAoRetornarUmIdiomaComContentTypeErrado() throws Exception {
 		
 		MvcResult mvcResult = this.mockMvc
-			.perform(MockMvcRequestBuilders.get("/idioma/1"))
+			.perform(MockMvcRequestBuilders.get("/idiomas/1"))
 			.andExpect(MockMvcResultMatchers.status().isUnsupportedMediaType())
 			.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(415))
 			.andExpect(MockMvcResultMatchers.jsonPath("$.detalhe").value("Content-Type não suportado."))
@@ -198,7 +198,7 @@ public class IdiomaControllerTest {
 	public void deveRetornarErroAoTentarRetornarUmIdiomaInexistente() throws Exception {
 		
 		MvcResult mvcResult = this.mockMvc
-			.perform(MockMvcRequestBuilders.get("/idioma/10").contentType("application/json"))
+			.perform(MockMvcRequestBuilders.get("/idiomas/10").contentType("application/json"))
 			.andExpect(MockMvcResultMatchers.status().isNotFound())
 			.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(404))
 			.andExpect(MockMvcResultMatchers.jsonPath("$.detalhe").value("Idioma 10 não encontrado."))
@@ -213,7 +213,7 @@ public class IdiomaControllerTest {
 	public void deveRetornarListaDeIdiomas() throws Exception {
 		
 		MvcResult mvcResult = this.mockMvc
-			.perform(MockMvcRequestBuilders.get("/idioma").contentType("application/json"))
+			.perform(MockMvcRequestBuilders.get("/idiomas").contentType("application/json"))
 			.andExpect(MockMvcResultMatchers.status().isOk())
 			.andExpect(MockMvcResultMatchers.jsonPath("$[0].descricao").value(this.descricao2))
 			.andExpect(MockMvcResultMatchers.jsonPath("$[1].descricao").value(this.descricao3))
@@ -229,7 +229,7 @@ public class IdiomaControllerTest {
 	public void deveDarErroAoListarIdiomasComContentTypeErrado() throws Exception {
 		
 		MvcResult mvcResult = this.mockMvc
-			.perform(MockMvcRequestBuilders.get("/idioma"))
+			.perform(MockMvcRequestBuilders.get("/idiomas"))
 			.andExpect(MockMvcResultMatchers.status().isUnsupportedMediaType())
 			.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(415))
 			.andExpect(MockMvcResultMatchers.jsonPath("$.detalhe").value("Content-Type não suportado."))

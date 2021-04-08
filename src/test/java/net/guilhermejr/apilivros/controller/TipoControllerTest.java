@@ -36,7 +36,7 @@ public class TipoControllerTest {
 	public void deveRetornarUmTipo() throws Exception {
 		
 		MvcResult mvcResult = this.mockMvc
-			.perform(MockMvcRequestBuilders.get("/tipo/1").contentType("application/json"))
+			.perform(MockMvcRequestBuilders.get("/tipos/1").contentType("application/json"))
 			.andExpect(MockMvcResultMatchers.status().isOk())
 			.andExpect(MockMvcResultMatchers.jsonPath("$.descricao").value("Físico"))
 			.andReturn();
@@ -50,7 +50,7 @@ public class TipoControllerTest {
 	public void deveDarErroAoRetornarUmTipoComContentTypeErrado() throws Exception {
 		
 		MvcResult mvcResult = this.mockMvc
-			.perform(MockMvcRequestBuilders.get("/tipo/1"))
+			.perform(MockMvcRequestBuilders.get("/tipos/1"))
 			.andExpect(MockMvcResultMatchers.status().isUnsupportedMediaType())
 			.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(415))
 			.andExpect(MockMvcResultMatchers.jsonPath("$.detalhe").value("Content-Type não suportado."))
@@ -65,7 +65,7 @@ public class TipoControllerTest {
 	public void deveRetornarErroAoTentarRetornarUmTipoInexistente() throws Exception {
 		
 		MvcResult mvcResult = this.mockMvc
-			.perform(MockMvcRequestBuilders.get("/tipo/10").contentType("application/json"))
+			.perform(MockMvcRequestBuilders.get("/tipos/10").contentType("application/json"))
 			.andExpect(MockMvcResultMatchers.status().isNotFound())
 			.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(404))
 			.andExpect(MockMvcResultMatchers.jsonPath("$.detalhe").value("Tipo 10 não encontrado."))
@@ -80,7 +80,7 @@ public class TipoControllerTest {
 	public void deveRetornarListaDeTipos() throws Exception {
 		
 		MvcResult mvcResult = this.mockMvc
-			.perform(MockMvcRequestBuilders.get("/tipo").contentType("application/json"))
+			.perform(MockMvcRequestBuilders.get("/tipos").contentType("application/json"))
 			.andExpect(MockMvcResultMatchers.status().isOk())
 			.andExpect(MockMvcResultMatchers.jsonPath("$[0].descricao").value("E-book"))
 			.andExpect(MockMvcResultMatchers.jsonPath("$[1].descricao").value("Físico"))
@@ -96,7 +96,7 @@ public class TipoControllerTest {
 	public void deveDarErroAoListarTiposComContentTypeErrado() throws Exception {
 		
 		MvcResult mvcResult = this.mockMvc
-			.perform(MockMvcRequestBuilders.get("/tipo"))
+			.perform(MockMvcRequestBuilders.get("/tipos"))
 			.andExpect(MockMvcResultMatchers.status().isUnsupportedMediaType())
 			.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(415))
 			.andExpect(MockMvcResultMatchers.jsonPath("$.detalhe").value("Content-Type não suportado."))

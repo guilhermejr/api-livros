@@ -59,7 +59,7 @@ public class AutorControllerTest {
 	public void deveCadastrarUmAutor() throws Exception {
 		
 		MvcResult mvcResult = this.mockMvc
-			.perform(MockMvcRequestBuilders.post("/autor")
+			.perform(MockMvcRequestBuilders.post("/autores")
 			.contentType("application/json")
 	        .content(LeJSON.conteudo("/json/correto/autor/autor.json")))
 			//.andDo(MockMvcResultHandlers.print())
@@ -76,7 +76,7 @@ public class AutorControllerTest {
 	public void deveDarErroAoCadastrarUmAutorComContentTypeErrado() throws Exception {
 		
 		MvcResult mvcResult = this.mockMvc
-			.perform(MockMvcRequestBuilders.post("/autor")
+			.perform(MockMvcRequestBuilders.post("/autores")
 	        .content(LeJSON.conteudo("/json/correto/autor/autor.json")))
 			.andExpect(MockMvcResultMatchers.status().isUnsupportedMediaType())
 			.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(415))
@@ -92,7 +92,7 @@ public class AutorControllerTest {
 	public void deveDarErroAoCadastrarUmAutorQueJaExiste() throws Exception {
 		
 		MvcResult mvcResult = this.mockMvc
-			.perform(MockMvcRequestBuilders.post("/autor")
+			.perform(MockMvcRequestBuilders.post("/autores")
 			.contentType("application/json")
 	        .content(LeJSON.conteudo("/json/correto/autor/autor.json")))
 			.andExpect(MockMvcResultMatchers.jsonPath("$.descricao").value("Paulo Coelho"))
@@ -102,7 +102,7 @@ public class AutorControllerTest {
 		Assertions.assertEquals("application/json", mvcResult.getResponse().getContentType());
 		
 		mvcResult = this.mockMvc
-				.perform(MockMvcRequestBuilders.post("/autor")
+				.perform(MockMvcRequestBuilders.post("/autores")
 				.contentType("application/json")
 		        .content(LeJSON.conteudo("/json/correto/autor/autor.json")))
 				//.andDo(MockMvcResultHandlers.print())
@@ -120,7 +120,7 @@ public class AutorControllerTest {
 	public void deveDarErroAoCadastrarUmAutorSemDescricao() throws Exception {
 		
 		MvcResult mvcResult = this.mockMvc
-			.perform(MockMvcRequestBuilders.post("/autor")
+			.perform(MockMvcRequestBuilders.post("/autores")
 			.contentType("application/json")
 	        .content(LeJSON.conteudo("/json/incorreto/autor/autor1.json")))
 			.andExpect(MockMvcResultMatchers.jsonPath("$[0].campo").value("descricao"))
@@ -137,7 +137,7 @@ public class AutorControllerTest {
 	public void deveDarErroAoCadastrarUmAutorComDescricaoEmBranco() throws Exception {
 		
 		MvcResult mvcResult = this.mockMvc
-			.perform(MockMvcRequestBuilders.post("/autor")
+			.perform(MockMvcRequestBuilders.post("/autores")
 			.contentType("application/json")
 	        .content(LeJSON.conteudo("/json/incorreto/autor/autor2.json")))
 			.andExpect(MockMvcResultMatchers.jsonPath("$[0].campo").value("descricao"))
@@ -154,7 +154,7 @@ public class AutorControllerTest {
 	public void deveDarErroAoCadastrarUmAutorComMuitosCaracteres() throws Exception {
 		
 		MvcResult mvcResult = this.mockMvc
-			.perform(MockMvcRequestBuilders.post("/autor")
+			.perform(MockMvcRequestBuilders.post("/autores")
 			.contentType("application/json")
 	        .content(LeJSON.conteudo("/json/incorreto/autor/autor3.json")))
 			.andExpect(MockMvcResultMatchers.jsonPath("$[0].campo").value("descricao"))
@@ -171,7 +171,7 @@ public class AutorControllerTest {
 	public void deveRetornarUmAutor() throws Exception {
 		
 		MvcResult mvcResult = this.mockMvc
-			.perform(MockMvcRequestBuilders.get("/autor/1").contentType("application/json"))
+			.perform(MockMvcRequestBuilders.get("/autores/1").contentType("application/json"))
 			.andExpect(MockMvcResultMatchers.status().isOk())
 			.andExpect(MockMvcResultMatchers.jsonPath("$.descricao").value(this.descricao1))
 			.andReturn();
@@ -185,7 +185,7 @@ public class AutorControllerTest {
 	public void deveDarErroAoRetornarUmAutorComContentTypeErrado() throws Exception {
 		
 		MvcResult mvcResult = this.mockMvc
-			.perform(MockMvcRequestBuilders.get("/autor/1"))
+			.perform(MockMvcRequestBuilders.get("/autores/1"))
 			.andExpect(MockMvcResultMatchers.status().isUnsupportedMediaType())
 			.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(415))
 			.andExpect(MockMvcResultMatchers.jsonPath("$.detalhe").value("Content-Type não suportado."))
@@ -200,7 +200,7 @@ public class AutorControllerTest {
 	public void deveRetornarErroAoTentarRetornarUmAutorInexistente() throws Exception {
 		
 		MvcResult mvcResult = this.mockMvc
-			.perform(MockMvcRequestBuilders.get("/autor/10").contentType("application/json"))
+			.perform(MockMvcRequestBuilders.get("/autores/10").contentType("application/json"))
 			.andExpect(MockMvcResultMatchers.status().isNotFound())
 			.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(404))
 			.andExpect(MockMvcResultMatchers.jsonPath("$.detalhe").value("Autor 10 não encontrado."))
@@ -215,7 +215,7 @@ public class AutorControllerTest {
 	public void deveRetornarListaDeAutores() throws Exception {
 		
 		MvcResult mvcResult = this.mockMvc
-			.perform(MockMvcRequestBuilders.get("/autor").contentType("application/json"))
+			.perform(MockMvcRequestBuilders.get("/autores").contentType("application/json"))
 			.andExpect(MockMvcResultMatchers.status().isOk())
 			.andExpect(MockMvcResultMatchers.jsonPath("$[0].descricao").value(this.descricao3))
 			.andExpect(MockMvcResultMatchers.jsonPath("$[1].descricao").value(this.descricao1))
@@ -231,7 +231,7 @@ public class AutorControllerTest {
 	public void deveDarErroAoListarAutoresComContentTypeErrado() throws Exception {
 		
 		MvcResult mvcResult = this.mockMvc
-			.perform(MockMvcRequestBuilders.get("/autor"))
+			.perform(MockMvcRequestBuilders.get("/autores"))
 			.andExpect(MockMvcResultMatchers.status().isUnsupportedMediaType())
 			.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(415))
 			.andExpect(MockMvcResultMatchers.jsonPath("$.detalhe").value("Content-Type não suportado."))

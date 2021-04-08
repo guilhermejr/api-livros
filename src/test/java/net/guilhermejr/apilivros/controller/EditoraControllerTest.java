@@ -60,7 +60,7 @@ public class EditoraControllerTest {
 	public void deveCadastrarUmaEditora() throws Exception {
 		
 		MvcResult mvcResult = this.mockMvc
-			.perform(MockMvcRequestBuilders.post("/editora")
+			.perform(MockMvcRequestBuilders.post("/editoras")
 			.contentType("application/json")
 	        .content(LeJSON.conteudo("/json/correto/editora/editora.json")))
 			.andExpect(MockMvcResultMatchers.jsonPath("$.descricao").value("Darkside"))
@@ -76,7 +76,7 @@ public class EditoraControllerTest {
 	public void deveDarErroAoCadastrarUmaEditoraComContentTypeErrado() throws Exception {
 		
 		MvcResult mvcResult = this.mockMvc
-			.perform(MockMvcRequestBuilders.post("/editora")
+			.perform(MockMvcRequestBuilders.post("/editoras")
 	        .content(LeJSON.conteudo("/json/correto/editora/editora.json")))
 			.andExpect(MockMvcResultMatchers.status().isUnsupportedMediaType())
 			.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(415))
@@ -92,7 +92,7 @@ public class EditoraControllerTest {
 	public void deveDarErroAoCadastrarUmaEditoraQueJaExiste() throws Exception {
 		
 		MvcResult mvcResult = this.mockMvc
-			.perform(MockMvcRequestBuilders.post("/editora")
+			.perform(MockMvcRequestBuilders.post("/editoras")
 			.contentType("application/json")
 	        .content(LeJSON.conteudo("/json/correto/editora/editora.json")))
 			.andExpect(MockMvcResultMatchers.jsonPath("$.descricao").value("Darkside"))
@@ -102,7 +102,7 @@ public class EditoraControllerTest {
 		Assertions.assertEquals("application/json", mvcResult.getResponse().getContentType());
 		
 		mvcResult = this.mockMvc
-				.perform(MockMvcRequestBuilders.post("/editora")
+				.perform(MockMvcRequestBuilders.post("/editoras")
 				.contentType("application/json")
 		        .content(LeJSON.conteudo("/json/correto/editora/editora.json")))
 				.andExpect(MockMvcResultMatchers.jsonPath("$[0].campo").value("descricao"))
@@ -119,7 +119,7 @@ public class EditoraControllerTest {
 	public void deveDarErroAoCadastrarUmaEditoraSemDescricao() throws Exception {
 		
 		MvcResult mvcResult = this.mockMvc
-			.perform(MockMvcRequestBuilders.post("/editora")
+			.perform(MockMvcRequestBuilders.post("/editoras")
 			.contentType("application/json")
 	        .content(LeJSON.conteudo("/json/incorreto/editora/editora1.json")))
 			.andExpect(MockMvcResultMatchers.jsonPath("$[0].campo").value("descricao"))
@@ -136,7 +136,7 @@ public class EditoraControllerTest {
 	public void deveDarErroAoCadastrarUmaEditoraComDescricaoEmBranco() throws Exception {
 		
 		MvcResult mvcResult = this.mockMvc
-			.perform(MockMvcRequestBuilders.post("/editora")
+			.perform(MockMvcRequestBuilders.post("/editoras")
 			.contentType("application/json")
 	        .content(LeJSON.conteudo("/json/incorreto/editora/editora2.json")))
 			.andExpect(MockMvcResultMatchers.jsonPath("$[0].campo").value("descricao"))
@@ -153,7 +153,7 @@ public class EditoraControllerTest {
 	public void deveDarErroAoCadastrarUmaEditoraComMuitosCaracteres() throws Exception {
 		
 		MvcResult mvcResult = this.mockMvc
-			.perform(MockMvcRequestBuilders.post("/editora")
+			.perform(MockMvcRequestBuilders.post("/editoras")
 			.contentType("application/json")
 	        .content(LeJSON.conteudo("/json/incorreto/editora/editora3.json")))
 			.andExpect(MockMvcResultMatchers.jsonPath("$[0].campo").value("descricao"))
@@ -170,7 +170,7 @@ public class EditoraControllerTest {
 	public void deveRetornarUmaEditora() throws Exception {
 		
 		MvcResult mvcResult = this.mockMvc
-			.perform(MockMvcRequestBuilders.get("/editora/1").contentType("application/json"))
+			.perform(MockMvcRequestBuilders.get("/editoras/1").contentType("application/json"))
 			.andExpect(MockMvcResultMatchers.status().isOk())
 			.andExpect(MockMvcResultMatchers.jsonPath("$.descricao").value(this.descricao1))
 			.andReturn();
@@ -184,7 +184,7 @@ public class EditoraControllerTest {
 	public void deveDarErroAoRetornarUmaEditoraComContentTypeErrado() throws Exception {
 		
 		MvcResult mvcResult = this.mockMvc
-			.perform(MockMvcRequestBuilders.get("/editora/1"))
+			.perform(MockMvcRequestBuilders.get("/editoras/1"))
 			.andExpect(MockMvcResultMatchers.status().isUnsupportedMediaType())
 			.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(415))
 			.andExpect(MockMvcResultMatchers.jsonPath("$.detalhe").value("Content-Type não suportado."))
@@ -199,7 +199,7 @@ public class EditoraControllerTest {
 	public void deveRetornarErroAoTentarRetornarUmaEditoraInexistente() throws Exception {
 		
 		MvcResult mvcResult = this.mockMvc
-			.perform(MockMvcRequestBuilders.get("/editora/10").contentType("application/json"))
+			.perform(MockMvcRequestBuilders.get("/editoras/10").contentType("application/json"))
 			.andExpect(MockMvcResultMatchers.status().isNotFound())
 			.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(404))
 			.andExpect(MockMvcResultMatchers.jsonPath("$.detalhe").value("Editora 10 não encontrada."))
@@ -214,7 +214,7 @@ public class EditoraControllerTest {
 	public void deveRetornarListaDeEditoras() throws Exception {
 		
 		MvcResult mvcResult = this.mockMvc
-			.perform(MockMvcRequestBuilders.get("/editora").contentType("application/json"))
+			.perform(MockMvcRequestBuilders.get("/editoras").contentType("application/json"))
 			.andExpect(MockMvcResultMatchers.status().isOk())
 			.andExpect(MockMvcResultMatchers.jsonPath("$[0].descricao").value(this.descricao3))
 			.andExpect(MockMvcResultMatchers.jsonPath("$[1].descricao").value(this.descricao2))
@@ -230,7 +230,7 @@ public class EditoraControllerTest {
 	public void deveDarErroAoListarEditorasComContentTypeErrado() throws Exception {
 		
 		MvcResult mvcResult = this.mockMvc
-			.perform(MockMvcRequestBuilders.get("/editora"))
+			.perform(MockMvcRequestBuilders.get("/editoras"))
 			.andExpect(MockMvcResultMatchers.status().isUnsupportedMediaType())
 			.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(415))
 			.andExpect(MockMvcResultMatchers.jsonPath("$.detalhe").value("Content-Type não suportado."))

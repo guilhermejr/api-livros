@@ -24,7 +24,7 @@ import net.guilhermejr.apilivros.validacao.ErroPadraoDTO;
 
 @Tag(name = "Estante", description = "Controller de estante")
 @RestController
-@RequestMapping(path = "/estante", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "/estantes", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 public class EstanteController {
 	
 	@Autowired
