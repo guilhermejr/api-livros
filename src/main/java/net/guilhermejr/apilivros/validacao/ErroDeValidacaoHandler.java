@@ -19,9 +19,11 @@ import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import lombok.extern.slf4j.Slf4j;
 import net.guilhermejr.apilivros.exception.ExceptionNotFound;
 import net.guilhermejr.apilivros.exception.ExceptionPadrao;
 
+@Slf4j
 @RestControllerAdvice
 public class ErroDeValidacaoHandler {
 	
@@ -33,6 +35,7 @@ public class ErroDeValidacaoHandler {
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public ErroPadraoDTO handleErrroPadrao(ExceptionPadrao ex, WebRequest request) {
 		
+		log.error(ex.getMessage(), ex);
 		return new ErroPadraoDTO(HttpStatus.BAD_REQUEST.value(), ex.getMessage());
 
 	}
@@ -42,6 +45,7 @@ public class ErroDeValidacaoHandler {
 	@ResponseStatus(HttpStatus.NOT_FOUND)
 	public ErroPadraoDTO handleErrroNotFound(ExceptionNotFound ex, WebRequest request) {
 		
+		log.error(ex.getMessage(), ex);
 		return new ErroPadraoDTO(HttpStatus.NOT_FOUND.value(), ex.getMessage());
 
 	}
@@ -51,6 +55,7 @@ public class ErroDeValidacaoHandler {
 	@ResponseStatus(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
 	public ErroPadraoDTO handleErrroNotFound(HttpMediaTypeNotSupportedException ex, WebRequest request) {
 		
+		log.error(ex.getMessage(), ex);
 		return new ErroPadraoDTO(HttpStatus.UNSUPPORTED_MEDIA_TYPE.value(), "Content-Type não suportado.");
 
 	}

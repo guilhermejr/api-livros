@@ -24,6 +24,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.extern.slf4j.Slf4j;
 import net.guilhermejr.apilivros.model.dto.EditoraDTO;
 import net.guilhermejr.apilivros.model.form.EditoraForm;
 import net.guilhermejr.apilivros.service.EditoraService;
@@ -32,6 +33,7 @@ import net.guilhermejr.apilivros.validacao.ErroPadraoDTO;
 
 @Tag(name = "Editora", description = "Controller de editora")
 @RestController
+@Slf4j
 @RequestMapping(path = "/editora", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 public class EditoraController {
 	
@@ -63,6 +65,9 @@ public class EditoraController {
 	@PostMapping()
 	public ResponseEntity<EditoraDTO> cadastrar(@Valid @RequestBody EditoraForm editoraForm, UriComponentsBuilder uriBuilder) {
 		EditoraDTO ediotraDTO = this.editoraService.cadastrar(editoraForm);
+		
+		log.info("Editora: "+ ediotraDTO.getDescricao() +" cadastrada com sucesso.");
+		
 		URI uri = uriBuilder.path("/editora/{id}").buildAndExpand(ediotraDTO.getId()).toUri();
 		return ResponseEntity.created(uri).body(ediotraDTO);	
 	}

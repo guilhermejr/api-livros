@@ -24,6 +24,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.extern.slf4j.Slf4j;
 import net.guilhermejr.apilivros.model.dto.IdiomaDTO;
 import net.guilhermejr.apilivros.model.form.IdiomaForm;
 import net.guilhermejr.apilivros.service.IdiomaService;
@@ -32,6 +33,7 @@ import net.guilhermejr.apilivros.validacao.ErroPadraoDTO;
 
 @Tag(name = "Idioma", description = "Controller de idioma")
 @RestController
+@Slf4j
 @RequestMapping(path = "/idioma", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 public class IdiomaController {
 
@@ -63,6 +65,9 @@ public class IdiomaController {
 	@PostMapping()
 	public ResponseEntity<IdiomaDTO> cadastrar(@Valid @RequestBody IdiomaForm idiomaForm, UriComponentsBuilder uriBuilder) {
 		IdiomaDTO idiomaDTO = this.idiomaService.cadastrar(idiomaForm);
+		
+		log.info("Idioma: "+ idiomaDTO.getDescricao() +" cadastrado com sucesso.");
+		
 		URI uri = uriBuilder.path("/idioma/{id}").buildAndExpand(idiomaDTO.getId()).toUri();
 		return ResponseEntity.created(uri).body(idiomaDTO);	
 	}

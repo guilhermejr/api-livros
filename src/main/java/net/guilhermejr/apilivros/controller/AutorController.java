@@ -24,6 +24,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.extern.slf4j.Slf4j;
 import net.guilhermejr.apilivros.model.dto.AutorDTO;
 import net.guilhermejr.apilivros.model.form.AutorForm;
 import net.guilhermejr.apilivros.service.AutorService;
@@ -32,6 +33,7 @@ import net.guilhermejr.apilivros.validacao.ErroPadraoDTO;
 
 @Tag(name = "Autor", description = "Controller de autor")
 @RestController
+@Slf4j
 @RequestMapping(path = "/autor", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 public class AutorController {
 
@@ -63,6 +65,9 @@ public class AutorController {
 	@PostMapping()
 	public ResponseEntity<AutorDTO> cadastrar(@Valid @RequestBody AutorForm autorForm, UriComponentsBuilder uriBuilder) {
 		AutorDTO autorDTO = this.autorService.cadastrar(autorForm);
+		
+		log.info("Autor: "+ autorDTO.getDescricao() +" cadastrado com sucesso.");
+		
 		URI uri = uriBuilder.path("/autor/{id}").buildAndExpand(autorDTO.getId()).toUri();
 		return ResponseEntity.created(uri).body(autorDTO);	
 	}

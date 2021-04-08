@@ -24,6 +24,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.extern.slf4j.Slf4j;
 import net.guilhermejr.apilivros.model.dto.GeneroDTO;
 import net.guilhermejr.apilivros.model.form.GeneroForm;
 import net.guilhermejr.apilivros.service.GeneroService;
@@ -32,6 +33,7 @@ import net.guilhermejr.apilivros.validacao.ErroPadraoDTO;
 
 @Tag(name = "Gênero", description = "Controller de gênero")
 @RestController
+@Slf4j
 @RequestMapping(path = "/genero", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 public class GeneroController {
 
@@ -63,6 +65,9 @@ public class GeneroController {
 	@PostMapping()
 	public ResponseEntity<GeneroDTO> cadastrar(@Valid @RequestBody GeneroForm generoForm, UriComponentsBuilder uriBuilder) {
 		GeneroDTO generoDTO = this.generoService.cadastrar(generoForm);
+		
+		log.info("Gênero: "+ generoDTO.getDescricao() +" cadastrado com sucesso.");
+		
 		URI uri = uriBuilder.path("/genero/{id}").buildAndExpand(generoDTO.getId()).toUri();
 		return ResponseEntity.created(uri).body(generoDTO);	
 	}

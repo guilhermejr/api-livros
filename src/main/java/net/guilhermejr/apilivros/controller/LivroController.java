@@ -32,6 +32,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.extern.slf4j.Slf4j;
 import net.guilhermejr.apilivros.model.dto.LivroDTO;
 import net.guilhermejr.apilivros.model.dto.LivrosDTO;
 import net.guilhermejr.apilivros.model.form.LivroForm;
@@ -41,6 +42,7 @@ import net.guilhermejr.apilivros.validacao.ErroPadraoDTO;
 
 @Tag(name = "Livro", description = "Controller de livro")
 @RestController
+@Slf4j
 @RequestMapping(path = "/livro", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 public class LivroController {
 
@@ -97,6 +99,8 @@ public class LivroController {
 	public ResponseEntity<LivroDTO> cadastrar(@RequestBody @Valid LivroForm livroForm, UriComponentsBuilder uriBuilder) {
 
 		LivroDTO livroDTO = this.livroService.cadastrar(livroForm);
+		
+		log.info("Livro: "+ livroDTO.getTitulo() +" cadastrado com sucesso.");
 
 		URI uri = uriBuilder.path("/livro/{id}").buildAndExpand(livroDTO.getId()).toUri();
 		return ResponseEntity.created(uri).body(livroDTO);
@@ -111,6 +115,7 @@ public class LivroController {
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void mudaEstante(@Parameter(description = "ID do livro", example = "1") @PathVariable Long idLivro, @Parameter(description = "ID da estante", example = "1")  @PathVariable Long idEstante) {
 		this.livroService.mudaEstante(idLivro, idEstante);
+		log.info("Livro "+ idLivro +" mudado para estante "+ idEstante);
 	}
 	
 	@Operation(summary = "Ativar um livro")
@@ -122,6 +127,7 @@ public class LivroController {
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void ativar(@Parameter(description = "ID do livro", example = "1") @PathVariable Long id) {
 		this.livroService.ativar(id);
+		log.info("Livro "+ id +" ativado");
 	}
 	
 	@Operation(summary = "Desativar um livro")
@@ -133,6 +139,8 @@ public class LivroController {
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void desativar(@Parameter(description = "ID do livro", example = "1") @PathVariable Long id) {
 		this.livroService.desativar(id);
+
+		log.info("Livro "+ id +" desativado");
 	}
 
 }

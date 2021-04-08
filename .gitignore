@@ -24,3 +24,6 @@ capas/
 
 ### DOCKER ###
 docker/data
+
+### LOG ###
+/logs.log
