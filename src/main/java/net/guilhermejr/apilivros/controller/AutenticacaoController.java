@@ -14,14 +14,20 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import net.guilhermejr.apilivros.exception.ExceptionPadrao;
 import net.guilhermejr.apilivros.model.dto.TokenDTO;
 import net.guilhermejr.apilivros.model.form.LoginForm;
 import net.guilhermejr.apilivros.service.TokenService;
+import net.guilhermejr.apilivros.validacao.ErroDeFormularioDTO;
 
-@Tag(name = "Autenticacao", description = "Controller de autenticacao")
+@Tag(name = "Autenticacao", description = "Controller de autenticação")
 @RestController
 @Slf4j
 @RequestMapping(path = "/auth", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -33,6 +39,11 @@ public class AutenticacaoController {
 	@Autowired
 	private TokenService tokenService;
 	
+	@Operation(summary = "Efetua login gerando token JWT")
+	@ApiResponses({
+		@ApiResponse(responseCode = "200", description = "Usuário logado e token gerado"),
+		@ApiResponse(responseCode = "400", description = "Erro ao tentar logar", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErroDeFormularioDTO.class)))
+	})
 	@PostMapping
 	public ResponseEntity<TokenDTO> autenticar(@RequestBody @Valid LoginForm loginForm) {
 

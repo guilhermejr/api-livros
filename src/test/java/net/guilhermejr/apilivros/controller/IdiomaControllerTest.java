@@ -20,6 +20,7 @@ import net.guilhermejr.apilivros.model.entity.Idioma;
 import net.guilhermejr.apilivros.model.repository.IdiomaRepository;
 import net.guilhermejr.apilivros.utils.LeJSON;
 import net.guilhermejr.apilivros.utils.LimpaBancoDeDados;
+import net.guilhermejr.apilivros.utils.Token;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -33,11 +34,16 @@ public class IdiomaControllerTest {
 	private LimpaBancoDeDados limpaBancoDeDados;
 
 	@Autowired
+	private Token token;
+	
+	@Autowired
 	private MockMvc mockMvc;
 
 	private String descricao1 = "Português";
 	private String descricao2 = "Árabe";
 	private String descricao3 = "Japonês";
+	
+	private String bearerToken;
 
 	@BeforeEach
 	private void initEach() {
@@ -47,11 +53,25 @@ public class IdiomaControllerTest {
 		Idioma idiomaCadastro3 = Idioma.builder().descricao(this.descricao3).build();
 		this.idiomaRepository.saveAll(Arrays.asList(idiomaCadastro1, idiomaCadastro2, idiomaCadastro3));
 		
+		this.bearerToken = "Bearer "+ this.token.gerar();
+		
 	}
 	
 	@AfterEach
 	public void cleanUpEach() {
 		this.limpaBancoDeDados.apagaTabelas();
+	}
+	
+	@Test
+	@DisplayName("Deve dar erro ao cadastrar um idioma sem token")
+	public void deveDarErroAoCadastrarUmIdiomaSemToken() throws Exception {
+		
+		this.mockMvc
+			.perform(MockMvcRequestBuilders.post("/idiomas")
+			.contentType("application/json")
+	        .content(LeJSON.conteudo("/json/correto/idioma/idioma.json")))
+			.andExpect(MockMvcResultMatchers.status().isForbidden());
+		
 	}
 	
 	@Test
@@ -61,7 +81,8 @@ public class IdiomaControllerTest {
 		MvcResult mvcResult = this.mockMvc
 			.perform(MockMvcRequestBuilders.post("/idiomas")
 			.contentType("application/json")
-	        .content(LeJSON.conteudo("/json/correto/idioma/idioma.json")))
+	        .content(LeJSON.conteudo("/json/correto/idioma/idioma.json"))
+	        .header("Authorization", this.bearerToken))
 			.andExpect(MockMvcResultMatchers.jsonPath("$.descricao").value("Alemão"))
 			.andExpect(MockMvcResultMatchers.status().isCreated())
 			.andReturn();
@@ -76,7 +97,8 @@ public class IdiomaControllerTest {
 		
 		MvcResult mvcResult = this.mockMvc
 			.perform(MockMvcRequestBuilders.post("/idiomas")
-	        .content(LeJSON.conteudo("/json/correto/idioma/idioma.json")))
+	        .content(LeJSON.conteudo("/json/correto/idioma/idioma.json"))
+	        .header("Authorization", this.bearerToken))
 			.andExpect(MockMvcResultMatchers.status().isUnsupportedMediaType())
 			.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(415))
 			.andExpect(MockMvcResultMatchers.jsonPath("$.detalhe").value("Content-Type não suportado."))
@@ -93,7 +115,8 @@ public class IdiomaControllerTest {
 		MvcResult mvcResult = this.mockMvc
 			.perform(MockMvcRequestBuilders.post("/idiomas")
 			.contentType("application/json")
-	        .content(LeJSON.conteudo("/json/correto/idioma/idioma.json")))
+	        .content(LeJSON.conteudo("/json/correto/idioma/idioma.json"))
+	        .header("Authorization", this.bearerToken))
 			.andExpect(MockMvcResultMatchers.jsonPath("$.descricao").value("Alemão"))
 			.andExpect(MockMvcResultMatchers.status().isCreated())
 			.andReturn();
@@ -103,7 +126,8 @@ public class IdiomaControllerTest {
 		mvcResult = this.mockMvc
 				.perform(MockMvcRequestBuilders.post("/idiomas")
 				.contentType("application/json")
-		        .content(LeJSON.conteudo("/json/correto/idioma/idioma.json")))
+		        .content(LeJSON.conteudo("/json/correto/idioma/idioma.json"))
+		        .header("Authorization", this.bearerToken))
 				.andExpect(MockMvcResultMatchers.jsonPath("$[0].campo").value("descricao"))
 				.andExpect(MockMvcResultMatchers.jsonPath("$[0].mensagem").value("Idioma já está cadastrado."))
 				.andExpect(MockMvcResultMatchers.status().isBadRequest())
@@ -120,7 +144,8 @@ public class IdiomaControllerTest {
 		MvcResult mvcResult = this.mockMvc
 			.perform(MockMvcRequestBuilders.post("/idiomas")
 			.contentType("application/json")
-	        .content(LeJSON.conteudo("/json/incorreto/idioma/idioma1.json")))
+	        .content(LeJSON.conteudo("/json/incorreto/idioma/idioma1.json"))
+	        .header("Authorization", this.bearerToken))
 			.andExpect(MockMvcResultMatchers.jsonPath("$[0].campo").value("descricao"))
 			.andExpect(MockMvcResultMatchers.jsonPath("$[0].mensagem").value("Idioma deve ser preenchido."))
 			.andExpect(MockMvcResultMatchers.status().isBadRequest())
@@ -137,7 +162,8 @@ public class IdiomaControllerTest {
 		MvcResult mvcResult = this.mockMvc
 			.perform(MockMvcRequestBuilders.post("/idiomas")
 			.contentType("application/json")
-	        .content(LeJSON.conteudo("/json/incorreto/idioma/idioma2.json")))
+	        .content(LeJSON.conteudo("/json/incorreto/idioma/idioma2.json"))
+	        .header("Authorization", this.bearerToken))
 			.andExpect(MockMvcResultMatchers.jsonPath("$[0].campo").value("descricao"))
 			.andExpect(MockMvcResultMatchers.jsonPath("$[0].mensagem").value("Idioma deve ser preenchido."))
 			.andExpect(MockMvcResultMatchers.status().isBadRequest())
@@ -154,7 +180,8 @@ public class IdiomaControllerTest {
 		MvcResult mvcResult = this.mockMvc
 			.perform(MockMvcRequestBuilders.post("/idiomas")
 			.contentType("application/json")
-	        .content(LeJSON.conteudo("/json/incorreto/idioma/idioma3.json")))
+	        .content(LeJSON.conteudo("/json/incorreto/idioma/idioma3.json"))
+	        .header("Authorization", this.bearerToken))
 			.andExpect(MockMvcResultMatchers.jsonPath("$[0].campo").value("descricao"))
 			.andExpect(MockMvcResultMatchers.jsonPath("$[0].mensagem").value("Idioma deve ter no máximo 255 caracteres."))
 			.andExpect(MockMvcResultMatchers.status().isBadRequest())

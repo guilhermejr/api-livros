@@ -20,6 +20,7 @@ import net.guilhermejr.apilivros.model.entity.Editora;
 import net.guilhermejr.apilivros.model.repository.EditoraRepository;
 import net.guilhermejr.apilivros.utils.LeJSON;
 import net.guilhermejr.apilivros.utils.LimpaBancoDeDados;
+import net.guilhermejr.apilivros.utils.Token;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -33,12 +34,16 @@ public class EditoraControllerTest {
 	private LimpaBancoDeDados limpaBancoDeDados;
 
 	@Autowired
+	private Token token;
+	
+	@Autowired
 	private MockMvc mockMvc;
-
 
 	private String descricao1 = "Rocco";
 	private String descricao2 = "Harper Collins";
 	private String descricao3 = "Abril";
+	
+	private String bearerToken;
 
 	@BeforeEach
 	private void initEach() {
@@ -48,11 +53,25 @@ public class EditoraControllerTest {
 		Editora editoraCadastro3 = Editora.builder().descricao(this.descricao3).build();
 		this.editoraRepository.saveAll(Arrays.asList(editoraCadastro1, editoraCadastro2, editoraCadastro3));
 		
+		this.bearerToken = "Bearer "+ this.token.gerar();
+		
 	}
 	
 	@AfterEach
 	public void cleanUpEach() {
 		this.limpaBancoDeDados.apagaTabelas();
+	}
+
+	@Test
+	@DisplayName("Deve dar erro ao cadastrar uma editora sem token")
+	public void deveDarErroAoCadastrarUmaEditoraSemToken() throws Exception {
+		
+		this.mockMvc
+			.perform(MockMvcRequestBuilders.post("/editoras")
+			.contentType("application/json")
+	        .content(LeJSON.conteudo("/json/correto/editora/editora.json")))
+			.andExpect(MockMvcResultMatchers.status().isForbidden());
+		
 	}
 	
 	@Test
@@ -62,7 +81,8 @@ public class EditoraControllerTest {
 		MvcResult mvcResult = this.mockMvc
 			.perform(MockMvcRequestBuilders.post("/editoras")
 			.contentType("application/json")
-	        .content(LeJSON.conteudo("/json/correto/editora/editora.json")))
+	        .content(LeJSON.conteudo("/json/correto/editora/editora.json"))
+	        .header("Authorization", this.bearerToken))
 			.andExpect(MockMvcResultMatchers.jsonPath("$.descricao").value("Darkside"))
 			.andExpect(MockMvcResultMatchers.status().isCreated())
 			.andReturn();
@@ -77,7 +97,8 @@ public class EditoraControllerTest {
 		
 		MvcResult mvcResult = this.mockMvc
 			.perform(MockMvcRequestBuilders.post("/editoras")
-	        .content(LeJSON.conteudo("/json/correto/editora/editora.json")))
+	        .content(LeJSON.conteudo("/json/correto/editora/editora.json"))
+	        .header("Authorization", this.bearerToken))
 			.andExpect(MockMvcResultMatchers.status().isUnsupportedMediaType())
 			.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(415))
 			.andExpect(MockMvcResultMatchers.jsonPath("$.detalhe").value("Content-Type não suportado."))
@@ -94,7 +115,8 @@ public class EditoraControllerTest {
 		MvcResult mvcResult = this.mockMvc
 			.perform(MockMvcRequestBuilders.post("/editoras")
 			.contentType("application/json")
-	        .content(LeJSON.conteudo("/json/correto/editora/editora.json")))
+	        .content(LeJSON.conteudo("/json/correto/editora/editora.json"))
+	        .header("Authorization", this.bearerToken))
 			.andExpect(MockMvcResultMatchers.jsonPath("$.descricao").value("Darkside"))
 			.andExpect(MockMvcResultMatchers.status().isCreated())
 			.andReturn();
@@ -104,7 +126,8 @@ public class EditoraControllerTest {
 		mvcResult = this.mockMvc
 				.perform(MockMvcRequestBuilders.post("/editoras")
 				.contentType("application/json")
-		        .content(LeJSON.conteudo("/json/correto/editora/editora.json")))
+		        .content(LeJSON.conteudo("/json/correto/editora/editora.json"))
+		        .header("Authorization", this.bearerToken))
 				.andExpect(MockMvcResultMatchers.jsonPath("$[0].campo").value("descricao"))
 				.andExpect(MockMvcResultMatchers.jsonPath("$[0].mensagem").value("Editora já está cadastrada."))
 				.andExpect(MockMvcResultMatchers.status().isBadRequest())
@@ -121,7 +144,8 @@ public class EditoraControllerTest {
 		MvcResult mvcResult = this.mockMvc
 			.perform(MockMvcRequestBuilders.post("/editoras")
 			.contentType("application/json")
-	        .content(LeJSON.conteudo("/json/incorreto/editora/editora1.json")))
+	        .content(LeJSON.conteudo("/json/incorreto/editora/editora1.json"))
+	        .header("Authorization", this.bearerToken))
 			.andExpect(MockMvcResultMatchers.jsonPath("$[0].campo").value("descricao"))
 			.andExpect(MockMvcResultMatchers.jsonPath("$[0].mensagem").value("Editora deve ser preenchido."))
 			.andExpect(MockMvcResultMatchers.status().isBadRequest())
@@ -138,7 +162,8 @@ public class EditoraControllerTest {
 		MvcResult mvcResult = this.mockMvc
 			.perform(MockMvcRequestBuilders.post("/editoras")
 			.contentType("application/json")
-	        .content(LeJSON.conteudo("/json/incorreto/editora/editora2.json")))
+	        .content(LeJSON.conteudo("/json/incorreto/editora/editora2.json"))
+	        .header("Authorization", this.bearerToken))
 			.andExpect(MockMvcResultMatchers.jsonPath("$[0].campo").value("descricao"))
 			.andExpect(MockMvcResultMatchers.jsonPath("$[0].mensagem").value("Editora deve ser preenchido."))
 			.andExpect(MockMvcResultMatchers.status().isBadRequest())
@@ -155,7 +180,8 @@ public class EditoraControllerTest {
 		MvcResult mvcResult = this.mockMvc
 			.perform(MockMvcRequestBuilders.post("/editoras")
 			.contentType("application/json")
-	        .content(LeJSON.conteudo("/json/incorreto/editora/editora3.json")))
+	        .content(LeJSON.conteudo("/json/incorreto/editora/editora3.json"))
+	        .header("Authorization", this.bearerToken))
 			.andExpect(MockMvcResultMatchers.jsonPath("$[0].campo").value("descricao"))
 			.andExpect(MockMvcResultMatchers.jsonPath("$[0].mensagem").value("Editora deve ter no máximo 255 caracteres."))
 			.andExpect(MockMvcResultMatchers.status().isBadRequest())

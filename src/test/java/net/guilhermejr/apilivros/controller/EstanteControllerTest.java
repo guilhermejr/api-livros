@@ -76,8 +76,8 @@ public class EstanteControllerTest {
 	}
 
 	@Test
-	@DisplayName("Deve retornar lista de autores")
-	public void deveRetornarListaDeAutores() throws Exception {
+	@DisplayName("Deve retornar lista de estantes")
+	public void deveRetornarListaDeEstantes() throws Exception {
 		
 		MvcResult mvcResult = this.mockMvc
 			.perform(MockMvcRequestBuilders.get("/estantes").contentType("application/json"))

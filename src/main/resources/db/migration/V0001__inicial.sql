@@ -148,6 +148,6 @@
 	insert into tipos (descricao, criado) VALUES ('E-book', NOW());
 	insert into tipos (descricao, criado) VALUES ('PDF', NOW());
 	
-	insert into usuarios (nome, email, senha, ativo, criado, atualizado, ultimo_acesso) VALUES ('Guilherme Jr.', 'falecom@guilhermejr.net', '123456', b'1', NOW(), NOW(), NULL);
+	insert into usuarios (nome, email, senha, ativo, criado, atualizado, ultimo_acesso) VALUES ('Guilherme Jr.', 'falecom@guilhermejr.net', '$2a$10$jQ3ou24O8YwHiocsoA3hyeypRvls52xCWoH1Lesj7TmK0Th41MPOK', b'1', NOW(), NOW(), NULL);
 	
 	insert into usuarios_perfis (usuario_id, perfis_id) VALUES (1, 1);

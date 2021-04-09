@@ -20,6 +20,7 @@ import net.guilhermejr.apilivros.model.entity.Autor;
 import net.guilhermejr.apilivros.model.repository.AutorRepository;
 import net.guilhermejr.apilivros.utils.LeJSON;
 import net.guilhermejr.apilivros.utils.LimpaBancoDeDados;
+import net.guilhermejr.apilivros.utils.Token;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -31,6 +32,9 @@ public class AutorControllerTest {
 	
 	@Autowired
 	private LimpaBancoDeDados limpaBancoDeDados;
+	
+	@Autowired
+	private Token token;
 
 	@Autowired
 	private MockMvc mockMvc;
@@ -38,6 +42,8 @@ public class AutorControllerTest {
 	private String descricao1 = "Camila Oliveira";
 	private String descricao2 = "Guilherme Oliveira";
 	private String descricao3 = "Amanda Alves";
+	
+	private String bearerToken;
 
 	@BeforeEach
 	private void initEach() {
@@ -47,11 +53,26 @@ public class AutorControllerTest {
 		Autor autorCadastro3 = Autor.builder().descricao(this.descricao3).build();
 		this.autorRepository.saveAll(Arrays.asList(autorCadastro1, autorCadastro2, autorCadastro3));
 		
+		this.bearerToken = "Bearer "+ this.token.gerar();
+		
 	}
 	
 	@AfterEach
 	public void cleanUpEach() {
 		this.limpaBancoDeDados.apagaTabelas();
+	}
+	
+	@Test
+	@DisplayName("Deve dar erro ao cadastrar um autor sem token")
+	public void deveDarErroAoCadastrarUmAutorSemToken() throws Exception {
+		
+		this.mockMvc
+			.perform(MockMvcRequestBuilders.post("/autores")
+			.contentType("application/json")
+	        .content(LeJSON.conteudo("/json/correto/autor/autor.json")))
+			//.andDo(MockMvcResultHandlers.print())
+			.andExpect(MockMvcResultMatchers.status().isForbidden());
+		
 	}
 	
 	@Test
@@ -61,8 +82,8 @@ public class AutorControllerTest {
 		MvcResult mvcResult = this.mockMvc
 			.perform(MockMvcRequestBuilders.post("/autores")
 			.contentType("application/json")
+			.header("Authorization", this.bearerToken)
 	        .content(LeJSON.conteudo("/json/correto/autor/autor.json")))
-			//.andDo(MockMvcResultHandlers.print())
 			.andExpect(MockMvcResultMatchers.jsonPath("$.descricao").value("Paulo Coelho"))
 			.andExpect(MockMvcResultMatchers.status().isCreated())
 			.andReturn();
@@ -77,7 +98,8 @@ public class AutorControllerTest {
 		
 		MvcResult mvcResult = this.mockMvc
 			.perform(MockMvcRequestBuilders.post("/autores")
-	        .content(LeJSON.conteudo("/json/correto/autor/autor.json")))
+	        .content(LeJSON.conteudo("/json/correto/autor/autor.json"))
+	        .header("Authorization", this.bearerToken))
 			.andExpect(MockMvcResultMatchers.status().isUnsupportedMediaType())
 			.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(415))
 			.andExpect(MockMvcResultMatchers.jsonPath("$.detalhe").value("Content-Type não suportado."))
@@ -94,7 +116,8 @@ public class AutorControllerTest {
 		MvcResult mvcResult = this.mockMvc
 			.perform(MockMvcRequestBuilders.post("/autores")
 			.contentType("application/json")
-	        .content(LeJSON.conteudo("/json/correto/autor/autor.json")))
+	        .content(LeJSON.conteudo("/json/correto/autor/autor.json"))
+	        .header("Authorization", this.bearerToken))
 			.andExpect(MockMvcResultMatchers.jsonPath("$.descricao").value("Paulo Coelho"))
 			.andExpect(MockMvcResultMatchers.status().isCreated())
 			.andReturn();
@@ -104,7 +127,8 @@ public class AutorControllerTest {
 		mvcResult = this.mockMvc
 				.perform(MockMvcRequestBuilders.post("/autores")
 				.contentType("application/json")
-		        .content(LeJSON.conteudo("/json/correto/autor/autor.json")))
+		        .content(LeJSON.conteudo("/json/correto/autor/autor.json"))
+		        .header("Authorization", this.bearerToken))
 				//.andDo(MockMvcResultHandlers.print())
 				.andExpect(MockMvcResultMatchers.jsonPath("$[0].campo").value("descricao"))
 				.andExpect(MockMvcResultMatchers.jsonPath("$[0].mensagem").value("Autor já está cadastrado."))
@@ -122,7 +146,8 @@ public class AutorControllerTest {
 		MvcResult mvcResult = this.mockMvc
 			.perform(MockMvcRequestBuilders.post("/autores")
 			.contentType("application/json")
-	        .content(LeJSON.conteudo("/json/incorreto/autor/autor1.json")))
+	        .content(LeJSON.conteudo("/json/incorreto/autor/autor1.json"))
+	        .header("Authorization", this.bearerToken))
 			.andExpect(MockMvcResultMatchers.jsonPath("$[0].campo").value("descricao"))
 			.andExpect(MockMvcResultMatchers.jsonPath("$[0].mensagem").value("Autor deve ser preenchido."))
 			.andExpect(MockMvcResultMatchers.status().isBadRequest())
@@ -139,7 +164,8 @@ public class AutorControllerTest {
 		MvcResult mvcResult = this.mockMvc
 			.perform(MockMvcRequestBuilders.post("/autores")
 			.contentType("application/json")
-	        .content(LeJSON.conteudo("/json/incorreto/autor/autor2.json")))
+	        .content(LeJSON.conteudo("/json/incorreto/autor/autor2.json"))
+	        .header("Authorization", this.bearerToken))
 			.andExpect(MockMvcResultMatchers.jsonPath("$[0].campo").value("descricao"))
 			.andExpect(MockMvcResultMatchers.jsonPath("$[0].mensagem").value("Autor deve ser preenchido."))
 			.andExpect(MockMvcResultMatchers.status().isBadRequest())
@@ -156,7 +182,8 @@ public class AutorControllerTest {
 		MvcResult mvcResult = this.mockMvc
 			.perform(MockMvcRequestBuilders.post("/autores")
 			.contentType("application/json")
-	        .content(LeJSON.conteudo("/json/incorreto/autor/autor3.json")))
+	        .content(LeJSON.conteudo("/json/incorreto/autor/autor3.json"))
+	        .header("Authorization", this.bearerToken))
 			.andExpect(MockMvcResultMatchers.jsonPath("$[0].campo").value("descricao"))
 			.andExpect(MockMvcResultMatchers.jsonPath("$[0].mensagem").value("Autor deve ter no máximo 255 caracteres."))
 			.andExpect(MockMvcResultMatchers.status().isBadRequest())

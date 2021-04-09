@@ -20,6 +20,7 @@ import net.guilhermejr.apilivros.model.entity.Genero;
 import net.guilhermejr.apilivros.model.repository.GeneroRepository;
 import net.guilhermejr.apilivros.utils.LeJSON;
 import net.guilhermejr.apilivros.utils.LimpaBancoDeDados;
+import net.guilhermejr.apilivros.utils.Token;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -33,11 +34,16 @@ public class GeneroControllerTest {
 	private LimpaBancoDeDados limpaBancoDeDados;
 
 	@Autowired
+	private Token token;
+	
+	@Autowired
 	private MockMvc mockMvc;
 
 	private String descricao1 = "Comédia";
 	private String descricao2 = "Terror";
 	private String descricao3 = "Fantasia";
+	
+	private String bearerToken;
 
 	@BeforeEach
 	private void initEach() {
@@ -47,11 +53,25 @@ public class GeneroControllerTest {
 		Genero generoCadastro3 = Genero.builder().descricao(this.descricao3).build();
 		this.generoRepository.saveAll(Arrays.asList(generoCadastro1, generoCadastro2, generoCadastro3));
 		
+		this.bearerToken = "Bearer "+ this.token.gerar();
+		
 	}
 	
 	@AfterEach
 	public void cleanUpEach() {
 		this.limpaBancoDeDados.apagaTabelas();
+	}
+	
+	@Test
+	@DisplayName("Deve dar erro ao cadastrar um gênero sem token")
+	public void deveDarErroAoCadastrarUmGeneroSemToken() throws Exception {
+		
+		this.mockMvc
+			.perform(MockMvcRequestBuilders.post("/generos")
+			.contentType("application/json")
+	        .content(LeJSON.conteudo("/json/correto/genero/genero.json")))
+			.andExpect(MockMvcResultMatchers.status().isForbidden());
+		
 	}
 	
 	@Test
@@ -61,8 +81,8 @@ public class GeneroControllerTest {
 		MvcResult mvcResult = this.mockMvc
 			.perform(MockMvcRequestBuilders.post("/generos")
 			.contentType("application/json")
-	        .content(LeJSON.conteudo("/json/correto/genero/genero.json")))
-			//.andDo(MockMvcResultHandlers.print())
+	        .content(LeJSON.conteudo("/json/correto/genero/genero.json"))
+	        .header("Authorization", this.bearerToken))
 			.andExpect(MockMvcResultMatchers.jsonPath("$.descricao").value("Drama"))
 			.andExpect(MockMvcResultMatchers.status().isCreated())
 			.andReturn();
@@ -77,7 +97,8 @@ public class GeneroControllerTest {
 		
 		MvcResult mvcResult = this.mockMvc
 			.perform(MockMvcRequestBuilders.post("/generos")
-	        .content(LeJSON.conteudo("/json/correto/genero/genero.json")))
+	        .content(LeJSON.conteudo("/json/correto/genero/genero.json"))
+	        .header("Authorization", this.bearerToken))
 			.andExpect(MockMvcResultMatchers.status().isUnsupportedMediaType())
 			.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(415))
 			.andExpect(MockMvcResultMatchers.jsonPath("$.detalhe").value("Content-Type não suportado."))
@@ -94,7 +115,8 @@ public class GeneroControllerTest {
 		MvcResult mvcResult = this.mockMvc
 			.perform(MockMvcRequestBuilders.post("/generos")
 			.contentType("application/json")
-	        .content(LeJSON.conteudo("/json/correto/genero/genero.json")))
+	        .content(LeJSON.conteudo("/json/correto/genero/genero.json"))
+	        .header("Authorization", this.bearerToken))
 			.andExpect(MockMvcResultMatchers.jsonPath("$.descricao").value("Drama"))
 			.andExpect(MockMvcResultMatchers.status().isCreated())
 			.andReturn();
@@ -104,7 +126,8 @@ public class GeneroControllerTest {
 		mvcResult = this.mockMvc
 				.perform(MockMvcRequestBuilders.post("/generos")
 				.contentType("application/json")
-		        .content(LeJSON.conteudo("/json/correto/genero/genero.json")))
+		        .content(LeJSON.conteudo("/json/correto/genero/genero.json"))
+		        .header("Authorization", this.bearerToken))
 				.andExpect(MockMvcResultMatchers.jsonPath("$[0].campo").value("descricao"))
 				.andExpect(MockMvcResultMatchers.jsonPath("$[0].mensagem").value("Gênero já está cadastrado."))
 				.andExpect(MockMvcResultMatchers.status().isBadRequest())
@@ -121,7 +144,8 @@ public class GeneroControllerTest {
 		MvcResult mvcResult = this.mockMvc
 			.perform(MockMvcRequestBuilders.post("/generos")
 			.contentType("application/json")
-	        .content(LeJSON.conteudo("/json/incorreto/genero/genero1.json")))
+	        .content(LeJSON.conteudo("/json/incorreto/genero/genero1.json"))
+	        .header("Authorization", this.bearerToken))
 			.andExpect(MockMvcResultMatchers.jsonPath("$[0].campo").value("descricao"))
 			.andExpect(MockMvcResultMatchers.jsonPath("$[0].mensagem").value("Gênero deve ser preenchido."))
 			.andExpect(MockMvcResultMatchers.status().isBadRequest())
@@ -138,7 +162,8 @@ public class GeneroControllerTest {
 		MvcResult mvcResult = this.mockMvc
 			.perform(MockMvcRequestBuilders.post("/generos")
 			.contentType("application/json")
-	        .content(LeJSON.conteudo("/json/incorreto/genero/genero2.json")))
+	        .content(LeJSON.conteudo("/json/incorreto/genero/genero2.json"))
+	        .header("Authorization", this.bearerToken))
 			.andExpect(MockMvcResultMatchers.jsonPath("$[0].campo").value("descricao"))
 			.andExpect(MockMvcResultMatchers.jsonPath("$[0].mensagem").value("Gênero deve ser preenchido."))
 			.andExpect(MockMvcResultMatchers.status().isBadRequest())
@@ -155,7 +180,8 @@ public class GeneroControllerTest {
 		MvcResult mvcResult = this.mockMvc
 			.perform(MockMvcRequestBuilders.post("/generos")
 			.contentType("application/json")
-	        .content(LeJSON.conteudo("/json/incorreto/genero/genero3.json")))
+	        .content(LeJSON.conteudo("/json/incorreto/genero/genero3.json"))
+	        .header("Authorization", this.bearerToken))
 			.andExpect(MockMvcResultMatchers.jsonPath("$[0].campo").value("descricao"))
 			.andExpect(MockMvcResultMatchers.jsonPath("$[0].mensagem").value("Gênero deve ter no máximo 255 caracteres."))
 			.andExpect(MockMvcResultMatchers.status().isBadRequest())

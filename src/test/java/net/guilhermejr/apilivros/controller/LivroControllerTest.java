@@ -33,6 +33,7 @@ import net.guilhermejr.apilivros.model.repository.IdiomaRepository;
 import net.guilhermejr.apilivros.model.repository.LivroRepository;
 import net.guilhermejr.apilivros.utils.LeJSON;
 import net.guilhermejr.apilivros.utils.LimpaBancoDeDados;
+import net.guilhermejr.apilivros.utils.Token;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -58,7 +59,12 @@ public class LivroControllerTest {
 	private LimpaBancoDeDados limpaBancoDeDados;
 
 	@Autowired
+	private Token token;
+	
+	@Autowired
 	private MockMvc mockMvc;
+	
+	private String bearerToken;
 
 	@BeforeEach
 	private void initEach() {
@@ -128,11 +134,25 @@ public class LivroControllerTest {
 		
 		this.livroRepository.saveAll(Arrays.asList(livro1, livro2, livro3));
 		
+		this.bearerToken = "Bearer "+ this.token.gerar();
+		
 	}
 	
 	@AfterEach
 	public void cleanUpEach() {
 		this.limpaBancoDeDados.apagaTabelas();
+	}
+	
+	@Test
+	@DisplayName("Deve dar erro ao cadastrar um livro sem token")
+	public void deveDarErroAoCadastrarUmLivroSemToken() throws Exception {
+		
+		this.mockMvc
+			.perform(MockMvcRequestBuilders.post("/livros")
+			.contentType("application/json")
+	        .content(LeJSON.conteudo("/json/correto/livro/livro.json")))
+			.andExpect(MockMvcResultMatchers.status().isForbidden());
+		
 	}
 	
 	@Test
@@ -142,7 +162,8 @@ public class LivroControllerTest {
 		MvcResult mvcResult = this.mockMvc
 			.perform(MockMvcRequestBuilders.post("/livros")
 			.contentType("application/json")
-	        .content(LeJSON.conteudo("/json/correto/livro/livro.json")))
+	        .content(LeJSON.conteudo("/json/correto/livro/livro.json"))
+	        .header("Authorization", this.bearerToken))
 			.andExpect(MockMvcResultMatchers.jsonPath("$.id").value("4"))
 			.andExpect(MockMvcResultMatchers.jsonPath("$.capa").value("https://cache.skoob.com.br/local/images//MMez1YzXxUkKc8dmEdjAVQeSRgM=/200x/center/top/smart/filters:format(jpeg)/https://skoob.s3.amazonaws.com/livros/11819145/A_FILHA_DE_AUSCHWITZ_161437652011819145SK-V11614376521B.jpg"))
 			.andExpect(MockMvcResultMatchers.jsonPath("$.extensao").value("jpg"))
@@ -184,7 +205,8 @@ public class LivroControllerTest {
 		
 		MvcResult mvcResult = this.mockMvc
 			.perform(MockMvcRequestBuilders.post("/livros")
-	        .content(LeJSON.conteudo("/json/correto/livro/livro.json")))
+	        .content(LeJSON.conteudo("/json/correto/livro/livro.json"))
+	        .header("Authorization", this.bearerToken))
 			.andExpect(MockMvcResultMatchers.status().isUnsupportedMediaType())
 			.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(415))
 			.andExpect(MockMvcResultMatchers.jsonPath("$.detalhe").value("Content-Type não suportado."))
@@ -201,7 +223,8 @@ public class LivroControllerTest {
 		MvcResult mvcResult = this.mockMvc
 			.perform(MockMvcRequestBuilders.post("/livros")
 			.contentType("application/json")
-	        .content(LeJSON.conteudo("/json/correto/livro/livro.json")))
+	        .content(LeJSON.conteudo("/json/correto/livro/livro.json"))
+	        .header("Authorization", this.bearerToken))
 			.andExpect(MockMvcResultMatchers.jsonPath("$.id").value("4"))
 			.andExpect(MockMvcResultMatchers.status().isCreated())
 			.andReturn();
@@ -211,7 +234,8 @@ public class LivroControllerTest {
 		mvcResult = this.mockMvc
 				.perform(MockMvcRequestBuilders.post("/livros")
 				.contentType("application/json")
-		        .content(LeJSON.conteudo("/json/correto/livro/livro.json")))
+		        .content(LeJSON.conteudo("/json/correto/livro/livro.json"))
+		        .header("Authorization", this.bearerToken))
 				.andExpect(MockMvcResultMatchers.jsonPath("$[0].campo").value("isbn13"))
 				.andExpect(MockMvcResultMatchers.jsonPath("$[0].mensagem").value("ISBN já está cadastrado."))
 				.andExpect(MockMvcResultMatchers.status().isBadRequest())
@@ -228,7 +252,8 @@ public class LivroControllerTest {
 		MvcResult mvcResult = this.mockMvc
 			.perform(MockMvcRequestBuilders.post("/livros")
 			.contentType("application/json")
-	        .content(LeJSON.conteudo("/json/incorreto/livro/livro1.json")))
+	        .content(LeJSON.conteudo("/json/incorreto/livro/livro1.json"))
+	        .header("Authorization", this.bearerToken))
 			.andExpect(MockMvcResultMatchers.jsonPath("$[*].campo", hasItems("capa", "anoPublicacao", "paginas", "autores", "idioma", "generos", "descricao", "isbn13", "titulo", "editora", "extensao")))
 			.andExpect(MockMvcResultMatchers.jsonPath("$[*].mensagem", hasItems("Capa deve ser preenchido.", "Ano deve ser maior que 1900.", "Páginas deve ser preenchido com um número inteiro.", "Autor(es) deve ser preenchido.", "Idioma deve ser preenchido.", "Ano deve ser menor que 2100.", "Gênero(s) deve ser preenchido.", "Descrição deve ser preenchido.", "ISBN deve ser preenchido.", "Título deve ser preenchido.", "ISBN deve ter 13 caracteres.", "Editora deve ser preenchido.", "Extensão deve ser preenchido.")))
 			.andExpect(MockMvcResultMatchers.status().isBadRequest())
@@ -245,7 +270,8 @@ public class LivroControllerTest {
 		MvcResult mvcResult = this.mockMvc
 			.perform(MockMvcRequestBuilders.post("/livros")
 			.contentType("application/json")
-	        .content(LeJSON.conteudo("/json/incorreto/livro/livro2.json")))
+	        .content(LeJSON.conteudo("/json/incorreto/livro/livro2.json"))
+	        .header("Authorization", this.bearerToken))
 			.andExpect(MockMvcResultMatchers.jsonPath("$[*].campo", hasItems("capa", "autores", "idioma", "generos", "descricao", "isbn13", "titulo", "editora", "extensao")))
 			.andExpect(MockMvcResultMatchers.jsonPath("$[*].mensagem", hasItems("Capa deve ser preenchido.", "Autor(es) deve ser preenchido.", "Idioma deve ser preenchido.", "Gênero(s) deve ser preenchido.", "Descrição deve ser preenchido.", "ISBN deve ser preenchido.", "Título deve ser preenchido.", "Editora deve ser preenchido.", "Extensão deve ser preenchido.")))
 			.andExpect(MockMvcResultMatchers.status().isBadRequest())
@@ -262,7 +288,8 @@ public class LivroControllerTest {
 		MvcResult mvcResult = this.mockMvc
 			.perform(MockMvcRequestBuilders.post("/livros")
 			.contentType("application/json")
-	        .content(LeJSON.conteudo("/json/incorreto/livro/livro3.json")))
+	        .content(LeJSON.conteudo("/json/incorreto/livro/livro3.json"))
+	        .header("Authorization", this.bearerToken))
 			.andExpect(MockMvcResultMatchers.jsonPath("$[*].campo", hasItems("editora", "capa", "isbn13", "descricao", "idioma", "autores", "generos", "subtitulo", "extensao", "titulo")))
 			.andExpect(MockMvcResultMatchers.jsonPath("$[*].mensagem", hasItems("Editora deve ser preenchido.", "Capa deve ter no máximo 255 caracteres.", "ISBN deve ser preenchido.", "Descrição deve ser preenchido.", "Idioma deve ser preenchido.", "Autor(es) deve ser preenchido.", "Gênero(s) deve ser preenchido.", "Extensão deve ter no máximo 255 caracteres.", "Título deve ter no máximo 255 caracteres.", "Subtítulo deve ter no máximo 255 caracteres.")))
 			.andExpect(MockMvcResultMatchers.status().isBadRequest())
@@ -374,7 +401,7 @@ public class LivroControllerTest {
 	public void deveMudarLivroDeEstante() throws Exception {
 		
 		this.mockMvc
-			.perform(MockMvcRequestBuilders.put("/livros/1/estante/2").contentType("application/json"))
+			.perform(MockMvcRequestBuilders.put("/livros/1/estante/2").contentType("application/json").header("Authorization", this.bearerToken))
 			.andExpect(MockMvcResultMatchers.status().isNoContent());
 		
 	}
@@ -384,7 +411,7 @@ public class LivroControllerTest {
 	public void deveRetornarErroAoTentarMudarLivroInexistenteDeEstante() throws Exception {
 		
 		MvcResult mvcResult = this.mockMvc
-				.perform(MockMvcRequestBuilders.put("/livros/10/estante/1").contentType("application/json"))
+			.perform(MockMvcRequestBuilders.put("/livros/10/estante/1").contentType("application/json").header("Authorization", this.bearerToken))
 			.andExpect(MockMvcResultMatchers.status().isNotFound())
 			.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(404))
 			.andExpect(MockMvcResultMatchers.jsonPath("$.detalhe").value("Livro 10 não encontrado."))
@@ -399,7 +426,7 @@ public class LivroControllerTest {
 	public void deveRetornarErroAoTentarMudarLivroDeEstanteInexistente() throws Exception {
 		
 		MvcResult mvcResult = this.mockMvc
-				.perform(MockMvcRequestBuilders.put("/livros/1/estante/10").contentType("application/json"))
+			.perform(MockMvcRequestBuilders.put("/livros/1/estante/10").contentType("application/json").header("Authorization", this.bearerToken))
 			.andExpect(MockMvcResultMatchers.status().isNotFound())
 			.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(404))
 			.andExpect(MockMvcResultMatchers.jsonPath("$.detalhe").value("Estante 10 não encontrada."))
@@ -414,7 +441,7 @@ public class LivroControllerTest {
 	public void deveDarErroAoMudarLivroDeEstanteComContentTypeErrado() throws Exception {
 		
 		MvcResult mvcResult = this.mockMvc
-				.perform(MockMvcRequestBuilders.put("/livros/1/estante/2"))
+			.perform(MockMvcRequestBuilders.put("/livros/1/estante/2").header("Authorization", this.bearerToken))
 			.andExpect(MockMvcResultMatchers.status().isUnsupportedMediaType())
 			.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(415))
 			.andExpect(MockMvcResultMatchers.jsonPath("$.detalhe").value("Content-Type não suportado."))
@@ -429,7 +456,7 @@ public class LivroControllerTest {
 	public void deveAtivarLivro() throws Exception {
 		
 		this.mockMvc
-			.perform(MockMvcRequestBuilders.put("/livros/2/ativar").contentType("application/json"))
+			.perform(MockMvcRequestBuilders.put("/livros/2/ativar").contentType("application/json").header("Authorization", this.bearerToken))
 			.andExpect(MockMvcResultMatchers.status().isNoContent());
 		
 	}
@@ -439,7 +466,7 @@ public class LivroControllerTest {
 	public void deveDarErroAoTentarAtivarLivroJaAtivado() throws Exception {
 		
 		this.mockMvc
-			.perform(MockMvcRequestBuilders.put("/livros/1/ativar").contentType("application/json"))
+			.perform(MockMvcRequestBuilders.put("/livros/1/ativar").contentType("application/json").header("Authorization", this.bearerToken))
 			.andExpect(MockMvcResultMatchers.status().isBadRequest())
 			.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(400))
 			.andExpect(MockMvcResultMatchers.jsonPath("$.detalhe").value("Livro 1 já está ativo."));
@@ -451,7 +478,7 @@ public class LivroControllerTest {
 	public void deveDarErroAoTentarAtivarLivroInexistente() throws Exception {
 		
 		this.mockMvc
-			.perform(MockMvcRequestBuilders.put("/livros/10/ativar").contentType("application/json"))
+			.perform(MockMvcRequestBuilders.put("/livros/10/ativar").contentType("application/json").header("Authorization", this.bearerToken))
 			.andExpect(MockMvcResultMatchers.status().isNotFound())
 			.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(404))
 			.andExpect(MockMvcResultMatchers.jsonPath("$.detalhe").value("Livro 10 não encontrado."));
@@ -463,7 +490,7 @@ public class LivroControllerTest {
 	public void deveDarErroAoAtivarUmLivroComContentTypeErrado() throws Exception {
 		
 		MvcResult mvcResult = this.mockMvc
-				.perform(MockMvcRequestBuilders.put("/livros/1/ativar"))
+			.perform(MockMvcRequestBuilders.put("/livros/1/ativar").header("Authorization", this.bearerToken))
 			.andExpect(MockMvcResultMatchers.status().isUnsupportedMediaType())
 			.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(415))
 			.andExpect(MockMvcResultMatchers.jsonPath("$.detalhe").value("Content-Type não suportado."))
@@ -478,7 +505,7 @@ public class LivroControllerTest {
 	public void deveDesativarLivro() throws Exception {
 		
 		this.mockMvc
-			.perform(MockMvcRequestBuilders.delete("/livros/1/desativar").contentType("application/json"))
+			.perform(MockMvcRequestBuilders.delete("/livros/1/desativar").contentType("application/json").header("Authorization", this.bearerToken))
 			.andExpect(MockMvcResultMatchers.status().isNoContent());
 		
 	}
@@ -488,7 +515,7 @@ public class LivroControllerTest {
 	public void deveDarErroAoTentarDesativarLivroJaDesativado() throws Exception {
 		
 		this.mockMvc
-			.perform(MockMvcRequestBuilders.delete("/livros/2/desativar").contentType("application/json"))
+			.perform(MockMvcRequestBuilders.delete("/livros/2/desativar").contentType("application/json").header("Authorization", this.bearerToken))
 			.andExpect(MockMvcResultMatchers.status().isBadRequest())
 			.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(400))
 			.andExpect(MockMvcResultMatchers.jsonPath("$.detalhe").value("Livro 2 já está inativo."));
@@ -500,7 +527,7 @@ public class LivroControllerTest {
 	public void deveDarErroAoTentarDesativarLivroInexistente() throws Exception {
 		
 		this.mockMvc
-			.perform(MockMvcRequestBuilders.delete("/livros/10/desativar").contentType("application/json"))
+			.perform(MockMvcRequestBuilders.delete("/livros/10/desativar").contentType("application/json").header("Authorization", this.bearerToken))
 			.andExpect(MockMvcResultMatchers.status().isNotFound())
 			.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(404))
 			.andExpect(MockMvcResultMatchers.jsonPath("$.detalhe").value("Livro 10 não encontrado."));
@@ -512,7 +539,7 @@ public class LivroControllerTest {
 	public void deveDarErroAoDesativarUmLivroComContentTypeErrado() throws Exception {
 		
 		MvcResult mvcResult = this.mockMvc
-				.perform(MockMvcRequestBuilders.delete("/livros/1/desativar"))
+			.perform(MockMvcRequestBuilders.delete("/livros/1/desativar").header("Authorization", this.bearerToken))
 			.andExpect(MockMvcResultMatchers.status().isUnsupportedMediaType())
 			.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(415))
 			.andExpect(MockMvcResultMatchers.jsonPath("$.detalhe").value("Content-Type não suportado."))
