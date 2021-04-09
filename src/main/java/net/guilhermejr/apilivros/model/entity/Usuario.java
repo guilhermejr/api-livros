@@ -58,7 +58,6 @@ public class Usuario implements Serializable, UserDetails {
     private LocalDateTime criado;
     
     @UpdateTimestamp
-    @Column(updatable = false)
     private LocalDateTime atualizado;
     
     private LocalDateTime ultimoAcesso;
