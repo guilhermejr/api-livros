@@ -23,8 +23,7 @@ public class AutenticacaoViaTokenFilter extends OncePerRequestFilter {
 	}
 
 	@Override
-	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-			throws ServletException, IOException {
+	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 		
 		String token = recuperaToken(request);
 		
@@ -39,13 +38,13 @@ public class AutenticacaoViaTokenFilter extends OncePerRequestFilter {
 	private void autenticarUsuario(String token) {
 		
 		Usuario usuario = tokenService.getUsuario(token);
-		
 		UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(usuario, null, usuario.getAuthorities());
 		SecurityContextHolder.getContext().setAuthentication(auth);
 		
 	}
 
 	private String recuperaToken(HttpServletRequest request) {
+		
 		String token = request.getHeader("Authorization");
 		
 		if (token == null || token.isEmpty() || !token.startsWith("Bearer ")) {

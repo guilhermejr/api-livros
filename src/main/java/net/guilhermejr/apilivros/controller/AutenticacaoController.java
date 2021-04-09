@@ -40,11 +40,13 @@ public class AutenticacaoController {
 			
 			Authentication authenticate = this.authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginForm.getEmail(), loginForm.getSenha()));
 			String token = this.tokenService.gerarToken(authenticate);
-			TokenDTO tokenDTO = TokenDTO.builder().token(token).build();
+			TokenDTO tokenDTO = TokenDTO.builder().access_token(token).token_type("Bearer").build();
+			log.info("Usuário: "+ loginForm.getEmail() +" autenticado com sucesso.");
 			return ResponseEntity.ok(tokenDTO);
 			
 		} catch (AuthenticationException e) {
 			
+			log.error("Usuário: "+ loginForm.getEmail() +" não informou uma chave email:senha válidos.");
 			throw new ExceptionPadrao("E-mail e senha inválidos.");
 			
 		}
