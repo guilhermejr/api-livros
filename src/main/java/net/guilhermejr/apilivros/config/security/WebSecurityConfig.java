@@ -14,7 +14,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import net.guilhermejr.apilivros.model.repository.UsuarioRepository;
 import net.guilhermejr.apilivros.service.AutenticacaoService;
 import net.guilhermejr.apilivros.service.TokenService;
 
@@ -27,9 +26,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Autowired
 	private TokenService tokenService;
-	
-	@Autowired
-	private UsuarioRepository usuarioRepository;
 	
 	@Override
 	@Bean
@@ -65,7 +61,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.sessionManagement()
 					.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 			.and()
-				.addFilterBefore(new AutenticacaoViaTokenFilter(this.tokenService, this.usuarioRepository), UsernamePasswordAuthenticationFilter.class);
+				.addFilterBefore(new AutenticacaoViaTokenFilter(this.tokenService), UsernamePasswordAuthenticationFilter.class);
 	}
 	
 	@Override
