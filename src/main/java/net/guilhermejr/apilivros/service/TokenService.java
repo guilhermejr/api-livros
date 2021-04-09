@@ -2,6 +2,7 @@ package net.guilhermejr.apilivros.service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -19,9 +20,6 @@ import net.guilhermejr.apilivros.model.entity.Usuario;
 @Service
 public class TokenService {
 	
-	@Value("${livros.jwt.expiration}")
-	private String expiration;
-	
 	@Value("${livros.jwt.secret}")
 	private String secret;
 	
@@ -29,15 +27,22 @@ public class TokenService {
 		
 		Usuario logado = (Usuario) authenticate.getPrincipal();
 		
-		Date hoje = new Date();
-		Date expiracao = new Date(hoje.getTime() + Long.parseLong(this.expiration));
+		Date agora = new Date();
+		
+		Calendar calendar = Calendar.getInstance();
+	    calendar.setTime(agora);
+	    calendar.set(Calendar.HOUR_OF_DAY, 23);
+	    calendar.set(Calendar.MINUTE, 59);
+	    calendar.set(Calendar.SECOND, 59);
+	    calendar.set(Calendar.MILLISECOND, 999);
+	    Date fimDia = calendar.getTime();
 		
 		return Jwts.builder()
 				.setIssuer("API de Livros")
 				.setSubject(logado.getNome())
 				.setId(logado.getId().toString())
-				.setIssuedAt(hoje)
-				.setExpiration(expiracao)
+				.setIssuedAt(agora)
+				.setExpiration(fimDia)
 				.claim("email", logado.getEmail())
 				.claim("criado", logado.getCriado().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")))
 				.claim("ultimoAcesso", logado.getUltimoAcesso().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")))
