@@ -12,7 +12,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.PrePersist;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -95,11 +94,11 @@ public class Livro implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     private Usuario usuario;
 
-    @PrePersist
-    public void prePersist() {
-        Usuario usuario1 = new Usuario();
-        usuario1.setId(1L);
-        this.usuario = usuario1;
-    }
+//    @PrePersist
+//    public void prePersist() {
+//        Usuario usuario1 = new Usuario();
+//        usuario1.setId(1L);
+//        this.usuario = usuario1;
+//    }
 
 }

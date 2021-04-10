@@ -27,6 +27,7 @@ import net.guilhermejr.apilivros.model.entity.Genero;
 import net.guilhermejr.apilivros.model.entity.Idioma;
 import net.guilhermejr.apilivros.model.entity.Livro;
 import net.guilhermejr.apilivros.model.entity.Tipo;
+import net.guilhermejr.apilivros.model.entity.Usuario;
 import net.guilhermejr.apilivros.model.form.LivroForm;
 import net.guilhermejr.apilivros.model.mapper.LivroMapper;
 import net.guilhermejr.apilivros.model.repository.AutorRepository;
@@ -106,7 +107,7 @@ public class LivroService {
 
 	@Transactional
 	@CacheEvict(value = "listarLivros", allEntries = true)
-	public LivroDTO cadastrar(LivroForm livroForm) {
+	public LivroDTO cadastrar(LivroForm livroForm, Usuario usuario) {
 
 		Livro livro = this.livroMapper.mapObject(livroForm);
 
@@ -165,6 +166,9 @@ public class LivroService {
 //		} catch (JsonProcessingException e) {
 //			e.printStackTrace();
 //		}
+		
+		// --- Usuario ---
+		livro.setUsuario(usuario);
 
 		// --- Salva livro ---
 		livroRepository.save(livro);

@@ -13,6 +13,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,6 +36,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import net.guilhermejr.apilivros.model.dto.LivroDTO;
 import net.guilhermejr.apilivros.model.dto.LivrosDTO;
+import net.guilhermejr.apilivros.model.entity.Usuario;
 import net.guilhermejr.apilivros.model.form.LivroForm;
 import net.guilhermejr.apilivros.service.LivroService;
 import net.guilhermejr.apilivros.validacao.ErroDeFormularioDTO;
@@ -96,9 +98,9 @@ public class LivroController {
 		@ApiResponse(responseCode = "400", description = "Erro ao cadastrar livro", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErroDeFormularioDTO.class)))
 	})
 	@PostMapping()
-	public ResponseEntity<LivroDTO> cadastrar(@RequestBody @Valid LivroForm livroForm, UriComponentsBuilder uriBuilder) {
+	public ResponseEntity<LivroDTO> cadastrar(@RequestBody @Valid LivroForm livroForm, UriComponentsBuilder uriBuilder, @AuthenticationPrincipal Usuario usuario) {
 
-		LivroDTO livroDTO = this.livroService.cadastrar(livroForm);
+		LivroDTO livroDTO = this.livroService.cadastrar(livroForm, usuario);
 		
 		log.info("Livro: "+ livroDTO.getTitulo() +" cadastrado com sucesso.");
 
