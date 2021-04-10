@@ -21,7 +21,7 @@ public class AutenticacaoService implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String email) {
 		
-		Optional<Usuario> usuarioRetorno = this.usuarioRepository.findByEmail(email);
+		Optional<Usuario> usuarioRetorno = this.usuarioRepository.findByEmailAndAtivo(email, Boolean.TRUE);
 		if (usuarioRetorno.isPresent()) {
 			Usuario usuario = usuarioRetorno.get();
 			usuario.setUltimoAcesso(LocalDateTime.now());

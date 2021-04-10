@@ -57,7 +57,7 @@ public class AutenticacaoController {
 			
 		} catch (AuthenticationException e) {
 			
-			log.error("Usuário: "+ loginForm.getEmail() +" não informou uma chave email:senha válidos.");
+			log.error("Usuário: "+ loginForm.getEmail() +" não informou uma chave email:senha válidos, ou está inativo.");
 			throw new ExceptionPadrao("E-mail e senha inválidos.");
 			
 		}
