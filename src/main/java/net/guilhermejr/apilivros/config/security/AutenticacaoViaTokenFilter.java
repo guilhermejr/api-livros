@@ -27,7 +27,7 @@ public class AutenticacaoViaTokenFilter extends OncePerRequestFilter {
 		
 		String token = recuperaToken(request);
 		
-		if (this.tokenService.ehValido(token)) {
+		if (token != null && this.tokenService.ehValido(token)) {
 			autenticarUsuario(token);
 		}
 		
