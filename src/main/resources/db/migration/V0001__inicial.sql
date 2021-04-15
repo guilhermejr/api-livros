@@ -138,9 +138,7 @@
 	   
 	insert into estantes (descricao, criado) VALUES ('Biblioteca', NOW());
 	insert into estantes (descricao, criado) VALUES ('Desejados', NOW());
-	insert into estantes (descricao, criado) VALUES ('Troca', NOW());
 	insert into estantes (descricao, criado) VALUES ('Doação', NOW());
-	insert into estantes (descricao, criado) VALUES ('Venda', NOW());
 	
 	insert into perfis (descricao, criado) VALUES ('ROLE_USUARIO', NOW());
 	
