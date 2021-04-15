@@ -40,12 +40,13 @@ import net.guilhermejr.apilivros.model.entity.Usuario;
 import net.guilhermejr.apilivros.model.form.LivroForm;
 import net.guilhermejr.apilivros.service.LivroService;
 import net.guilhermejr.apilivros.validacao.ErroDeFormularioDTO;
+import net.guilhermejr.apilivros.validacao.ErroMediaTypeDTO;
 import net.guilhermejr.apilivros.validacao.ErroPadraoDTO;
 
 @Tag(name = "Livro", description = "Controller de livro")
 @RestController
 @Slf4j
-@RequestMapping(path = "/livros", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping("/livros")
 public class LivroController {
 
 	@Autowired
@@ -53,7 +54,7 @@ public class LivroController {
 
 	@Operation(summary = "Lista livros de uma estante")
 	@ApiResponse(responseCode = "200", description = "Lista de livros")
-	@GetMapping
+	@GetMapping()
 	public ResponseEntity<Page<LivrosDTO>> listar(
 			@Parameter(description = "ID da estante", example = "1") @RequestParam Long estante,
 			@ParameterObject @PageableDefault(page = 0, size = 24, sort = "titulo", direction = Direction.ASC) Pageable paginacao) {
@@ -95,9 +96,10 @@ public class LivroController {
 	@Operation(summary = "Cadastra novo livro")
 	@ApiResponses({
 		@ApiResponse(responseCode = "201", description = "Livro cadastrado"),
-		@ApiResponse(responseCode = "400", description = "Erro ao cadastrar livro", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErroDeFormularioDTO.class)))
+		@ApiResponse(responseCode = "400", description = "Erro ao cadastrar livro", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErroDeFormularioDTO.class))),
+		@ApiResponse(responseCode = "415", description = "Content-Type não suportado", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErroMediaTypeDTO.class)))
 	})
-	@PostMapping()
+	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<LivroDTO> cadastrar(@RequestBody @Valid LivroForm livroForm, UriComponentsBuilder uriBuilder, @AuthenticationPrincipal Usuario usuario) {
 
 		LivroDTO livroDTO = this.livroService.cadastrar(livroForm, usuario);
@@ -111,9 +113,10 @@ public class LivroController {
 	@Operation(summary = "Muda um livro de estante")
 	@ApiResponses({
 		@ApiResponse(responseCode = "204", description = "Livro mudado de estante"),
-		@ApiResponse(responseCode = "404", description = "Livro ou Estante não encontrado(a)", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErroPadraoDTO.class)))
+		@ApiResponse(responseCode = "404", description = "Livro ou Estante não encontrado(a)", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErroPadraoDTO.class))),
+		@ApiResponse(responseCode = "415", description = "Content-Type não suportado", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErroMediaTypeDTO.class)))
 	})
-	@PutMapping("{idLivro}/estante/{idEstante}")
+	@PutMapping(path = "{idLivro}/estante/{idEstante}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void mudaEstante(@Parameter(description = "ID do livro", example = "1") @PathVariable Long idLivro, @Parameter(description = "ID da estante", example = "1")  @PathVariable Long idEstante) {
 		this.livroService.mudaEstante(idLivro, idEstante);
@@ -123,9 +126,10 @@ public class LivroController {
 	@Operation(summary = "Ativar um livro")
 	@ApiResponses({
 		@ApiResponse(responseCode = "204", description = "Livro ativado"),
-		@ApiResponse(responseCode = "404", description = "Livro não encontrado", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErroPadraoDTO.class)))
+		@ApiResponse(responseCode = "404", description = "Livro não encontrado", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErroPadraoDTO.class))),
+		@ApiResponse(responseCode = "415", description = "Content-Type não suportado", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErroMediaTypeDTO.class)))
 	})
-	@PutMapping("{id}/ativar")
+	@PutMapping(path = "{id}/ativar", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void ativar(@Parameter(description = "ID do livro", example = "1") @PathVariable Long id) {
 		this.livroService.ativar(id);
@@ -135,9 +139,10 @@ public class LivroController {
 	@Operation(summary = "Desativar um livro")
 	@ApiResponses({
 		@ApiResponse(responseCode = "204", description = "Livro deativado"),
-		@ApiResponse(responseCode = "404", description = "Livro não encontrado", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErroPadraoDTO.class)))
+		@ApiResponse(responseCode = "404", description = "Livro não encontrado", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErroPadraoDTO.class))),
+		@ApiResponse(responseCode = "415", description = "Content-Type não suportado", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErroMediaTypeDTO.class)))
 	})
-	@DeleteMapping("{id}/desativar")
+	@DeleteMapping(path = "{id}/desativar", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void desativar(@Parameter(description = "ID do livro", example = "1") @PathVariable Long id) {
 		this.livroService.desativar(id);

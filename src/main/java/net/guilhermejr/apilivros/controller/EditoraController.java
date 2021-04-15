@@ -29,12 +29,13 @@ import net.guilhermejr.apilivros.model.dto.EditoraDTO;
 import net.guilhermejr.apilivros.model.form.EditoraForm;
 import net.guilhermejr.apilivros.service.EditoraService;
 import net.guilhermejr.apilivros.validacao.ErroDeFormularioDTO;
+import net.guilhermejr.apilivros.validacao.ErroMediaTypeDTO;
 import net.guilhermejr.apilivros.validacao.ErroPadraoDTO;
 
 @Tag(name = "Editora", description = "Controller de editora")
 @RestController
 @Slf4j
-@RequestMapping(path = "/editoras", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping("/editoras")
 public class EditoraController {
 	
 	@Autowired
@@ -60,9 +61,10 @@ public class EditoraController {
 	@Operation(summary = "Cadastra nova editora")
 	@ApiResponses({
 		@ApiResponse(responseCode = "201", description = "Editora cadastrada"),
-		@ApiResponse(responseCode = "400", description = "Erro ao cadastrar editora", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErroDeFormularioDTO.class)))
+		@ApiResponse(responseCode = "400", description = "Erro ao cadastrar editora", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErroDeFormularioDTO.class))),
+		@ApiResponse(responseCode = "415", description = "Content-Type não suportado", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErroMediaTypeDTO.class)))
 	})
-	@PostMapping()
+	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<EditoraDTO> cadastrar(@Valid @RequestBody EditoraForm editoraForm, UriComponentsBuilder uriBuilder) {
 		EditoraDTO ediotraDTO = this.editoraService.cadastrar(editoraForm);
 		

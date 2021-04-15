@@ -46,21 +46,6 @@ public class EstanteControllerTest {
 	}
 	
 	@Test
-	@DisplayName("Deve dar erro ao retornar uma estante com Content-Type errado")
-	public void deveDarErroAoRetornarUmaEstanteComContentTypeErrado() throws Exception {
-		
-		MvcResult mvcResult = this.mockMvc
-			.perform(MockMvcRequestBuilders.get("/estantes/1"))
-			.andExpect(MockMvcResultMatchers.status().isUnsupportedMediaType())
-			.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(415))
-			.andExpect(MockMvcResultMatchers.jsonPath("$.detalhe").value("Content-Type não suportado."))
-			.andReturn();
-		
-		Assertions.assertEquals("application/json", mvcResult.getResponse().getContentType());
-		
-	}
-	
-	@Test
 	@DisplayName("Deve retornar erro ao tentar retornar uma estante inexistente")
 	public void deveRetornarErroAoTentarRetornarUmaEstanteInexistente() throws Exception {
 		
@@ -87,21 +72,6 @@ public class EstanteControllerTest {
 			.andExpect(MockMvcResultMatchers.jsonPath("$[2].descricao").value("Doação"))
 			.andExpect(MockMvcResultMatchers.jsonPath("$[3].descricao").value("Troca"))
 			.andExpect(MockMvcResultMatchers.jsonPath("$[4].descricao").value("Venda"))
-			.andReturn();
-		
-		Assertions.assertEquals("application/json", mvcResult.getResponse().getContentType());
-		
-	}
-	
-	@Test
-	@DisplayName("Deve dar erro ao listar estantes com Content-Type errado")
-	public void deveDarErroAoListarEstantesComContentTypeErrado() throws Exception {
-		
-		MvcResult mvcResult = this.mockMvc
-			.perform(MockMvcRequestBuilders.get("/estantes"))
-			.andExpect(MockMvcResultMatchers.status().isUnsupportedMediaType())
-			.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(415))
-			.andExpect(MockMvcResultMatchers.jsonPath("$.detalhe").value("Content-Type não suportado."))
 			.andReturn();
 		
 		Assertions.assertEquals("application/json", mvcResult.getResponse().getContentType());

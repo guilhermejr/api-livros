@@ -29,12 +29,13 @@ import net.guilhermejr.apilivros.model.dto.IdiomaDTO;
 import net.guilhermejr.apilivros.model.form.IdiomaForm;
 import net.guilhermejr.apilivros.service.IdiomaService;
 import net.guilhermejr.apilivros.validacao.ErroDeFormularioDTO;
+import net.guilhermejr.apilivros.validacao.ErroMediaTypeDTO;
 import net.guilhermejr.apilivros.validacao.ErroPadraoDTO;
 
 @Tag(name = "Idioma", description = "Controller de idioma")
 @RestController
 @Slf4j
-@RequestMapping(path = "/idiomas", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping("/idiomas")
 public class IdiomaController {
 
 	@Autowired
@@ -60,9 +61,10 @@ public class IdiomaController {
 	@Operation(summary = "Cadastra novo idioma")
 	@ApiResponses({
 		@ApiResponse(responseCode = "201", description = "Idioma cadastrado"),
-		@ApiResponse(responseCode = "400", description = "Erro ao cadastrar idioma", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErroDeFormularioDTO.class)))
+		@ApiResponse(responseCode = "400", description = "Erro ao cadastrar idioma", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErroDeFormularioDTO.class))),
+		@ApiResponse(responseCode = "415", description = "Content-Type não suportado", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErroMediaTypeDTO.class)))
 	})
-	@PostMapping()
+	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<IdiomaDTO> cadastrar(@Valid @RequestBody IdiomaForm idiomaForm, UriComponentsBuilder uriBuilder) {
 		IdiomaDTO idiomaDTO = this.idiomaService.cadastrar(idiomaForm);
 		

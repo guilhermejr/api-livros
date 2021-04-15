@@ -26,6 +26,7 @@ import net.guilhermejr.apilivros.model.dto.TokenDTO;
 import net.guilhermejr.apilivros.model.form.LoginForm;
 import net.guilhermejr.apilivros.service.TokenService;
 import net.guilhermejr.apilivros.validacao.ErroDeFormularioDTO;
+import net.guilhermejr.apilivros.validacao.ErroMediaTypeDTO;
 
 @Tag(name = "Autenticacao", description = "Controller de autenticação")
 @RestController
@@ -42,7 +43,8 @@ public class AutenticacaoController {
 	@Operation(summary = "Efetua login gerando token JWT")
 	@ApiResponses({
 		@ApiResponse(responseCode = "200", description = "Usuário logado e token gerado"),
-		@ApiResponse(responseCode = "400", description = "Erro ao tentar logar", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErroDeFormularioDTO.class)))
+		@ApiResponse(responseCode = "400", description = "Erro ao tentar logar", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErroDeFormularioDTO.class))),
+		@ApiResponse(responseCode = "415", description = "Content-Type não suportado", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErroMediaTypeDTO.class)))
 	})
 	@PostMapping
 	public ResponseEntity<TokenDTO> autenticar(@RequestBody @Valid LoginForm loginForm) {

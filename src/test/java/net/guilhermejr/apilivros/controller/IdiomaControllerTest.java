@@ -206,21 +206,6 @@ public class IdiomaControllerTest {
 	}
 	
 	@Test
-	@DisplayName("Deve dar erro ao retornar um idioma com Content-Type errado")
-	public void deveDarErroAoRetornarUmIdiomaComContentTypeErrado() throws Exception {
-		
-		MvcResult mvcResult = this.mockMvc
-			.perform(MockMvcRequestBuilders.get("/idiomas/1"))
-			.andExpect(MockMvcResultMatchers.status().isUnsupportedMediaType())
-			.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(415))
-			.andExpect(MockMvcResultMatchers.jsonPath("$.detalhe").value("Content-Type não suportado."))
-			.andReturn();
-		
-		Assertions.assertEquals("application/json", mvcResult.getResponse().getContentType());
-		
-	}
-	
-	@Test
 	@DisplayName("Deve retornar erro ao tentar retornar um genero inexistente")
 	public void deveRetornarErroAoTentarRetornarUmIdiomaInexistente() throws Exception {
 		
@@ -245,21 +230,6 @@ public class IdiomaControllerTest {
 			.andExpect(MockMvcResultMatchers.jsonPath("$[0].descricao").value(this.descricao2))
 			.andExpect(MockMvcResultMatchers.jsonPath("$[1].descricao").value(this.descricao3))
 			.andExpect(MockMvcResultMatchers.jsonPath("$[2].descricao").value(this.descricao1))
-			.andReturn();
-		
-		Assertions.assertEquals("application/json", mvcResult.getResponse().getContentType());
-		
-	}
-	
-	@Test
-	@DisplayName("Deve dar erro ao listar idiomas com Content-Type errado")
-	public void deveDarErroAoListarIdiomasComContentTypeErrado() throws Exception {
-		
-		MvcResult mvcResult = this.mockMvc
-			.perform(MockMvcRequestBuilders.get("/idiomas"))
-			.andExpect(MockMvcResultMatchers.status().isUnsupportedMediaType())
-			.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(415))
-			.andExpect(MockMvcResultMatchers.jsonPath("$.detalhe").value("Content-Type não suportado."))
 			.andReturn();
 		
 		Assertions.assertEquals("application/json", mvcResult.getResponse().getContentType());

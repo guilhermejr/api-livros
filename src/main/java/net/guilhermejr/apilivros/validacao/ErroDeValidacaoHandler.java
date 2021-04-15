@@ -16,9 +16,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 
 import io.swagger.v3.oas.annotations.Hidden;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.extern.slf4j.Slf4j;
 import net.guilhermejr.apilivros.exception.ExceptionNotFound;
 import net.guilhermejr.apilivros.exception.ExceptionPadrao;
@@ -50,7 +47,7 @@ public class ErroDeValidacaoHandler {
 
 	}
 	
-	@ApiResponse(responseCode = "415", description = "Content-Type não suportado", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErroMediaTypeDTO.class)))
+	@Hidden
 	@ExceptionHandler(HttpMediaTypeNotSupportedException.class)
 	@ResponseStatus(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
 	public ErroPadraoDTO handleErrroNotFound(HttpMediaTypeNotSupportedException ex, WebRequest request) {

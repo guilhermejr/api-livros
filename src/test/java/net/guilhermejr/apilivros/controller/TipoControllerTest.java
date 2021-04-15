@@ -46,21 +46,6 @@ public class TipoControllerTest {
 	}
 	
 	@Test
-	@DisplayName("Deve dar erro ao retornar um tipo com Content-Type errado")
-	public void deveDarErroAoRetornarUmTipoComContentTypeErrado() throws Exception {
-		
-		MvcResult mvcResult = this.mockMvc
-			.perform(MockMvcRequestBuilders.get("/tipos/1"))
-			.andExpect(MockMvcResultMatchers.status().isUnsupportedMediaType())
-			.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(415))
-			.andExpect(MockMvcResultMatchers.jsonPath("$.detalhe").value("Content-Type não suportado."))
-			.andReturn();
-		
-		Assertions.assertEquals("application/json", mvcResult.getResponse().getContentType());
-		
-	}
-	
-	@Test
 	@DisplayName("Deve retornar erro ao tentar retornar um tipo inexistente")
 	public void deveRetornarErroAoTentarRetornarUmTipoInexistente() throws Exception {
 		
@@ -85,21 +70,6 @@ public class TipoControllerTest {
 			.andExpect(MockMvcResultMatchers.jsonPath("$[0].descricao").value("E-book"))
 			.andExpect(MockMvcResultMatchers.jsonPath("$[1].descricao").value("Físico"))
 			.andExpect(MockMvcResultMatchers.jsonPath("$[2].descricao").value("PDF"))
-			.andReturn();
-		
-		Assertions.assertEquals("application/json", mvcResult.getResponse().getContentType());
-		
-	}
-	
-	@Test
-	@DisplayName("Deve dar erro ao listar tipos com Content-Type errado")
-	public void deveDarErroAoListarTiposComContentTypeErrado() throws Exception {
-		
-		MvcResult mvcResult = this.mockMvc
-			.perform(MockMvcRequestBuilders.get("/tipos"))
-			.andExpect(MockMvcResultMatchers.status().isUnsupportedMediaType())
-			.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(415))
-			.andExpect(MockMvcResultMatchers.jsonPath("$.detalhe").value("Content-Type não suportado."))
 			.andReturn();
 		
 		Assertions.assertEquals("application/json", mvcResult.getResponse().getContentType());

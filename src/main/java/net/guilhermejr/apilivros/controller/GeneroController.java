@@ -29,12 +29,13 @@ import net.guilhermejr.apilivros.model.dto.GeneroDTO;
 import net.guilhermejr.apilivros.model.form.GeneroForm;
 import net.guilhermejr.apilivros.service.GeneroService;
 import net.guilhermejr.apilivros.validacao.ErroDeFormularioDTO;
+import net.guilhermejr.apilivros.validacao.ErroMediaTypeDTO;
 import net.guilhermejr.apilivros.validacao.ErroPadraoDTO;
 
 @Tag(name = "Gênero", description = "Controller de gênero")
 @RestController
 @Slf4j
-@RequestMapping(path = "/generos", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping("/generos")
 public class GeneroController {
 
 	@Autowired
@@ -60,9 +61,10 @@ public class GeneroController {
 	@Operation(summary = "Cadastra novo gênero")
 	@ApiResponses({
 		@ApiResponse(responseCode = "201", description = "Gênero cadastrado"),
-		@ApiResponse(responseCode = "400", description = "Erro ao cadastrar gênero", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErroDeFormularioDTO.class)))
+		@ApiResponse(responseCode = "400", description = "Erro ao cadastrar gênero", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErroDeFormularioDTO.class))),
+		@ApiResponse(responseCode = "415", description = "Content-Type não suportado", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErroMediaTypeDTO.class)))
 	})
-	@PostMapping()
+	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<GeneroDTO> cadastrar(@Valid @RequestBody GeneroForm generoForm, UriComponentsBuilder uriBuilder) {
 		GeneroDTO generoDTO = this.generoService.cadastrar(generoForm);
 		

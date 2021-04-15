@@ -3,7 +3,6 @@ package net.guilhermejr.apilivros.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,7 +23,7 @@ import net.guilhermejr.apilivros.validacao.ErroPadraoDTO;
 
 @Tag(name = "Estante", description = "Controller de estante")
 @RestController
-@RequestMapping(path = "/estantes", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping("/estantes")
 public class EstanteController {
 	
 	@Autowired
