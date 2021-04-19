@@ -53,8 +53,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers(HttpMethod.GET, "/generos/**").permitAll() 
 				.antMatchers(HttpMethod.GET, "/idiomas/**").permitAll() 
 				.antMatchers(HttpMethod.GET, "/actuator/**").permitAll() 
-				.antMatchers("/swagger-ui/**").permitAll() 
-				.antMatchers("/api-docs/**").permitAll() 
 				.anyRequest().authenticated()	
 			.and()
 				.csrf()
@@ -67,6 +65,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Override
 	public void configure(WebSecurity web) throws Exception {
+		web.ignoring().antMatchers("/swagger-ui/**", "/api-docs/**", "/capas/**");
 	}
 	
 }
