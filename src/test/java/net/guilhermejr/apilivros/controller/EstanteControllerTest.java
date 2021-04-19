@@ -70,8 +70,6 @@ public class EstanteControllerTest {
 			.andExpect(MockMvcResultMatchers.jsonPath("$[0].descricao").value("Biblioteca"))
 			.andExpect(MockMvcResultMatchers.jsonPath("$[1].descricao").value("Desejados"))
 			.andExpect(MockMvcResultMatchers.jsonPath("$[2].descricao").value("Doação"))
-			.andExpect(MockMvcResultMatchers.jsonPath("$[3].descricao").value("Troca"))
-			.andExpect(MockMvcResultMatchers.jsonPath("$[4].descricao").value("Venda"))
 			.andReturn();
 		
 		Assertions.assertEquals("application/json", mvcResult.getResponse().getContentType());

@@ -29,8 +29,6 @@ public class EstanteRepositoryTest {
 		assertEquals("Biblioteca", estantes.get(0).getDescricao());
 		assertEquals("Desejados", estantes.get(1).getDescricao());
 		assertEquals("Doação", estantes.get(2).getDescricao());
-		assertEquals("Troca", estantes.get(3).getDescricao());
-		assertEquals("Venda", estantes.get(4).getDescricao());
 		
 	}
 
