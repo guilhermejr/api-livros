@@ -62,6 +62,17 @@ public class LivroController {
 		return ResponseEntity.ok(this.livroService.listar(estante, paginacao));
 
 	}
+	
+	@Operation(summary = "Pesquisa livros")
+	@ApiResponse(responseCode = "200", description = "Lista de livros")
+	@GetMapping("/pesquisar/{pesquisa}")
+	public ResponseEntity<Page<LivrosDTO>> pesquisar(
+			@Parameter(description = "Pesquisa", example = "Drácula") @PathVariable String pesquisa,
+			@ParameterObject @PageableDefault(page = 0, size = 24, sort = "titulo", direction = Direction.ASC) Pageable paginacao) {
+
+		return ResponseEntity.ok(this.livroService.pesquisar(pesquisa.trim(), paginacao));
+
+	}
 
 	@Operation(summary = "Pesquisa livros")
 	@ApiResponse(responseCode = "200", description = "Lista de livros")
@@ -70,9 +81,9 @@ public class LivroController {
 			@Parameter(description = "ID da estante", example = "1") @RequestParam(required = false) Long estante,
 			@Parameter(description = "Título do livro", example = "Sófocles") @RequestParam(required = false) String titulo, 
 			@Parameter(description = "ISBN do livro", example = "9788575425770") @RequestParam(required = false) String isbn,
-			@Parameter(description = "ID da editora", example = "1") @RequestParam(required = false) Long editora, 
-			@Parameter(description = "ID do autor", example = "1") @RequestParam(required = false) Long autor,
-			@Parameter(description = "ID do gênero", example = "1") @RequestParam(required = false) Long genero,
+			@Parameter(description = "ID da editora", example = "Intrínseca") @RequestParam(required = false) String editora, 
+			@Parameter(description = "ID do autor", example = "Stephen Hawking") @RequestParam(required = false) String autor,
+			@Parameter(description = "ID do gênero", example = "Biografia") @RequestParam(required = false) String genero,
 			@Parameter(description = "ID do idioma", example = "1") @RequestParam(required = false) Long idioma,
 			@Parameter(description = "ID do tipo", example = "1") @RequestParam(required = false) Long tipo,
 			@Parameter(description = "Ano do livro", example = "2010") @RequestParam(required = false) Integer ano,

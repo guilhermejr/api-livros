@@ -47,35 +47,41 @@ public class LivroSpecification {
 		return null;
 	}
 
-	public static Specification<Livro> editora(Long editora) {
+	public static Specification<Livro> editora(String editora) {
 
-		if (editora != null) {
-			return (root, query, builder) -> builder.equal(root.get("editora").get("id"), editora);
-		}
-
-		return null;
-	}
-
-	public static Specification<Livro> autor(Long autor) {
-
-		if (autor != null) {
-
+		if (StringUtils.hasText(editora)) {
 			return (root, query, builder) -> {
-				Join<Autor, Livro> join = root.join("autores");
-				return builder.equal(join.get("id"), autor);
+				return builder.like(root.get("editora").get("descricao"), "%" + editora + "%");
 			};
 		}
 
 		return null;
 	}
 
-	public static Specification<Livro> genero(Long genero) {
+	public static Specification<Livro> autor(String autor) {
 
-		if (genero != null) {
+		if (StringUtils.hasText(autor)) {
+
+			return (root, query, builder) -> {
+				Join<Autor, Livro> join = root.join("autores");
+				Predicate p = builder.like(join.get("descricao"), "%" + autor + "%");
+				query.distinct(true);
+				return p;
+			};
+		}
+
+		return null;
+	}
+
+	public static Specification<Livro> genero(String genero) {
+		
+		if (StringUtils.hasText(genero)) {
 
 			return (root, query, builder) -> {
 				Join<Genero, Livro> join = root.join("generos");
-				return builder.equal(join.get("id"), genero);
+				Predicate p = builder.like(join.get("descricao"), "%" + genero + "%");
+				query.distinct(true);
+				return p;
 			};
 		}
 
