@@ -63,7 +63,7 @@ public class LivroController {
 
 	}
 	
-	@Operation(summary = "Pesquisa livros")
+	@Operation(summary = "Pesquisa livros com um filtro só")
 	@ApiResponse(responseCode = "200", description = "Lista de livros")
 	@GetMapping("/pesquisar/{pesquisa}")
 	public ResponseEntity<Page<LivrosDTO>> pesquisar(
@@ -74,7 +74,7 @@ public class LivroController {
 
 	}
 
-	@Operation(summary = "Pesquisa livros")
+	@Operation(summary = "Pesquisa livros com vários filtros")
 	@ApiResponse(responseCode = "200", description = "Lista de livros")
 	@GetMapping("/pesquisar")
 	public ResponseEntity<Page<LivrosDTO>> pesquisar(
