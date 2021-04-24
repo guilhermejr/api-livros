@@ -65,12 +65,13 @@ public class LivroController {
 	
 	@Operation(summary = "Pesquisa livros com um filtro só")
 	@ApiResponse(responseCode = "200", description = "Lista de livros")
-	@GetMapping("/pesquisar/{pesquisa}")
+	@GetMapping("/pesquisar/{estante}/{texto}")
 	public ResponseEntity<Page<LivrosDTO>> pesquisar(
-			@Parameter(description = "Pesquisa", example = "Drácula") @PathVariable String pesquisa,
+			@Parameter(description = "Estante", example = "1") @PathVariable Long estante,
+			@Parameter(description = "Texto a pesquisar", example = "Drácula") @PathVariable String texto,
 			@ParameterObject @PageableDefault(page = 0, size = 24, sort = "titulo", direction = Direction.ASC) Pageable paginacao) {
 
-		return ResponseEntity.ok(this.livroService.pesquisar(pesquisa.trim(), paginacao));
+		return ResponseEntity.ok(this.livroService.pesquisar(estante, texto.trim(), paginacao));
 
 	}
 

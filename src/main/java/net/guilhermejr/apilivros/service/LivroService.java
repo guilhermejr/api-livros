@@ -78,16 +78,17 @@ public class LivroService {
 
 	}
 	
-	public Page<LivrosDTO> pesquisar(String pesquisa,
+	public Page<LivrosDTO> pesquisar(Long estante, String texto,
 			Pageable paginacao) {
 
 		Page<Livro> livros = this.livroRepository
 				.findAll(
-							LivroSpecification.titulo(pesquisa)
-							.or(LivroSpecification.isbn(pesquisa))
-							.or(LivroSpecification.editora(pesquisa))
-							.or(LivroSpecification.autor(pesquisa))
-							.or(LivroSpecification.genero(pesquisa)),
+							LivroSpecification.estante(estante)
+							.and((LivroSpecification.titulo(texto))
+							.or(LivroSpecification.isbn(texto))
+							.or(LivroSpecification.editora(texto))
+							.or(LivroSpecification.autor(texto))
+							.or(LivroSpecification.genero(texto))),
 						paginacao);
 
 		return this.livroMapper.mapPage(livros);
