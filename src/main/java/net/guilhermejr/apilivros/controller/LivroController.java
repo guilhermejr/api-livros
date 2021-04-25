@@ -57,7 +57,7 @@ public class LivroController {
 	@GetMapping()
 	public ResponseEntity<Page<LivrosDTO>> listar(
 			@Parameter(description = "ID da estante", example = "1") @RequestParam Long estante,
-			@ParameterObject @PageableDefault(page = 0, size = 24, sort = "titulo", direction = Direction.ASC) Pageable paginacao) {
+			@ParameterObject @PageableDefault(page = 0, size = 24, sort = {"titulo", "subtitulo"}, direction = Direction.ASC) Pageable paginacao) {
 
 		return ResponseEntity.ok(this.livroService.listar(estante, paginacao));
 
