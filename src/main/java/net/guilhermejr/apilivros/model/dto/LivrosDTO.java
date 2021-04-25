@@ -14,5 +14,8 @@ public class LivrosDTO {
 	
 	@Schema(description = "Título do livro", example = "O Melhor do Teatro Grego")
 	private String titulo;
+	
+	@Schema(description = "Extensão da capa do livro", example = "jpg")
+	private String extensao;
 
 }
