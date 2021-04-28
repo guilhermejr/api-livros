@@ -206,7 +206,7 @@ public class LivroService {
 	}
 
 	@Transactional
-	@CacheEvict(value = "listarLivros", allEntries = true)
+	@CacheEvict(value = { "listarLivros", "livro" }, allEntries = true)
 	public void mudaEstante(Long idLivro, Long idEstante) {
 		
 		Optional<Livro> livro = this.livroRepository.findById(idLivro);
@@ -228,7 +228,7 @@ public class LivroService {
 	}
 
 	@Transactional
-	@CacheEvict(value = "listarLivros", allEntries = true)
+	@CacheEvict(value = { "listarLivros", "livro" }, allEntries = true)
 	public void ativar(Long idLivro) {
 		
 		Optional<Livro> livro = this.livroRepository.findById(idLivro);
@@ -248,7 +248,7 @@ public class LivroService {
 	}
 
 	@Transactional
-	@CacheEvict(value = "listarLivros", allEntries = true)
+	@CacheEvict(value = { "listarLivros", "livro" }, allEntries = true)
 	public void desativar(Long idLivro) {
 		
 		Optional<Livro> livro = this.livroRepository.findById(idLivro);
