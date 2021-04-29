@@ -11,7 +11,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-@Schema(description = "Representa um livro Form")
+@Schema(description = "Representa um login Form")
 public class LoginForm {
 	
 	@Schema(description = "E-mail do usuário", example = "nome@dominio.com")
