@@ -27,3 +27,6 @@ docker/data
 
 ### LOG ###
 /logs/
+
+### CONF DE PRD ###
+src/main/resources/application-prod.properties
