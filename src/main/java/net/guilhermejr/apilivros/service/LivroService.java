@@ -66,7 +66,7 @@ public class LivroService {
 	@Autowired
 	private LivroMapper livroMapper;
 
-	@Value("${livro.localCapa}")
+	@Value("${livros.localCapa}")
 	private String localCapa;
 
 	@Cacheable(value = "listarLivros")
