@@ -1,5 +1,6 @@
 package net.guilhermejr.apilivros.controller;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import net.guilhermejr.apilivros.exception.ExceptionPadrao;
 import net.guilhermejr.apilivros.model.dto.TokenDTO;
+import net.guilhermejr.apilivros.model.entity.Usuario;
 import net.guilhermejr.apilivros.model.form.LoginForm;
 import net.guilhermejr.apilivros.service.TokenService;
 import net.guilhermejr.apilivros.validacao.ErroDeFormularioDTO;
@@ -52,8 +54,10 @@ public class AutenticacaoController {
 		try {
 			
 			Authentication authenticate = this.authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginForm.getEmail(), loginForm.getSenha()));
-			String token = this.tokenService.gerarToken(authenticate);
-			TokenDTO tokenDTO = TokenDTO.builder().access_token(token).token_type("Bearer").build();
+			Usuario usuario = (Usuario) authenticate.getPrincipal();
+	
+			TokenDTO tokenDTO = this.tokenService.gerarToken(usuario);
+			
 			log.info("Usuário: "+ loginForm.getEmail() +" autenticado com sucesso.");
 			return ResponseEntity.ok(tokenDTO);
 			
@@ -63,6 +67,34 @@ public class AutenticacaoController {
 			throw new ExceptionPadrao("E-mail e senha inválidos.");
 			
 		}
+		
+	}
+	
+	@Operation(summary = "Renova o token JWT")
+	@ApiResponses({
+		@ApiResponse(responseCode = "200", description = "Token renovado", content = @Content(mediaType = "application/json", schema = @Schema(implementation = TokenDTO.class))),
+		@ApiResponse(responseCode = "400", description = "Erro ao tentar logar", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErroDeFormularioDTO.class))),
+		@ApiResponse(responseCode = "415", description = "Content-Type não suportado", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErroMediaTypeDTO.class)))
+	})
+	@PostMapping("/refresh")
+	public ResponseEntity<TokenDTO> refresh(HttpServletRequest request) {
+		
+		String token = request.getHeader("Authorization");
+		
+		if (token == null || token.isEmpty() || !token.startsWith("Bearer ")) {
+			throw new ExceptionPadrao("Token inválido");	
+		}
+		
+		token = token.substring(7, token.length());
+		
+		String refreshToken = request.getHeader("X-Refresh-Token");
+		
+		if (refreshToken == null || refreshToken.isEmpty()) {
+			throw new ExceptionPadrao("Token inválido");	
+		}
+		
+		TokenDTO tokenDTO = this.tokenService.refresh(token, refreshToken);
+		return ResponseEntity.ok(tokenDTO);
 		
 	}
 

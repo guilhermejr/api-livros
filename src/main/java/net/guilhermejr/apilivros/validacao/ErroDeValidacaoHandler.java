@@ -17,6 +17,7 @@ import org.springframework.web.context.request.WebRequest;
 
 import io.swagger.v3.oas.annotations.Hidden;
 import lombok.extern.slf4j.Slf4j;
+import net.guilhermejr.apilivros.exception.Exception401;
 import net.guilhermejr.apilivros.exception.ExceptionNotFound;
 import net.guilhermejr.apilivros.exception.ExceptionPadrao;
 
@@ -26,6 +27,16 @@ public class ErroDeValidacaoHandler {
 	
 	@Autowired
 	private MessageSource messageSource;
+	
+	@Hidden
+	@ExceptionHandler(Exception401.class)
+	@ResponseStatus(HttpStatus.UNAUTHORIZED)
+	public ErroPadraoDTO handleErroPadrao401(Exception401 ex, WebRequest request) {
+		
+		log.error(ex.getMessage(), ex);
+		return new ErroPadraoDTO(HttpStatus.UNAUTHORIZED.value(), ex.getMessage());
+
+	}
 	
 	@Hidden
 	@ExceptionHandler(ExceptionPadrao.class)

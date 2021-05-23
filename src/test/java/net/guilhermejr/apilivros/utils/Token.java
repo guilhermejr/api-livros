@@ -6,6 +6,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
+import net.guilhermejr.apilivros.model.dto.TokenDTO;
+import net.guilhermejr.apilivros.model.entity.Usuario;
 import net.guilhermejr.apilivros.service.TokenService;
 
 @Component
@@ -22,7 +24,9 @@ public class Token {
 	
 	public String gerar() {
 		Authentication authenticate = this.authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(this.email, this.senha));	 
-		return this.tokenService.gerarToken(authenticate);
+		Usuario usuario = (Usuario) authenticate.getPrincipal();
+		TokenDTO tokenDTO = this.tokenService.gerarToken(usuario);
+		return tokenDTO.getAccess_token();
 	}
 
 }

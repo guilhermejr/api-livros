@@ -33,6 +33,7 @@ public class AutenticacaoControllerTest {
 			.contentType("application/json")
 	        .content(LeJSON.conteudo("/json/correto/autenticacao/autenticacao.json")))
 			.andExpect(MockMvcResultMatchers.jsonPath("$.access_token").exists())
+			.andExpect(MockMvcResultMatchers.jsonPath("$.refresh_token").exists())
 			.andExpect(MockMvcResultMatchers.jsonPath("$.token_type").value("Bearer"))
 			.andExpect(MockMvcResultMatchers.status().isOk())
 			.andReturn();
