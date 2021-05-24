@@ -123,6 +123,7 @@ public class TokenService {
 		if (rto.isPresent()) {
 			RefreshToken rt = rto.get();
 			if (rt.getExpiracao().isBefore(LocalDateTime.now())) {
+				this.refreshTokenRepository.delete(rt);
 				throw new Exception401("Token expirado.");
 			} else {
 
@@ -148,16 +149,16 @@ public class TokenService {
 					}
 
 				} catch (MalformedJwtException e) {
-					throw new ExceptionPadrao("Token inválido");
+					throw new Exception401("Token inválido");
 				} catch (SignatureException e) {
-					throw new ExceptionPadrao("Token inválido");
+					throw new Exception401("Token inválido");
 				} catch (Exception e) {
-					throw new ExceptionPadrao("Token inválido");
+					throw new Exception401("Token inválido");
 				}
 
 			}
 		} else {
-			throw new ExceptionPadrao("Token inválido");
+			throw new Exception401("Token inválido");
 		}
 
 	}

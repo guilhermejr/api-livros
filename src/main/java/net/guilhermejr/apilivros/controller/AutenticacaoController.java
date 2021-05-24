@@ -22,6 +22,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
+import net.guilhermejr.apilivros.exception.Exception401;
 import net.guilhermejr.apilivros.exception.ExceptionPadrao;
 import net.guilhermejr.apilivros.model.dto.TokenDTO;
 import net.guilhermejr.apilivros.model.entity.Usuario;
@@ -73,7 +74,7 @@ public class AutenticacaoController {
 	@Operation(summary = "Renova o token JWT")
 	@ApiResponses({
 		@ApiResponse(responseCode = "200", description = "Token renovado", content = @Content(mediaType = "application/json", schema = @Schema(implementation = TokenDTO.class))),
-		@ApiResponse(responseCode = "400", description = "Erro ao tentar logar", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErroDeFormularioDTO.class))),
+		@ApiResponse(responseCode = "401", description = "Erro ao tentar logar", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErroDeFormularioDTO.class))),
 		@ApiResponse(responseCode = "415", description = "Content-Type não suportado", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErroMediaTypeDTO.class)))
 	})
 	@PostMapping("/refresh")
@@ -82,7 +83,7 @@ public class AutenticacaoController {
 		String token = request.getHeader("Authorization");
 		
 		if (token == null || token.isEmpty() || !token.startsWith("Bearer ")) {
-			throw new ExceptionPadrao("Token inválido");	
+			throw new Exception401("Token inválido");	
 		}
 		
 		token = token.substring(7, token.length());
@@ -90,7 +91,7 @@ public class AutenticacaoController {
 		String refreshToken = request.getHeader("X-Refresh-Token");
 		
 		if (refreshToken == null || refreshToken.isEmpty()) {
-			throw new ExceptionPadrao("Token inválido");	
+			throw new Exception401("Token inválido");	
 		}
 		
 		TokenDTO tokenDTO = this.tokenService.refresh(token, refreshToken);
